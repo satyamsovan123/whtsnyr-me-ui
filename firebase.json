@@ -1,10 +1,16 @@
 {
   "hosting": {
-    "public": "dist/whtsnyr-me-ui",
+    "public": "dist/whtsnyr-me-ui/browser",
     "ignore": [
       "firebase.json",
       "**/.*",
       "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
     ]
   }
 }
