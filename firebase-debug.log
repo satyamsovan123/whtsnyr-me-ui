@@ -1,53 +1,85 @@
-[debug] [2026-07-17T19:15:45.847Z] ----------------------------------------------------------------------
-[debug] [2026-07-17T19:15:45.853Z] Command:       /Users/satyamsovan123/.nvm/versions/node/v24.12.0/bin/node /Users/satyamsovan123/.nvm/versions/node/v24.12.0/bin/firebase init
-[debug] [2026-07-17T19:15:45.853Z] CLI Version:   15.24.0
-[debug] [2026-07-17T19:15:45.853Z] Platform:      darwin
-[debug] [2026-07-17T19:15:45.853Z] Node Version:  v24.12.0
-[debug] [2026-07-17T19:15:45.853Z] Detected Agent: unknown
-[debug] [2026-07-17T19:15:45.853Z] Time:          Sat Jul 18 2026 00:45:45 GMT+0530 (India Standard Time)
-[debug] [2026-07-17T19:15:45.853Z] ----------------------------------------------------------------------
+[debug] [2026-07-17T19:20:33.029Z] ----------------------------------------------------------------------
+[debug] [2026-07-17T19:20:33.033Z] Command:       /Users/satyamsovan123/.nvm/versions/node/v24.12.0/bin/node /Users/satyamsovan123/.nvm/versions/node/v24.12.0/bin/firebase deploy
+[debug] [2026-07-17T19:20:33.033Z] CLI Version:   15.24.0
+[debug] [2026-07-17T19:20:33.033Z] Platform:      darwin
+[debug] [2026-07-17T19:20:33.033Z] Node Version:  v24.12.0
+[debug] [2026-07-17T19:20:33.034Z] Detected Agent: unknown
+[debug] [2026-07-17T19:20:33.034Z] Time:          Sat Jul 18 2026 00:50:33 GMT+0530 (India Standard Time)
+[debug] [2026-07-17T19:20:33.034Z] ----------------------------------------------------------------------
 [debug] 
-[debug] [2026-07-17T19:15:45.873Z] >>> [apiv2][query] GET https://firebase-public.firebaseio.com/cli.json [none]
+[debug] [2026-07-17T19:20:34.006Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2026-07-17T19:20:34.006Z] > authorizing via signed-in user (msatyamsovan@gmail.com)
+[debug] [2026-07-17T19:20:34.006Z] [iam] checking project whtsnyr-me for permissions ["firebase.projects.get","firebasehosting.sites.update"]
+[debug] [2026-07-17T19:20:34.016Z] Checked if tokens are valid: true, expires at: 1784319381361
+[debug] [2026-07-17T19:20:34.016Z] Checked if tokens are valid: true, expires at: 1784319381361
+[debug] [2026-07-17T19:20:34.016Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/whtsnyr-me:testIamPermissions [none]
+[debug] [2026-07-17T19:20:34.017Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/whtsnyr-me:testIamPermissions  x-goog-user-project=whtsnyr-me
+[debug] [2026-07-17T19:20:34.017Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/whtsnyr-me:testIamPermissions {"permissions":["firebase.projects.get","firebasehosting.sites.update"]}
+[debug] [2026-07-17T19:20:35.551Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/whtsnyr-me:testIamPermissions 200
+[debug] [2026-07-17T19:20:35.552Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/whtsnyr-me:testIamPermissions {"permissions":["firebase.projects.get","firebasehosting.sites.update"]}
+[debug] [2026-07-17T19:20:35.552Z] Checked if tokens are valid: true, expires at: 1784319381361
+[debug] [2026-07-17T19:20:35.552Z] Checked if tokens are valid: true, expires at: 1784319381361
+[debug] [2026-07-17T19:20:35.552Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/whtsnyr-me [none]
+[debug] [2026-07-17T19:20:36.277Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/whtsnyr-me 200
+[debug] [2026-07-17T19:20:36.277Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/whtsnyr-me {"projectId":"whtsnyr-me","projectNumber":"1061904127814","displayName":"whtsnyr-me","name":"projects/whtsnyr-me","resources":{"hostingSite":"whtsnyr-me"},"state":"ACTIVE","labels":{"firebase":"enabled"},"etag":"1_1f93938d-b874-4247-90c5-ed8b2b0d05ee"}
 [info] 
-     ######## #### ########  ######## ########     ###     ######  ########
-     ##        ##  ##     ## ##       ##     ##  ##   ##  ##       ##
-     ######    ##  ########  ######   ########  #########  ######  ######
-     ##        ##  ##    ##  ##       ##     ## ##     ##       ## ##
-     ##       #### ##     ## ######## ########  ##     ##  ######  ########
-
-You're about to initialize a Firebase project in this directory:
-
-  /Users/satyamsovan123/Desktop/whtsnyr.me/whtsnyr-me-ui
-
-[debug] [2026-07-17T19:15:47.307Z] <<< [apiv2][status] GET https://firebase-public.firebaseio.com/cli.json 200
-[debug] [2026-07-17T19:15:47.307Z] <<< [apiv2][body] GET https://firebase-public.firebaseio.com/cli.json {"cloudBuildErrorAfter":1594252800000,"cloudBuildWarnAfter":1590019200000,"defaultNode10After":1594252800000,"minVersion":"3.0.5","node8DeploysDisabledAfter":1613390400000,"node8RuntimeDisabledAfter":1615809600000,"node8WarnAfter":1600128000000}
+[info] === Deploying to 'whtsnyr-me'...
 [info] 
-=== Project Setup
-[info] 
-[info] First, let's associate this project directory with a Firebase project.
-[info] You can create multiple project aliases by running firebase use --add, 
-[info] 
-[debug] [2026-07-17T19:16:22.113Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
-[debug] [2026-07-17T19:16:22.114Z] > authorizing via signed-in user (msatyamsovan@gmail.com)
-[debug] [2026-07-17T19:16:22.115Z] Checked if tokens are valid: false, expires at: 1774349512610
-[debug] [2026-07-17T19:16:22.115Z] Checked if tokens are valid: false, expires at: 1774349512610
-[debug] [2026-07-17T19:16:22.116Z] > refreshing access token with scopes: []
-[debug] [2026-07-17T19:16:22.117Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
-[debug] [2026-07-17T19:16:22.117Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
-[debug] [2026-07-17T19:16:22.360Z] <<< [apiv2][status] POST https://www.googleapis.com/oauth2/v3/token 200
-[debug] [2026-07-17T19:16:22.361Z] <<< [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
-[debug] [2026-07-17T19:16:22.376Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects pageSize=100
-[debug] [2026-07-17T19:16:23.622Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects 200
-[debug] [2026-07-17T19:16:23.622Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects [omitted]
-[info] 
-=== Hosting Setup
-[debug] [2026-07-17T19:16:31.237Z] Checked if tokens are valid: true, expires at: 1784319381361
-[debug] [2026-07-17T19:16:31.237Z] Checked if tokens are valid: true, expires at: 1784319381361
-[debug] [2026-07-17T19:16:31.237Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/whtsnyr-me [none]
-[debug] [2026-07-17T19:16:31.957Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/whtsnyr-me 200
-[debug] [2026-07-17T19:16:31.957Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/whtsnyr-me {"projectId":"whtsnyr-me","projectNumber":"1061904127814","displayName":"whtsnyr-me","name":"projects/whtsnyr-me","resources":{"hostingSite":"whtsnyr-me"},"state":"ACTIVE","labels":{"firebase":"enabled"},"etag":"1_1f93938d-b874-4247-90c5-ed8b2b0d05ee"}
-[info] 
-[info] Your public directory is the folder (relative to your project directory) that
-[info] will contain Hosting assets to be uploaded with firebase deploy. If you
-[info] have a build process for your assets, use your build's output directory.
-[info] 
+[info] i  deploying hosting 
+[debug] [2026-07-17T19:20:36.280Z] Checked if tokens are valid: true, expires at: 1784319381361
+[debug] [2026-07-17T19:20:36.280Z] Checked if tokens are valid: true, expires at: 1784319381361
+[debug] [2026-07-17T19:20:36.280Z] >>> [apiv2][query] GET https://firebasehosting.googleapis.com/v1beta1/projects/whtsnyr-me/sites/whtsnyr-me [none]
+[debug] [2026-07-17T19:20:37.800Z] <<< [apiv2][status] GET https://firebasehosting.googleapis.com/v1beta1/projects/whtsnyr-me/sites/whtsnyr-me 200
+[debug] [2026-07-17T19:20:37.800Z] <<< [apiv2][body] GET https://firebasehosting.googleapis.com/v1beta1/projects/whtsnyr-me/sites/whtsnyr-me {"name":"projects/whtsnyr-me/sites/whtsnyr-me","defaultUrl":"https://whtsnyr-me.web.app","appId":"1:1061904127814:web:6da3cb1630eaffce457747","type":"DEFAULT_SITE"}
+[debug] [2026-07-17T19:20:37.801Z] Checked if tokens are valid: true, expires at: 1784319381361
+[debug] [2026-07-17T19:20:37.801Z] Checked if tokens are valid: true, expires at: 1784319381361
+[debug] [2026-07-17T19:20:37.801Z] >>> [apiv2][query] POST https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/whtsnyr-me/versions [none]
+[debug] [2026-07-17T19:20:37.801Z] >>> [apiv2][body] POST https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/whtsnyr-me/versions {"status":"CREATED","labels":{"deployment-tool":"cli-firebase"}}
+[debug] [2026-07-17T19:20:40.868Z] <<< [apiv2][status] POST https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/whtsnyr-me/versions 200
+[debug] [2026-07-17T19:20:40.868Z] <<< [apiv2][body] POST https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/whtsnyr-me/versions {"name":"projects/1061904127814/sites/whtsnyr-me/versions/48d653eb86a2202e","status":"CREATED","config":{},"labels":{"deployment-tool":"cli-firebase"}}
+[info] i  hosting[whtsnyr-me]: beginning deploy... 
+[info] i  hosting[whtsnyr-me]: found 8 files in dist/whtsnyr-me-ui 
+[debug] [2026-07-17T19:20:40.878Z] [hosting] uploading with 200 concurrency
+[debug] [2026-07-17T19:20:40.879Z] [hosting] hash cache [ZGlzdC93aHRzbnlyLW1lLXVp] not populated
+[debug] [2026-07-17T19:20:40.891Z] Checked if tokens are valid: true, expires at: 1784319381361
+[debug] [2026-07-17T19:20:40.891Z] Checked if tokens are valid: true, expires at: 1784319381361
+[debug] [2026-07-17T19:20:40.892Z] [hosting] hash cache [ZGlzdC93aHRzbnlyLW1lLXVp] stored for 8 files
+[debug] [2026-07-17T19:20:40.892Z] [hosting][hash queue][FINAL] {"max":10,"min":2,"avg":4.25,"active":0,"complete":8,"success":8,"errored":0,"retried":0,"total":8,"elapsed":12}
+[debug] [2026-07-17T19:20:40.893Z] >>> [apiv2][query] POST https://firebasehosting.googleapis.com/v1beta1/projects/1061904127814/sites/whtsnyr-me/versions/48d653eb86a2202e:populateFiles [none]
+[debug] [2026-07-17T19:20:40.893Z] >>> [apiv2][body] POST https://firebasehosting.googleapis.com/v1beta1/projects/1061904127814/sites/whtsnyr-me/versions/48d653eb86a2202e:populateFiles {"files":{"/browser/styles-5INURTSO.css":"f1b651238a58fe290baec6c5e32f3bdb1943dd2bd582f02569231f7a757c7837","/prerendered-routes.json":"5c19cca0df6fbfe49815495e7145ec4551d30ac216520a6ce811ec2cca054a67","/index.html":"0e7be0033fd549849abc2b7cf1487b1970ea97c2da93ebe6280c0602afe842eb","/404.html":"b6abfbdc894d37c260154e281499dc6415bb6ad76b32f01ef94dee93aa897ac4","/browser/index.html":"5e63d90c4bf1d8a6a103a83800b629712920b5b365df698bb26d1f1413153c7b","/3rdpartylicenses.txt":"49fb8f04668a38bdee5c1b6b7c07dd5f0260948599e2ff9b7c8af77d5bc06424","/browser/favicon.ico":"8f1fc0f94ae643bb8757c3cb49f69bf6cb2228f632cb77c7e47d8ee3995d88a7","/browser/main-CGEARIMU.js":"60b060ed26375aaf7aa8920f661c7d5ebaf4f5f4a9e4d65c08e2e16586cc84ef"}}
+[debug] [2026-07-17T19:20:41.666Z] <<< [apiv2][status] POST https://firebasehosting.googleapis.com/v1beta1/projects/1061904127814/sites/whtsnyr-me/versions/48d653eb86a2202e:populateFiles 200
+[debug] [2026-07-17T19:20:41.666Z] <<< [apiv2][body] POST https://firebasehosting.googleapis.com/v1beta1/projects/1061904127814/sites/whtsnyr-me/versions/48d653eb86a2202e:populateFiles {"uploadRequiredHashes":["0e7be0033fd549849abc2b7cf1487b1970ea97c2da93ebe6280c0602afe842eb","b6abfbdc894d37c260154e281499dc6415bb6ad76b32f01ef94dee93aa897ac4","5e63d90c4bf1d8a6a103a83800b629712920b5b365df698bb26d1f1413153c7b","49fb8f04668a38bdee5c1b6b7c07dd5f0260948599e2ff9b7c8af77d5bc06424","8f1fc0f94ae643bb8757c3cb49f69bf6cb2228f632cb77c7e47d8ee3995d88a7","60b060ed26375aaf7aa8920f661c7d5ebaf4f5f4a9e4d65c08e2e16586cc84ef","f1b651238a58fe290baec6c5e32f3bdb1943dd2bd582f02569231f7a757c7837","5c19cca0df6fbfe49815495e7145ec4551d30ac216520a6ce811ec2cca054a67"],"uploadUrl":"https://upload-firebasehosting.googleapis.com/upload/sites/whtsnyr-me/versions/48d653eb86a2202e/files"}
+[debug] [2026-07-17T19:20:41.666Z] Checked if tokens are valid: true, expires at: 1784319381361
+[debug] [2026-07-17T19:20:41.666Z] Checked if tokens are valid: true, expires at: 1784319381361
+[debug] [2026-07-17T19:20:41.666Z] Checked if tokens are valid: true, expires at: 1784319381361
+[debug] [2026-07-17T19:20:41.666Z] Checked if tokens are valid: true, expires at: 1784319381361
+[debug] [2026-07-17T19:20:41.667Z] Checked if tokens are valid: true, expires at: 1784319381361
+[debug] [2026-07-17T19:20:41.667Z] Checked if tokens are valid: true, expires at: 1784319381361
+[debug] [2026-07-17T19:20:41.667Z] Checked if tokens are valid: true, expires at: 1784319381361
+[debug] [2026-07-17T19:20:41.667Z] Checked if tokens are valid: true, expires at: 1784319381361
+[debug] [2026-07-17T19:20:41.667Z] Checked if tokens are valid: true, expires at: 1784319381361
+[debug] [2026-07-17T19:20:41.667Z] Checked if tokens are valid: true, expires at: 1784319381361
+[debug] [2026-07-17T19:20:41.667Z] Checked if tokens are valid: true, expires at: 1784319381361
+[debug] [2026-07-17T19:20:41.667Z] Checked if tokens are valid: true, expires at: 1784319381361
+[debug] [2026-07-17T19:20:41.667Z] Checked if tokens are valid: true, expires at: 1784319381361
+[debug] [2026-07-17T19:20:41.667Z] Checked if tokens are valid: true, expires at: 1784319381361
+[debug] [2026-07-17T19:20:41.667Z] Checked if tokens are valid: true, expires at: 1784319381361
+[debug] [2026-07-17T19:20:41.667Z] Checked if tokens are valid: true, expires at: 1784319381361
+[debug] [2026-07-17T19:20:41.667Z] >>> [apiv2][query] POST https://upload-firebasehosting.googleapis.com/upload/sites/whtsnyr-me/versions/48d653eb86a2202e/files/0e7be0033fd549849abc2b7cf1487b1970ea97c2da93ebe6280c0602afe842eb [none]
+[debug] [2026-07-17T19:20:41.667Z] >>> [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/whtsnyr-me/versions/48d653eb86a2202e/files/0e7be0033fd549849abc2b7cf1487b1970ea97c2da93ebe6280c0602afe842eb [stream]
+[debug] [2026-07-17T19:20:41.668Z] >>> [apiv2][query] POST https://upload-firebasehosting.googleapis.com/upload/sites/whtsnyr-me/versions/48d653eb86a2202e/files/b6abfbdc894d37c260154e281499dc6415bb6ad76b32f01ef94dee93aa897ac4 [none]
+[debug] [2026-07-17T19:20:41.668Z] >>> [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/whtsnyr-me/versions/48d653eb86a2202e/files/b6abfbdc894d37c260154e281499dc6415bb6ad76b32f01ef94dee93aa897ac4 [stream]
+[debug] [2026-07-17T19:20:41.668Z] >>> [apiv2][query] POST https://upload-firebasehosting.googleapis.com/upload/sites/whtsnyr-me/versions/48d653eb86a2202e/files/5e63d90c4bf1d8a6a103a83800b629712920b5b365df698bb26d1f1413153c7b [none]
+[debug] [2026-07-17T19:20:41.668Z] >>> [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/whtsnyr-me/versions/48d653eb86a2202e/files/5e63d90c4bf1d8a6a103a83800b629712920b5b365df698bb26d1f1413153c7b [stream]
+[debug] [2026-07-17T19:20:41.668Z] >>> [apiv2][query] POST https://upload-firebasehosting.googleapis.com/upload/sites/whtsnyr-me/versions/48d653eb86a2202e/files/49fb8f04668a38bdee5c1b6b7c07dd5f0260948599e2ff9b7c8af77d5bc06424 [none]
+[debug] [2026-07-17T19:20:41.668Z] >>> [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/whtsnyr-me/versions/48d653eb86a2202e/files/49fb8f04668a38bdee5c1b6b7c07dd5f0260948599e2ff9b7c8af77d5bc06424 [stream]
+[debug] [2026-07-17T19:20:41.669Z] >>> [apiv2][query] POST https://upload-firebasehosting.googleapis.com/upload/sites/whtsnyr-me/versions/48d653eb86a2202e/files/8f1fc0f94ae643bb8757c3cb49f69bf6cb2228f632cb77c7e47d8ee3995d88a7 [none]
+[debug] [2026-07-17T19:20:41.669Z] >>> [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/whtsnyr-me/versions/48d653eb86a2202e/files/8f1fc0f94ae643bb8757c3cb49f69bf6cb2228f632cb77c7e47d8ee3995d88a7 [stream]
+[debug] [2026-07-17T19:20:41.669Z] >>> [apiv2][query] POST https://upload-firebasehosting.googleapis.com/upload/sites/whtsnyr-me/versions/48d653eb86a2202e/files/60b060ed26375aaf7aa8920f661c7d5ebaf4f5f4a9e4d65c08e2e16586cc84ef [none]
+[debug] [2026-07-17T19:20:41.669Z] >>> [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/whtsnyr-me/versions/48d653eb86a2202e/files/60b060ed26375aaf7aa8920f661c7d5ebaf4f5f4a9e4d65c08e2e16586cc84ef [stream]
+[debug] [2026-07-17T19:20:41.669Z] >>> [apiv2][query] POST https://upload-firebasehosting.googleapis.com/upload/sites/whtsnyr-me/versions/48d653eb86a2202e/files/f1b651238a58fe290baec6c5e32f3bdb1943dd2bd582f02569231f7a757c7837 [none]
+[debug] [2026-07-17T19:20:41.669Z] >>> [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/whtsnyr-me/versions/48d653eb86a2202e/files/f1b651238a58fe290baec6c5e32f3bdb1943dd2bd582f02569231f7a757c7837 [stream]
+[debug] [2026-07-17T19:20:41.669Z] >>> [apiv2][query] POST https://upload-firebasehosting.googleapis.com/upload/sites/whtsnyr-me/versions/48d653eb86a2202e/files/5c19cca0df6fbfe49815495e7145ec4551d30ac216520a6ce811ec2cca054a67 [none]
+[debug] [2026-07-17T19:20:41.669Z] >>> [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/whtsnyr-me/versions/48d653eb86a2202e/files/5c19cca0df6fbfe49815495e7145ec4551d30ac216520a6ce811ec2cca054a67 [stream]
+[debug] [2026-07-17T19:20:41.672Z] [hosting][populate queue][FINAL] {"max":776,"min":776,"avg":776,"active":0,"complete":1,"success":1,"errored":0,"retried":0,"total":1,"elapsed":781}
+[debug] [2026-07-17T19:20:41.672Z] [hosting] uploads queued: 8
