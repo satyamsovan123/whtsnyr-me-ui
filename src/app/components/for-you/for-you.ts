@@ -8,7 +8,7 @@ import gsap from 'gsap';
   standalone: true,
   imports: [CommonModule],
   template: `
-    <div class="glass-panel p-4 mb-4 position-relative overflow-hidden ai-container" #aiContainer *ngIf="insightText || loading">
+    <div class="glass-panel p-4 mb-4 position-relative overflow-hidden ai-container" #aiContainer>
       <!-- Shimmer effect overlay -->
       <div class="shimmer-overlay" *ngIf="loading"></div>
       
@@ -20,6 +20,7 @@ import gsap from 'gsap';
       <div class="ai-content-box mt-3 position-relative z-1">
         <p class="mb-0 fs-5 lh-base ai-text" *ngIf="insightText">{{ insightText }}</p>
         <p class="mb-0 fs-5 text-muted ai-loading-text" *ngIf="loading">Gathering insights from your surroundings...</p>
+        <p class="mb-0 fs-5 text-muted" *ngIf="!insightText && !loading">Waiting for location data to generate personalized AI insights...</p>
       </div>
     </div>
   `,
