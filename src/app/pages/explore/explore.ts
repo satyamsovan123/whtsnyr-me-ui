@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { LABELS } from '../../constants/labels';
 
 @Component({
   selector: 'app-explore',
@@ -9,24 +10,37 @@ import { CommonModule } from '@angular/common';
     <div class="page-container d-flex flex-column h-100 max-w-desktop mx-auto bg-white fade-in">
       
       <!-- Top Search & Filters -->
-      <div class="p-3 bg-white z-1">
+      <div class="pt-3 bg-white z-1">
         <div class="input-group bg-light rounded-pill p-1 mb-3">
           <span class="input-group-text bg-transparent border-0 text-secondary"><i class="bi bi-search"></i></span>
-          <input type="text" class="form-control border-0 bg-transparent shadow-none" placeholder="Search places, food, events...">
+          <input type="text" class="form-control border-0 bg-transparent shadow-none" [placeholder]="labels.EXPLORE.SEARCH_PLACEHOLDER">
         </div>
-        
-        <div class="d-flex gap-2 overflow-auto no-scrollbar pb-2">
-          <button class="btn btn-outline border-light rounded-pill text-dark fw-medium btn-sm px-3 shadow-sm bg-white text-nowrap d-flex align-items-center"><i class="bi bi-geo-alt-fill me-1 text-secondary"></i> Bandra West <i class="bi bi-chevron-down ms-2"></i></button>
-          <button class="btn btn-outline border-light rounded-pill text-dark fw-medium btn-sm px-3 shadow-sm bg-white text-nowrap">2 km <i class="bi bi-chevron-down ms-1"></i></button>
-          <button class="btn btn-outline border-light rounded-pill text-dark fw-medium btn-sm px-3 shadow-sm bg-white text-nowrap">Filters <i class="bi bi-sliders ms-1"></i></button>
-        </div>
+        <div class="d-flex gap-2 overflow-auto no-scrollbar pb-2 mb-2">
+          
+          <!-- Category Dropdown -->
+          <div class="position-relative d-inline-block">
+            <button class="btn btn-outline border-light rounded-pill text-dark fw-medium btn-sm px-3 shadow-sm bg-white text-nowrap">{{ currentCategory }} <i class="bi bi-chevron-down ms-1"></i></button>
+            <select class="position-absolute top-0 start-0 w-100 h-100 opacity-0" style="cursor: pointer;" (change)="currentCategory = $any($event.target).value">
+              <option value="All Categories" [selected]="currentCategory === 'All Categories'">All Categories</option>
+              <option value="Food & Dining" [selected]="currentCategory === 'Food & Dining'">Food & Dining</option>
+              <option value="Nature & Parks" [selected]="currentCategory === 'Nature & Parks'">Nature & Parks</option>
+              <option value="Shopping" [selected]="currentCategory === 'Shopping'">Shopping</option>
+              <option value="Arts & Culture" [selected]="currentCategory === 'Arts & Culture'">Arts & Culture</option>
+              <option value="Entertainment" [selected]="currentCategory === 'Entertainment'">Entertainment</option>
+            </select>
+          </div>
 
-        <div class="d-flex gap-4 overflow-auto no-scrollbar pt-2 border-bottom border-light pb-2">
-          <span class="text-secondary small fw-medium text-nowrap border-bottom border-dark border-2 pb-2 text-dark">Food</span>
-          <span class="text-secondary small fw-medium text-nowrap pb-2">Nature</span>
-          <span class="text-secondary small fw-medium text-nowrap pb-2">Temples</span>
-          <span class="text-secondary small fw-medium text-nowrap pb-2">Shopping</span>
-          <span class="text-secondary small fw-medium text-nowrap pb-2">Parks</span>
+          <!-- Radius Dropdown -->
+          <div class="position-relative d-inline-block">
+            <button class="btn btn-outline border-light rounded-pill text-dark fw-medium btn-sm px-3 shadow-sm bg-white text-nowrap">{{ currentRadius }} <i class="bi bi-chevron-down ms-1"></i></button>
+            <select class="position-absolute top-0 start-0 w-100 h-100 opacity-0" style="cursor: pointer;" (change)="currentRadius = $any($event.target).value">
+              <option value="1 km" [selected]="currentRadius === '1 km'">1 km</option>
+              <option value="2 km" [selected]="currentRadius === '2 km'">2 km</option>
+              <option value="5 km" [selected]="currentRadius === '5 km'">5 km</option>
+              <option value="10 km" [selected]="currentRadius === '10 km'">10 km</option>
+            </select>
+          </div>
+
         </div>
       </div>
 
@@ -42,27 +56,60 @@ import { CommonModule } from '@angular/common';
           <div class="position-absolute start-50 translate-middle-x" style="bottom: -8px; width: 0; height: 0; border-left: 8px solid transparent; border-right: 8px solid transparent; border-top: 8px solid var(--inverse-bg);"></div>
         </div>
 
-        <!-- Floating Action Buttons -->
-        <div class="position-absolute bottom-0 start-50 translate-middle-x mb-4 d-flex bg-white rounded-pill shadow-sm p-1">
-          <button class="btn btn-black rounded-pill px-4 fw-medium">Map</button>
-          <button class="btn btn-white text-secondary rounded-pill px-4 fw-medium border-0">List</button>
-        </div>
       </div>
 
-      <!-- Place Card Bottom Sheet Mockup -->
-      <div class="bg-white rounded-top-4 shadow-lg p-3 mx-2 mx-md-4 position-relative z-2" style="margin-top: -20px;">
-        <div class="d-flex justify-content-center mb-3">
-          <div class="bg-secondary rounded-pill opacity-25" style="width: 40px; height: 4px;"></div>
+      <!-- Place Card Bottom Sheet / Modal -->
+      <div [class]="isModalOpen ? 'position-absolute top-0 start-0 w-100 h-100 bg-white z-3 d-flex flex-column' : 'bg-white rounded-4 shadow-lg p-4 mx-4 mb-4 position-relative z-2 d-flex flex-column'" 
+           [style]="isModalOpen ? 'padding-top: max(env(safe-area-inset-top), 20px); padding-bottom: max(env(safe-area-inset-bottom), 20px);' : 'margin-top: -60px; max-height: 40vh;'">
+        
+        <!-- Modal Header -->
+        <div *ngIf="isModalOpen" class="d-flex justify-content-between align-items-center p-3 border-bottom flex-shrink-0">
+          <h5 class="fw-bold mb-0">{{ labels.EXPLORE.PLACES_NEARBY }}</h5>
+          <button (click)="isModalOpen = false" class="btn btn-light rounded-circle p-2 d-flex align-items-center justify-content-center" style="width: 36px; height: 36px;">
+            <i class="bi bi-chevron-down"></i>
+          </button>
+        </div>
+
+        <!-- Bottom Sheet Header -->
+        <div *ngIf="!isModalOpen" class="d-flex w-100 justify-content-between align-items-center mb-3 flex-shrink-0" style="cursor: pointer;" (click)="isModalOpen = true">
+          <h6 class="fw-bold mb-0">{{ labels.EXPLORE.PLACES_NEARBY }}</h6>
+          <i class="bi bi-arrows-angle-expand text-secondary fs-5"></i>
         </div>
         
-        <div class="d-flex gap-3 align-items-center">
-          <div class="rounded-3 flex-shrink-0 bg-light" style="width: 70px; height: 70px; background-image: url('https://images.unsplash.com/photo-1524492412937-b28074a5d7da?q=80&w=200&auto=format&fit=crop'); background-size: cover;"></div>
-          <div class="flex-grow-1">
-            <h6 class="fw-bold mb-1 fs-5">Bandra Fort</h6>
-            <p class="small text-secondary mb-1">1.1 km • <i class="bi bi-star-fill text-warning"></i> 4.6 <span class="text-success ms-1">Open</span></p>
-            <p class="small text-tertiary mb-0">Historic • Photography</p>
+        <!-- Scrollable List -->
+        <div class="overflow-auto pb-2 pe-1" [ngClass]="{'p-4': isModalOpen}">
+          <!-- Item 1 -->
+          <div class="d-flex gap-3 align-items-center mb-4">
+            <div class="rounded-3 flex-shrink-0 bg-light" style="width: 70px; height: 70px; background-image: url('https://images.unsplash.com/photo-1524492412937-b28074a5d7da?q=80&w=200&auto=format&fit=crop'); background-size: cover;"></div>
+            <div class="flex-grow-1">
+              <h6 class="fw-bold mb-1 fs-5">Bandra Fort</h6>
+              <p class="small text-secondary mb-1">1.1 km • <i class="bi bi-star-fill text-warning"></i> 4.6 <span class="text-success ms-1">Open</span></p>
+              <p class="small text-tertiary mb-0" style="font-size: 0.8rem;">Historic • Photography</p>
+            </div>
+            <i class="bi bi-bookmark text-secondary fs-5" style="cursor: pointer;"></i>
           </div>
-          <i class="bi bi-three-dots-vertical text-secondary fs-5"></i>
+
+          <!-- Item 2 -->
+          <div class="d-flex gap-3 align-items-center mb-4">
+            <div class="rounded-3 flex-shrink-0 bg-light" style="width: 70px; height: 70px; background-image: url('https://images.unsplash.com/photo-1548013146-72479768bada?q=80&w=200&auto=format&fit=crop'); background-size: cover;"></div>
+            <div class="flex-grow-1">
+              <h6 class="fw-bold mb-1 fs-5">Mount Mary</h6>
+              <p class="small text-secondary mb-1">1.3 km • <i class="bi bi-star-fill text-warning"></i> 4.7 <span class="text-success ms-1">Open</span></p>
+              <p class="small text-tertiary mb-0" style="font-size: 0.8rem;">Architecture • Spiritual</p>
+            </div>
+            <i class="bi bi-bookmark text-secondary fs-5" style="cursor: pointer;"></i>
+          </div>
+
+          <!-- Item 3 -->
+          <div class="d-flex gap-3 align-items-center">
+            <div class="rounded-3 flex-shrink-0 bg-light" style="width: 70px; height: 70px; background-image: url('https://images.unsplash.com/photo-1473448912268-2022ce9509d8?q=80&w=200&auto=format&fit=crop'); background-size: cover;"></div>
+            <div class="flex-grow-1">
+              <h6 class="fw-bold mb-1 fs-5">Joggers' Park</h6>
+              <p class="small text-secondary mb-1">1.6 km • <i class="bi bi-star-fill text-warning"></i> 4.5 <span class="text-success ms-1">Open</span></p>
+              <p class="small text-tertiary mb-0" style="font-size: 0.8rem;">Nature • Walking</p>
+            </div>
+            <i class="bi bi-bookmark text-secondary fs-5" style="cursor: pointer;"></i>
+          </div>
         </div>
       </div>
     </div>
@@ -77,4 +124,9 @@ import { CommonModule } from '@angular/common';
     }
   `]
 })
-export class ExploreComponent {}
+export class ExploreComponent {
+  public labels = LABELS;
+  currentCategory = 'All Categories';
+  currentRadius = '2 km';
+  isModalOpen = false;
+}

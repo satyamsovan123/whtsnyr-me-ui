@@ -2,19 +2,19 @@
 <style>
   @keyframes float-hand {
     0% { transform: translate(0px, 0px); }
-    50% { transform: translate(1px, -1.5px); }
+    50% { transform: translate(1.5px, -2px); }
     100% { transform: translate(0px, 0px); }
   }
   @keyframes float-pin {
     0% { transform: translate(0px, 0px); }
-    50% { transform: translate(0px, -4px); }
+    50% { transform: translate(0px, -3px); }
     100% { transform: translate(0px, 0px); }
   }
   .anim-hand-map {
-    animation: float-hand 4s ease-in-out infinite;
+    animation: float-hand 6s ease-in-out infinite;
   }
   .anim-pin {
-    animation: float-pin 3s ease-in-out infinite;
+    animation: float-pin 5s ease-in-out infinite;
     animation-delay: 0.5s;
   }
 </style>

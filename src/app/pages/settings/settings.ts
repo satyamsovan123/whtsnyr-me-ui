@@ -2,6 +2,7 @@ import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { ThemeService, Theme } from '../../services/theme';
+import { LABELS } from '../../constants/labels';
 
 @Component({
   selector: 'app-settings',
@@ -25,7 +26,7 @@ import { ThemeService, Theme } from '../../services/theme';
       <div class="list-group list-group-flush pt-2">
         
         <div class="list-group-item border-0 px-4 py-3 d-flex justify-content-between align-items-center bg-white position-relative">
-          <span class="text-dark">Preferred radius</span>
+          <span class="text-dark">{{ labels.SETTINGS.PREFERRED_RADIUS }}</span>
           <span class="text-secondary small d-flex align-items-center">{{ currentRadius }} <i class="bi bi-chevron-right ms-2 opacity-50"></i></span>
           <select class="position-absolute top-0 start-0 w-100 h-100 opacity-0" style="cursor: pointer;" (change)="currentRadius = $any($event.target).value">
             <option value="1 km" [selected]="currentRadius === '1 km'">1 km</option>
@@ -36,7 +37,7 @@ import { ThemeService, Theme } from '../../services/theme';
         </div>
 
         <div class="list-group-item border-0 px-4 py-3 d-flex justify-content-between align-items-center bg-white position-relative">
-          <span class="text-dark">Temperature units</span>
+          <span class="text-dark">{{ labels.SETTINGS.TEMPERATURE_UNITS }}</span>
           <span class="text-secondary small d-flex align-items-center">{{ currentTemp }} <i class="bi bi-chevron-right ms-2 opacity-50"></i></span>
           <select class="position-absolute top-0 start-0 w-100 h-100 opacity-0" style="cursor: pointer;" (change)="currentTemp = $any($event.target).value">
             <option value="°C" [selected]="currentTemp === '°C'">Celsius (°C)</option>
@@ -45,7 +46,7 @@ import { ThemeService, Theme } from '../../services/theme';
         </div>
 
         <div class="list-group-item border-0 px-4 py-3 d-flex justify-content-between align-items-center bg-white position-relative">
-          <span class="text-dark">Theme</span>
+          <span class="text-dark">{{ labels.SETTINGS.THEME }}</span>
           <span class="text-secondary small d-flex align-items-center text-capitalize">{{ currentTheme }} <i class="bi bi-chevron-right ms-2 opacity-50"></i></span>
           <select class="position-absolute top-0 start-0 w-100 h-100 opacity-0" style="cursor: pointer;" (change)="onThemeChange($event)">
             <option value="light" [selected]="currentTheme === 'light'">Light</option>
@@ -55,7 +56,7 @@ import { ThemeService, Theme } from '../../services/theme';
         </div>
 
         <div class="list-group-item border-0 px-4 py-3 d-flex justify-content-between align-items-center bg-white position-relative">
-          <span class="text-dark">Language</span>
+          <span class="text-dark">{{ labels.SETTINGS.LANGUAGE }}</span>
           <span class="text-secondary small d-flex align-items-center">{{ currentLang }} <i class="bi bi-chevron-right ms-2 opacity-50"></i></span>
           <select class="position-absolute top-0 start-0 w-100 h-100 opacity-0" style="cursor: pointer;" (change)="currentLang = $any($event.target).value">
             <option value="English" [selected]="currentLang === 'English'">English</option>
@@ -67,7 +68,7 @@ import { ThemeService, Theme } from '../../services/theme';
         <div class="px-4 py-2 mt-2"></div> <!-- Spacer -->
 
         <div class="list-group-item border-0 px-4 py-3 d-flex justify-content-between align-items-center bg-white position-relative">
-          <span class="text-dark">Location</span>
+          <span class="text-dark">{{ labels.SETTINGS.LOCATION }}</span>
           <span class="text-secondary small d-flex align-items-center">{{ currentLocation }} <i class="bi bi-chevron-right ms-2 opacity-50"></i></span>
           <select class="position-absolute top-0 start-0 w-100 h-100 opacity-0" style="cursor: pointer;" (change)="currentLocation = $any($event.target).value">
             <option value="Always" [selected]="currentLocation === 'Always'">Always</option>
@@ -77,14 +78,14 @@ import { ThemeService, Theme } from '../../services/theme';
         </div>
 
         <button class="list-group-item list-group-item-action border-0 px-4 py-3 d-flex justify-content-between align-items-center bg-white position-relative z-1">
-          <span class="text-dark">Swiggy</span>
-          <span class="text-success small fw-medium d-flex align-items-center">Connected <i class="bi bi-chevron-right text-secondary ms-2 opacity-50"></i></span>
+          <span class="text-dark">{{ labels.SETTINGS.SWIGGY }}</span>
+          <span class="text-success small fw-medium d-flex align-items-center">{{ labels.SETTINGS.CONNECTED }} <i class="bi bi-chevron-right text-secondary ms-2 opacity-50"></i></span>
         </button>
 
         <div class="px-4 py-2 mt-2"></div> <!-- Spacer -->
 
         <button class="list-group-item list-group-item-action border-0 px-4 py-3 d-flex justify-content-between align-items-center bg-white position-relative z-1">
-          <span class="text-dark">Order history</span>
+          <span class="text-dark">{{ labels.SETTINGS.ORDER_HISTORY }}</span>
           <span class="text-secondary small d-flex align-items-center"><i class="bi bi-chevron-right ms-2 opacity-50"></i></span>
         </button>
       </div>
@@ -92,21 +93,21 @@ import { ThemeService, Theme } from '../../services/theme';
       <!-- Settings Footer -->
       <div class="mt-auto border-top border-light" style="padding: 60px 24px 100px; margin-top: 40px !important;">
         <div class="legal-text mb-4">
-          whtsnyr.me is an informational app. All content shown here, including AI-generated content, is provided for educational and informational purposes only.
+          {{ labels.SETTINGS.LEGAL_DISCLAIMER_1 }}
           <br><br>
-          Content in whtsnyr.me is not individually reviewed, approved, or verified. Please confirm any local guidelines or regulations before acting on it.
+          {{ labels.SETTINGS.LEGAL_DISCLAIMER_2 }}
           <br><br>
-          whtsnyr.me is not a replacement for professional judgment. Always review the place details, warnings, and guidelines before visiting.
+          {{ labels.SETTINGS.LEGAL_DISCLAIMER_3 }}
         </div>
 
         <div class="d-flex flex-wrap gap-3 mb-4 mt-5">
-          <a routerLink="/about" class="text-secondary text-decoration-none" style="font-size: 0.75rem;">About</a>
-          <a routerLink="/privacy-policy" class="text-secondary text-decoration-none" style="font-size: 0.75rem;">Privacy Policy</a>
+          <a routerLink="/about" class="text-secondary text-decoration-none">{{ labels.SETTINGS.ABOUT }}</a>
+          <a routerLink="/privacy-policy" class="text-secondary text-decoration-none">{{ labels.SETTINGS.PRIVACY_POLICY }}</a>
         </div>
         
         <div class="d-flex justify-content-between align-items-center">
-          <p class="text-secondary mb-0" style="font-size: 0.75rem;">Copyright © 2026 whtsnyr.me v1.0.0.</p>
-          <span class="text-secondary" style="font-size: 0.75rem;">🇮🇳 OD 19</span>
+          <p class="text-secondary mb-0">{{ labels.COMMON.COPYRIGHT }}</p>
+          <span class="text-secondary">{{ labels.COMMON.REGION }}</span>
         </div>
       </div>
     </div>
@@ -127,6 +128,7 @@ import { ThemeService, Theme } from '../../services/theme';
 })
 export class SettingsComponent {
   private themeService = inject(ThemeService);
+  public labels = LABELS;
 
   // Mock State
   currentRadius = '2 km';

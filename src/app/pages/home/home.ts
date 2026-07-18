@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { LABELS } from '../../constants/labels';
 
 @Component({
   selector: 'app-home',
@@ -11,22 +12,22 @@ import { CommonModule } from '@angular/common';
       <!-- Header -->
       <header class="d-flex justify-content-between align-items-start mb-3">
         <div>
-          <p class="text-secondary small mb-1">Good Morning,</p>
+          <p class="text-secondary small mb-1">{{ labels.HOME.GREETING }}</p>
           <h1 class="fw-bold fs-4 mb-0 d-flex align-items-center">
-            Bandra West <i class="bi bi-chevron-down ms-1 fs-6 text-secondary"></i>
+            Bandra West
           </h1>
           <p class="text-secondary small mt-1"><i class="bi bi-geo-alt-fill"></i> Mumbai, India</p>
         </div>
         <button (click)="requestLocation()" class="btn btn-light rounded-circle shadow-sm border d-flex align-items-center justify-content-center flex-shrink-0" style="width: 44px; height: 44px;">
-          <i class="bi bi-crosshair"></i>
+          <i class="bi bi-geo-alt"></i>
         </button>
       </header>
 
       <!-- Weather Hero Card -->
       <div class="min-card mb-4 border-0 position-relative" style="background-image: url('https://images.unsplash.com/photo-1570168007204-dfb528c6858f?q=80&w=1000&auto=format&fit=crop'); background-size: cover; background-position: center; height: 200px; border-radius: 20px;">
         <div class="position-absolute bottom-0 start-0 w-100 p-3 p-md-4" style="background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);">
-          <h3 class="text-white fw-bold mb-1 fs-5">Pleasant weather today.</h3>
-          <p class="text-white opacity-75 mb-0 small">Great time to explore local cafés.</p>
+          <h3 class="text-white fw-bold mb-1 fs-5">{{ labels.HOME.WEATHER_HERO_TITLE }}</h3>
+          <p class="text-white opacity-75 mb-0 small">{{ labels.HOME.WEATHER_HERO_SUBTITLE }}</p>
         </div>
       </div>
 
@@ -34,26 +35,34 @@ import { CommonModule } from '@angular/common';
       <div class="d-flex justify-content-between align-items-center mb-4 px-2">
         <div class="text-center">
           <h4 class="fw-bold mb-0">28°</h4>
-          <p class="small text-secondary mb-0">Sunny</p>
+          <p class="small text-secondary mb-0">{{ labels.HOME.SUNNY }}</p>
         </div>
         <div class="text-center">
           <h4 class="fw-bold mb-0">42</h4>
-          <p class="small text-secondary mb-0">Good</p>
+          <p class="small text-secondary mb-0">{{ labels.HOME.GOOD }}</p>
         </div>
         <div class="text-center">
           <h4 class="fw-bold mb-0">62%</h4>
-          <p class="small text-secondary mb-0">Humidity</p>
+          <p class="small text-secondary mb-0">{{ labels.HOME.HUMIDITY }}</p>
         </div>
         <div class="text-center">
           <h4 class="fw-bold mb-0">12</h4>
-          <p class="small text-secondary mb-0">km/h</p>
+          <p class="small text-secondary mb-0">{{ labels.HOME.KM_H }}</p>
         </div>
       </div>
 
       <!-- Nearby highlights -->
       <div class="d-flex justify-content-between align-items-center mb-3 mt-4">
-        <h5 class="fw-bold mb-0">Nearby highlights</h5>
-        <span class="badge bg-light text-dark fw-normal rounded-pill border">2 km <i class="bi bi-chevron-down"></i></span>
+        <h5 class="fw-bold mb-0">{{ labels.HOME.NEARBY_HIGHLIGHTS }}</h5>
+        <div class="position-relative d-inline-block">
+          <span class="badge bg-light text-dark fw-normal rounded-pill border">{{ currentRadius }} <i class="bi bi-chevron-down ms-1"></i></span>
+          <select class="position-absolute top-0 start-0 w-100 h-100 opacity-0" style="cursor: pointer;" (change)="currentRadius = $any($event.target).value">
+            <option value="1 km" [selected]="currentRadius === '1 km'">1 km</option>
+            <option value="2 km" [selected]="currentRadius === '2 km'">2 km</option>
+            <option value="5 km" [selected]="currentRadius === '5 km'">5 km</option>
+            <option value="10 km" [selected]="currentRadius === '10 km'">10 km</option>
+          </select>
+        </div>
       </div>
       
       <div class="d-flex overflow-auto no-scrollbar gap-3 pb-2 mb-4">
@@ -81,8 +90,7 @@ import { CommonModule } from '@angular/common';
 
       <!-- Local specialities -->
       <div class="d-flex justify-content-between align-items-center mb-3">
-        <h5 class="fw-bold mb-0">Local specialities</h5>
-        <i class="bi bi-chevron-right text-secondary"></i>
+        <h5 class="fw-bold mb-0">{{ labels.HOME.LOCAL_SPECIALITIES }}</h5>
       </div>
 
       <div class="d-flex overflow-auto no-scrollbar gap-3 pb-2 mb-4">
@@ -110,6 +118,9 @@ import { CommonModule } from '@angular/common';
   `]
 })
 export class HomeComponent {
+  public labels = LABELS;
+  currentRadius = '2 km';
+
   requestLocation() {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(

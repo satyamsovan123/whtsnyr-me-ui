@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { LABELS } from '../../constants/labels';
 
 @Component({
   selector: 'app-ai-chat',
@@ -13,14 +14,14 @@ import { CommonModule } from '@angular/common';
         
         <!-- Empty State Header -->
         <div class="mb-5">
-          <h1 class="fw-bold fs-2 mb-4">What do you<br>want to do today?</h1>
+          <h1 class="fw-bold fs-2 mb-4">{{ labels.AI_CHAT.HEADER_TITLE }}</h1>
           
           <div class="d-flex flex-wrap gap-2">
-            <button class="btn btn-outline rounded-pill text-secondary btn-sm px-3 py-2 border-light bg-light bg-opacity-50"><i class="bi bi-search me-2"></i> Find famous local food</button>
-            <button class="btn btn-outline rounded-pill text-secondary btn-sm px-3 py-2 border-light bg-light bg-opacity-50"><i class="bi bi-moon me-2"></i> Plan my evening</button>
-            <button class="btn btn-outline rounded-pill text-secondary btn-sm px-3 py-2 border-light bg-light bg-opacity-50"><i class="bi bi-gem me-2"></i> Hidden gems nearby</button>
-            <button class="btn btn-outline rounded-pill text-secondary btn-sm px-3 py-2 border-light bg-light bg-opacity-50"><i class="bi bi-people me-2"></i> Family outing</button>
-            <button class="btn btn-outline rounded-pill text-secondary btn-sm px-3 py-2 border-light bg-light bg-opacity-50"><i class="bi bi-cart me-2"></i> Build grocery cart</button>
+            <button class="btn btn-outline rounded-pill text-secondary btn-sm px-3 py-2 border-light bg-light bg-opacity-50"><i class="bi bi-search me-2"></i> {{ labels.AI_CHAT.FIND_LOCAL_FOOD }}</button>
+            <button class="btn btn-outline rounded-pill text-secondary btn-sm px-3 py-2 border-light bg-light bg-opacity-50"><i class="bi bi-moon me-2"></i> {{ labels.AI_CHAT.PLAN_EVENING }}</button>
+            <button class="btn btn-outline rounded-pill text-secondary btn-sm px-3 py-2 border-light bg-light bg-opacity-50"><i class="bi bi-gem me-2"></i> {{ labels.AI_CHAT.HIDDEN_GEMS }}</button>
+            <button class="btn btn-outline rounded-pill text-secondary btn-sm px-3 py-2 border-light bg-light bg-opacity-50"><i class="bi bi-people me-2"></i> {{ labels.AI_CHAT.FAMILY_OUTING }}</button>
+            <button class="btn btn-outline rounded-pill text-secondary btn-sm px-3 py-2 border-light bg-light bg-opacity-50"><i class="bi bi-cart me-2"></i> {{ labels.AI_CHAT.BUILD_GROCERY }}</button>
           </div>
         </div>
 
@@ -46,15 +47,14 @@ import { CommonModule } from '@angular/common';
                 </div>
               </div>
               <div class="d-flex gap-2">
-                <button class="btn btn-outline border-light btn-sm flex-grow-1 fw-bold rounded-pill text-secondary">View menu</button>
-                <button class="btn btn-outline border-light btn-sm flex-grow-1 fw-bold rounded-pill text-secondary">More like this</button>
+                <button class="btn btn-outline border-light btn-sm flex-grow-1 fw-bold rounded-pill text-secondary">
+                  <i class="bi bi-geo-alt me-1"></i> {{ labels.AI_CHAT.DIRECTIONS }}
+                </button>
+                <button class="btn btn-outline border-light btn-sm flex-grow-1 fw-bold rounded-pill text-dark d-flex justify-content-center align-items-center">
+                  <img src="https://upload.wikimedia.org/wikipedia/en/1/12/Swiggy_logo.svg" alt="Swiggy" height="14" class="me-1"> {{ labels.AI_CHAT.ORDER }}
+                </button>
               </div>
             </div>
-            
-            <p class="small text-secondary mt-3 mb-2">You can order fast on Swiggy.</p>
-            <button class="btn btn-swiggy w-100 rounded-pill d-flex align-items-center justify-content-center py-3">
-              <img src="https://upload.wikimedia.org/wikipedia/en/1/12/Swiggy_logo.svg" alt="Swiggy" height="20" class="me-2 filter-white" style="filter: brightness(0) invert(1);"> Order with Swiggy
-            </button>
           </div>
         </div>
         
@@ -63,7 +63,7 @@ import { CommonModule } from '@angular/common';
       <!-- Input Area -->
       <div class="p-3 border-top bg-white pb-4 pb-md-3">
         <div class="input-group bg-light rounded-pill p-1 border">
-          <input type="text" class="form-control border-0 bg-transparent shadow-none ps-3" placeholder="Ask anything...">
+          <input type="text" class="form-control border-0 bg-transparent shadow-none ps-3" [placeholder]="labels.AI_CHAT.PLACEHOLDER">
           <button class="btn btn-link text-secondary text-decoration-none shadow-none"><i class="bi bi-send-fill fs-5"></i></button>
         </div>
       </div>
@@ -80,4 +80,6 @@ import { CommonModule } from '@angular/common';
     }
   `]
 })
-export class AiChatComponent {}
+export class AiChatComponent {
+  public labels = LABELS;
+}

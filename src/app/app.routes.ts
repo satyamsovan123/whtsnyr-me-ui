@@ -5,6 +5,7 @@ import { ExploreComponent } from './pages/explore/explore';
 import { SettingsComponent } from './pages/settings/settings';
 import { AboutComponent } from './pages/about/about';
 import { PrivacyPolicyComponent } from './pages/privacy-policy/privacy-policy';
+import { SavedComponent } from './pages/saved/saved';
 
 export const routes: Routes = [
   { 
@@ -21,6 +22,11 @@ export const routes: Routes = [
     path: 'explore', 
     component: ExploreComponent,
     data: { title: 'Explore | whtsnyr.me', description: 'Discover local specialties, nature spots, temples, and shopping near you.' }
+  },
+  { 
+    path: 'saved', 
+    component: SavedComponent,
+    data: { title: 'Saved Places | whtsnyr.me', description: 'View your saved local spots.' }
   },
   { 
     path: 'settings', 

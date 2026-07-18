@@ -2,6 +2,7 @@ import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { SidebarService } from '../../services/sidebar';
+import { LABELS } from '../../constants/labels';
 
 @Component({
   selector: 'app-navbar',
@@ -13,19 +14,19 @@ import { SidebarService } from '../../services/sidebar';
       <div class="d-flex justify-content-around align-items-center h-100 px-2">
         <a routerLink="/home" routerLinkActive="active" class="nav-item">
           <i class="bi bi-house-door-fill"></i>
-          <span>Home</span>
+          <span>{{ labels.NAVBAR.HOME }}</span>
         </a>
         <a routerLink="/ai" routerLinkActive="active" class="nav-item">
           <i class="bi bi-stars" style="font-size: 1.7rem;"></i>
-          <span>AI</span>
+          <span>{{ labels.NAVBAR.AI }}</span>
         </a>
         <a routerLink="/explore" routerLinkActive="active" class="nav-item">
           <i class="bi bi-compass-fill"></i>
-          <span>Explore</span>
+          <span>{{ labels.NAVBAR.EXPLORE }}</span>
         </a>
         <a routerLink="/settings" routerLinkActive="active" class="nav-item">
           <i class="bi bi-person-fill"></i>
-          <span>You</span>
+          <span>{{ labels.NAVBAR.YOU }}</span>
         </a>
       </div>
     </nav>
@@ -34,8 +35,8 @@ import { SidebarService } from '../../services/sidebar';
     <aside class="d-none d-md-flex flex-column desktop-sidebar bg-white border-end" [class.collapsed]="sidebarService.isCollapsed()">
       <a routerLink="/about" class="sidebar-header p-4 d-flex align-items-center text-decoration-none text-dark" [class.justify-content-center]="sidebarService.isCollapsed()" style="cursor: pointer;">
         <div *ngIf="!sidebarService.isCollapsed()" style="white-space: nowrap; overflow: hidden; animation: fadeIn 0.3s;">
-          <h3 class="fw-bold mb-0">whtsnyr.me</h3>
-          <p class="text-secondary small mb-0">Around you, reimagined.</p>
+          <h3 class="fw-bold mb-0">{{ labels.ABOUT.TITLE }}</h3>
+          <p class="text-secondary small mb-0">{{ labels.ABOUT.HERO_TEXT_1 }} {{ labels.ABOUT.HERO_TEXT_2 }} {{ labels.ABOUT.HERO_TEXT_3 }}</p>
         </div>
         <div *ngIf="sidebarService.isCollapsed()" style="animation: fadeIn 0.3s;">
           <h3 class="fw-bold mb-0 fs-4">w</h3>
@@ -43,25 +44,25 @@ import { SidebarService } from '../../services/sidebar';
       </a>
       
       <div class="sidebar-links flex-grow-1 mt-2 overflow-y-auto no-scrollbar" [class.px-3]="!sidebarService.isCollapsed()" [class.px-2]="sidebarService.isCollapsed()">
-        <a routerLink="/home" routerLinkActive="active" class="sidebar-item mb-2" [title]="sidebarService.isCollapsed() ? 'Home' : ''">
+        <a routerLink="/home" routerLinkActive="active" class="sidebar-item mb-2" [title]="sidebarService.isCollapsed() ? labels.NAVBAR.HOME : ''">
           <i class="bi bi-house-door-fill"></i> 
-          <span *ngIf="!sidebarService.isCollapsed()" class="ms-3" style="white-space: nowrap; animation: fadeIn 0.3s;">Home</span>
+          <span *ngIf="!sidebarService.isCollapsed()" class="ms-3" style="white-space: nowrap; animation: fadeIn 0.3s;">{{ labels.NAVBAR.HOME }}</span>
         </a>
-        <a routerLink="/ai" routerLinkActive="active" class="sidebar-item mb-2" [title]="sidebarService.isCollapsed() ? 'AI Assistant' : ''">
+        <a routerLink="/ai" routerLinkActive="active" class="sidebar-item mb-2" [title]="sidebarService.isCollapsed() ? labels.NAVBAR.AI_ASSISTANT : ''">
           <i class="bi bi-stars" style="font-size: 1.4rem;"></i> 
-          <span *ngIf="!sidebarService.isCollapsed()" class="ms-3" style="white-space: nowrap; animation: fadeIn 0.3s;">AI Assistant</span>
+          <span *ngIf="!sidebarService.isCollapsed()" class="ms-3" style="white-space: nowrap; animation: fadeIn 0.3s;">{{ labels.NAVBAR.AI_ASSISTANT }}</span>
         </a>
-        <a routerLink="/explore" routerLinkActive="active" class="sidebar-item mb-2" [title]="sidebarService.isCollapsed() ? 'Explore' : ''">
+        <a routerLink="/explore" routerLinkActive="active" class="sidebar-item mb-2" [title]="sidebarService.isCollapsed() ? labels.NAVBAR.EXPLORE : ''">
           <i class="bi bi-compass-fill"></i> 
-          <span *ngIf="!sidebarService.isCollapsed()" class="ms-3" style="white-space: nowrap; animation: fadeIn 0.3s;">Explore</span>
+          <span *ngIf="!sidebarService.isCollapsed()" class="ms-3" style="white-space: nowrap; animation: fadeIn 0.3s;">{{ labels.NAVBAR.EXPLORE }}</span>
         </a>
-        <a routerLink="/saved" routerLinkActive="active" class="sidebar-item mb-2" [title]="sidebarService.isCollapsed() ? 'Saved' : ''">
+        <a routerLink="/saved" routerLinkActive="active" class="sidebar-item mb-2" [title]="sidebarService.isCollapsed() ? labels.NAVBAR.SAVED : ''">
           <i class="bi bi-bookmark-fill"></i> 
-          <span *ngIf="!sidebarService.isCollapsed()" class="ms-3" style="white-space: nowrap; animation: fadeIn 0.3s;">Saved</span>
+          <span *ngIf="!sidebarService.isCollapsed()" class="ms-3" style="white-space: nowrap; animation: fadeIn 0.3s;">{{ labels.NAVBAR.SAVED }}</span>
         </a>
-        <a routerLink="/settings" routerLinkActive="active" class="sidebar-item mt-auto mb-4" [title]="sidebarService.isCollapsed() ? 'Settings' : ''">
+        <a routerLink="/settings" routerLinkActive="active" class="sidebar-item mt-auto mb-4" [title]="sidebarService.isCollapsed() ? labels.NAVBAR.SETTINGS : ''">
           <i class="bi bi-gear-fill"></i> 
-          <span *ngIf="!sidebarService.isCollapsed()" class="ms-3" style="white-space: nowrap; animation: fadeIn 0.3s;">Settings</span>
+          <span *ngIf="!sidebarService.isCollapsed()" class="ms-3" style="white-space: nowrap; animation: fadeIn 0.3s;">{{ labels.NAVBAR.SETTINGS }}</span>
         </a>
       </div>
 
@@ -163,4 +164,5 @@ import { SidebarService } from '../../services/sidebar';
 })
 export class NavbarComponent {
   public sidebarService = inject(SidebarService);
+  public labels = LABELS;
 }

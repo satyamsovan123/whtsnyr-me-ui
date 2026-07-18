@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { LABELS } from '../../constants/labels';
+import { environment } from '../../../environments/environment';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -30,17 +32,9 @@ gsap.registerPlugin(ScrollTrigger);
         </div>
 
         <div class="position-relative" style="z-index: 1; max-width: 800px;">
-          <p class="text-secondary fw-bold mb-3 hero-eyebrow tracking-tight" style="opacity: 0; font-size: 1.2rem; font-family: var(--bs-body-font-family);">whtsnyr.me</p>
-          <h1 class="fw-bold tracking-tighter mb-4" style="font-size: clamp(3.5rem, 8vw, 6rem); line-height: 1.05;">
-            <span class="d-block overflow-hidden" style="padding-bottom: 5px;">
-              <span class="d-inline-block hero-word" style="opacity: 0; transform: translateY(100%);">Around</span>
-            </span>
-            <span class="d-block overflow-hidden" style="padding-bottom: 5px;">
-              <span class="d-inline-block hero-word" style="opacity: 0; transform: translateY(100%);">you,</span>
-            </span>
-            <span class="d-block overflow-hidden" style="padding-bottom: 5px;">
-              <span class="d-inline-block hero-word" style="opacity: 0; transform: translateY(100%);">reimagined.</span>
-            </span>
+          <p class="text-secondary fw-bold mb-3 hero-eyebrow tracking-tight" style="opacity: 0; font-size: 1.2rem; font-family: var(--bs-body-font-family);">{{ labels.ABOUT.TITLE }}</p>
+          <h1 class="fw-bold tracking-tighter mb-4 hero-heading" style="font-size: clamp(3.5rem, 8vw, 6rem); line-height: 1.05;">
+            Around<br>you,<br>reimagined.
           </h1>
         </div>
       </section>
@@ -51,16 +45,16 @@ gsap.registerPlugin(ScrollTrigger);
           <div class="row align-items-center">
             
             <!-- Text Content (Left) -->
-            <div class="col-md-7 col-lg-6 mb-5 mb-md-0 apple-text-1 pe-md-5 ms-md-4 ms-lg-5" style="opacity: 0; transform: translateX(-30px); position: relative;">
+            <div class="col-md-7 col-lg-6 mb-5 mb-md-0 apple-text-1 pe-md-5 ms-md-4 ms-lg-5 px-4 px-md-0" style="opacity: 0; transform: translateX(-30px); position: relative;">
               <h2 class="fw-bold tracking-tighter mb-4" style="font-size: clamp(2.5rem, 5vw, 3.5rem); line-height: 1.1; color: #1d1d1f;">
-                Discover.<br>
-                <span style="color: #34c759;">Without the noise.</span>
+                {{ labels.ABOUT.SECTION_1_TITLE }}<br>
+                <span style="color: #34c759;">{{ labels.ABOUT.SECTION_1_SUBTITLE }}</span>
               </h2>
               <p class="fw-semibold tracking-tight m-0 mb-4" style="font-size: 1.25rem; line-height: 1.5; color: #86868b;">
-                A real-time discovery engine with AI-powered insights isolates exactly what you care about. Say goodbye to outdated tourist blogs.
+                {{ labels.ABOUT.SECTION_1_P1 }}
               </p>
               <p class="fw-semibold tracking-tight m-0" style="font-size: 1.25rem; line-height: 1.5; color: #86868b;">
-                See <span style="color: #1d1d1f;">curated details</span> and get personalized recommendations tailored to your exact vibe for dining, sights, and hidden gems.
+                {{ labels.ABOUT.SECTION_1_P2_1 }}<span style="color: #1d1d1f;">{{ labels.ABOUT.SECTION_1_P2_BOLD }}</span>{{ labels.ABOUT.SECTION_1_P2_2 }}
               </p>
             </div>
             
@@ -74,8 +68,109 @@ gsap.registerPlugin(ScrollTrigger);
         </div>
         
         <!-- Mobile Image -->
-        <div class="w-100 mt-4 d-md-none text-end apple-image-mobile" style="opacity: 0; transform: translateY(30px); margin-right: -10%;">
-          <img src="navigation.svg" class="img-fluid" style="width: 110%; max-width: none;">
+        <div class="w-100 mt-4 d-md-none d-flex justify-content-center apple-image-mobile" style="opacity: 0; transform: translateY(30px);">
+          <img src="navigation.svg" class="img-fluid" style="width: 100%; max-width: 400px;">
+        </div>
+      </section>
+
+      <!-- Grid/Walking Section -->
+      <section *ngIf="false" #gridSection class="position-relative w-100" style="margin-top: 20vh; padding-bottom: 15vh;">
+        <!-- Overflowing Image from the left (Desktop) -->
+        <div class="position-absolute h-100 d-none d-md-flex align-items-center justify-content-start" 
+             style="top: 0; left: -15vw; width: 65vw; pointer-events: none; z-index: 0;">
+             <!-- Container that hugs left -->
+             <div class="position-relative w-100 h-100 d-flex justify-content-start align-items-center">
+                 <svg viewBox="0 80 400 240" preserveAspectRatio="xMinYMid meet" class="position-absolute w-100 h-100" style="z-index: 0; left: 0;">
+                   <g transform="translate(200, 200) scale(1, 0.5) rotate(45)">
+                     <g class="grid-lines-group">
+                       <line x1="-150" y1="-150" x2="-150" y2="150" stroke="#d2d2d7" stroke-width="2" class="iso-grid-line"/>
+                       <line x1="-100" y1="-150" x2="-100" y2="150" stroke="#d2d2d7" stroke-width="2" class="iso-grid-line"/>
+                       <line x1="-50" y1="-150" x2="-50" y2="150" stroke="#d2d2d7" stroke-width="2" class="iso-grid-line"/>
+                       <line x1="0" y1="-150" x2="0" y2="150" stroke="#d2d2d7" stroke-width="2" class="iso-grid-line"/>
+                       <line x1="50" y1="-150" x2="50" y2="150" stroke="#d2d2d7" stroke-width="2" class="iso-grid-line"/>
+                       <line x1="100" y1="-150" x2="100" y2="150" stroke="#d2d2d7" stroke-width="2" class="iso-grid-line"/>
+                       <line x1="150" y1="-150" x2="150" y2="150" stroke="#d2d2d7" stroke-width="2" class="iso-grid-line"/>
+                       <line x1="-150" y1="-150" x2="150" y2="-150" stroke="#d2d2d7" stroke-width="2" class="iso-grid-line"/>
+                       <line x1="-150" y1="-100" x2="150" y2="-100" stroke="#d2d2d7" stroke-width="2" class="iso-grid-line"/>
+                       <line x1="-150" y1="-50" x2="150" y2="-50" stroke="#d2d2d7" stroke-width="2" class="iso-grid-line"/>
+                       <line x1="-150" y1="0" x2="150" y2="0" stroke="#d2d2d7" stroke-width="2" class="iso-grid-line"/>
+                       <line x1="-150" y1="50" x2="150" y2="50" stroke="#d2d2d7" stroke-width="2" class="iso-grid-line"/>
+                       <line x1="-150" y1="100" x2="150" y2="100" stroke="#d2d2d7" stroke-width="2" class="iso-grid-line"/>
+                       <line x1="-150" y1="150" x2="150" y2="150" stroke="#d2d2d7" stroke-width="2" class="iso-grid-line"/>
+                     </g>
+                   </g>
+                 </svg>
+                 <!-- Walking Character -->
+                 <img src="walking.svg" class="apple-walking-img position-relative" style="height: 130%; max-height: 800px; z-index: 1; opacity: 0; transform: translateY(20px); margin-left: 15vw; margin-top: -15vh;">
+             </div>
+        </div>
+
+        <div class="container h-100">
+          <div class="row h-100 align-items-center">
+            
+            <!-- Mobile Image / Grid -->
+            <div class="col-12 order-2 d-md-none position-relative d-flex justify-content-center align-items-center mt-5" style="min-height: 400px;">
+               <!-- Isometric Grid SVG -->
+               <svg viewBox="0 0 400 400" class="position-absolute w-100 h-100" style="z-index: 0; max-width: 400px;">
+                 <g transform="translate(200, 200) scale(1, 0.5) rotate(45)">
+                   <g class="grid-lines-group">
+                     <line x1="-150" y1="-150" x2="-150" y2="150" stroke="#d2d2d7" stroke-width="2" class="iso-grid-line"/>
+                     <line x1="-100" y1="-150" x2="-100" y2="150" stroke="#d2d2d7" stroke-width="2" class="iso-grid-line"/>
+                     <line x1="-50" y1="-150" x2="-50" y2="150" stroke="#d2d2d7" stroke-width="2" class="iso-grid-line"/>
+                     <line x1="0" y1="-150" x2="0" y2="150" stroke="#d2d2d7" stroke-width="2" class="iso-grid-line"/>
+                     <line x1="50" y1="-150" x2="50" y2="150" stroke="#d2d2d7" stroke-width="2" class="iso-grid-line"/>
+                     <line x1="100" y1="-150" x2="100" y2="150" stroke="#d2d2d7" stroke-width="2" class="iso-grid-line"/>
+                     <line x1="150" y1="-150" x2="150" y2="150" stroke="#d2d2d7" stroke-width="2" class="iso-grid-line"/>
+                     <line x1="-150" y1="-150" x2="150" y2="-150" stroke="#d2d2d7" stroke-width="2" class="iso-grid-line"/>
+                     <line x1="-150" y1="-100" x2="150" y2="-100" stroke="#d2d2d7" stroke-width="2" class="iso-grid-line"/>
+                     <line x1="-150" y1="-50" x2="150" y2="-50" stroke="#d2d2d7" stroke-width="2" class="iso-grid-line"/>
+                     <line x1="-150" y1="0" x2="150" y2="0" stroke="#d2d2d7" stroke-width="2" class="iso-grid-line"/>
+                     <line x1="-150" y1="50" x2="150" y2="50" stroke="#d2d2d7" stroke-width="2" class="iso-grid-line"/>
+                     <line x1="-150" y1="100" x2="150" y2="100" stroke="#d2d2d7" stroke-width="2" class="iso-grid-line"/>
+                     <line x1="-150" y1="150" x2="150" y2="150" stroke="#d2d2d7" stroke-width="2" class="iso-grid-line"/>
+                   </g>
+                 </g>
+               </svg>
+               <!-- Walking Character -->
+               <img src="walking.svg" class="apple-walking-img" style="height: 250px; z-index: 1; position: relative; opacity: 0; transform: scale(0.8) translateY(20px);">
+            </div>
+
+            <!-- Empty space for Desktop Left Bleed -->
+            <div class="col-md-6 d-none d-md-block"></div>
+
+            <!-- Right Side: Text Content -->
+            <div class="col-md-6 order-1 order-md-2 apple-text-2 ps-md-4 ps-lg-5 px-4 px-md-0" style="opacity: 0; transform: translateX(30px);">
+              <h2 class="fw-bold tracking-tight mb-4" style="font-size: 3rem; line-height: 1.1; color: #1d1d1f;">
+                {{ labels.ABOUT.SECTION_2_TITLE }}<span style="color: #34C759;">{{ labels.ABOUT.SECTION_2_TITLE_HIGHLIGHT }}</span>
+              </h2>
+              <p class="fw-semibold tracking-tight text-secondary mb-4" style="font-size: 1.25rem; line-height: 1.5;">
+                {{ labels.ABOUT.SECTION_2_P1 }}
+              </p>
+              <p class="fw-semibold tracking-tight m-0" style="font-size: 1.25rem; line-height: 1.5; color: #86868b;">
+                <span style="color: #1d1d1f;">{{ labels.ABOUT.SECTION_2_P2_BOLD }}</span>{{ labels.ABOUT.SECTION_2_P2 }}
+              </p>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- Why We Built This Section -->
+      <section #whySection class="w-100 d-flex flex-column justify-content-center align-items-center text-center px-4" style="margin-top: 15vh; padding-bottom: 25vh;">
+        <div class="container" style="max-width: 800px;">
+          <h2 class="fw-bold tracking-tight mb-4 apple-text-3" style="font-size: clamp(2rem, 4vw, 3rem); line-height: 1.1; color: #1d1d1f; opacity: 0; transform: translateY(30px);">
+            {{ labels.ABOUT.WHY_TITLE }}
+          </h2>
+          <p class="fw-semibold tracking-tight text-secondary apple-text-3 mb-5" style="font-size: 1.25rem; line-height: 1.5; opacity: 0; transform: translateY(30px);">
+            {{ labels.ABOUT.WHY_TEXT }}
+          </p>
+          
+          <!-- Subtle Contact Link -->
+          <div class="apple-text-3 mt-5" style="opacity: 0; transform: translateY(30px);">
+            <p class="fw-semibold" style="font-size: 1.1rem; color: #86868b;">
+              {{ labels.ABOUT.CONTACT_PRE }}<a [href]="'mailto:' + contactEmail" class="text-decoration-none" style="color: #0071e3; border-bottom: 1px solid rgba(0, 113, 227, 0.3); transition: border-color 0.2s;">{{ labels.ABOUT.CONTACT_LINK }}</a>{{ labels.ABOUT.CONTACT_POST }}
+            </p>
+          </div>
         </div>
       </section>
 
@@ -89,7 +184,7 @@ gsap.registerPlugin(ScrollTrigger);
       100% { transform: rotate(360deg); }
     }
     .rotating-badge {
-      animation: spin 15s linear infinite;
+      animation: spin 45s linear infinite;
     }
     
     /* Responsive Badge Positioning */
@@ -110,23 +205,45 @@ gsap.registerPlugin(ScrollTrigger);
         transform: none;
       }
     }
+    .iso-grid-line {
+      stroke-dasharray: 300;
+      stroke-dashoffset: 300;
+    }
   `]
 })
 export class AboutComponent implements AfterViewInit, OnDestroy {
   @ViewChild('mainContainer') mainContainer!: ElementRef;
   @ViewChild('heroSection') heroSection!: ElementRef;
   @ViewChild('featuresSection') featuresSection!: ElementRef;
+  @ViewChild('gridSection') gridSection!: ElementRef;
+  @ViewChild('whySection') whySection!: ElementRef;
 
   private ctx!: gsap.Context;
+  public labels = LABELS;
+  public contactEmail = environment.contactEmail;
 
   ngAfterViewInit() {
     this.ctx = gsap.context(() => {
       
+      // Character Split for Hero
+      const hero = document.querySelector('.hero-heading');
+      if (hero) {
+        const text = `${LABELS.ABOUT.HERO_TEXT_1}<br>${LABELS.ABOUT.HERO_TEXT_2}<br>${LABELS.ABOUT.HERO_TEXT_3}`;
+        const lines = text.split('<br>');
+        hero.innerHTML = lines.map(line => {
+            return Array.from(line).map(ch => 
+              `<span class="hero-char d-inline-block">${ch === ' ' ? '&nbsp;' : ch}</span>`
+            ).join('');
+        }).join('<br>');
+      }
+
+      gsap.set('.hero-char', { opacity: 0, yPercent: 100, filter: 'blur(10px)' });
+
       // Hero Entrance Timeline
       const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
       
       tl.to('.hero-eyebrow', { opacity: 1, duration: 1, delay: 0.2 })
-        .to('.hero-word', { opacity: 1, y: 0, duration: 1.2, stagger: 0.15, ease: 'power4.out' }, '-=0.8')
+        .to('.hero-char', { opacity: 1, yPercent: 0, filter: 'blur(0px)', duration: 1, stagger: 0.03, ease: 'power4.inOut' }, '-=0.8')
         .to('.badge-container', { opacity: 1, duration: 1 }, '-=0.5');
 
       // Apple-style Features Reveal
@@ -143,6 +260,51 @@ export class AboutComponent implements AfterViewInit, OnDestroy {
         opacity: 1, y: 0, duration: 1, delay: 0.2, ease: 'power3.out'
       });
 
+      // Grid Section Animations
+      if (this.gridSection) {
+        const gridTl = gsap.timeline({
+          scrollTrigger: {
+            trigger: this.gridSection.nativeElement,
+            start: 'top 70%'
+          }
+        });
+
+      gridTl.to('.iso-grid-line', {
+        strokeDashoffset: 0,
+        duration: 1.5,
+        stagger: {
+          amount: 1,
+          from: "random"
+        },
+        ease: 'power2.inOut'
+      })
+      .to('.apple-walking-img', {
+        opacity: 1,
+        scale: 1,
+        y: 0,
+        duration: 1,
+        ease: 'back.out(1.7)'
+      }, "-=1")
+      .to('.apple-text-2', {
+        opacity: 1,
+        x: 0,
+        duration: 1,
+        ease: 'power3.out'
+      }, "-=1.5");
+      }
+
+      // Why We Built This Animation
+      gsap.to('.apple-text-3', {
+        scrollTrigger: {
+          trigger: this.whySection.nativeElement,
+          start: 'top 80%'
+        },
+        opacity: 1,
+        y: 0,
+        duration: 1,
+        stagger: 0.2,
+        ease: 'power3.out'
+      });
 
     }, this.mainContainer.nativeElement);
   }
