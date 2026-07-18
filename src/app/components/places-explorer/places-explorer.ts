@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges, inject } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges, inject, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ApiService } from '../../services/api';
 
@@ -23,8 +23,8 @@ import { ApiService } from '../../services/api';
       <div *ngIf="places" class="d-flex overflow-auto pb-3 custom-scrollbar">
         <div *ngFor="let place of places" class="place-card me-3 flex-shrink-0">
           <div class="place-image bg-light d-flex align-items-center justify-content-center text-muted">
-            <i class="bi bi-camera fs-1" *ngIf="!place.photoReference"></i>
-            <img *ngIf="place.photoReference" [src]="'https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=' + place.photoReference + '&key=YOUR_API_KEY'" class="w-100 h-100 object-fit-cover" alt="Place image"/>
+            <i class="bi bi-camera fs-1" *ngIf="!place.photoUrl"></i>
+            <img *ngIf="place.photoUrl" [src]="place.photoUrl" class="w-100 h-100 object-fit-cover" alt="Place image"/>
           </div>
           <div class="p-3">
             <h6 class="mb-1 fw-semibold text-truncate">{{ place.name }}</h6>
@@ -76,6 +76,7 @@ export class PlacesExplorerComponent implements OnChanges {
   @Input() location!: { lat: number; lng: number } | null;
   @Output() dataLoaded = new EventEmitter<any>();
   api = inject(ApiService);
+  cdr = inject(ChangeDetectorRef);
   places: any[] | null = null;
 
   async ngOnChanges(changes: SimpleChanges) {
@@ -85,9 +86,11 @@ export class PlacesExplorerComponent implements OnChanges {
         if (data.available) {
           this.places = data.places;
           this.dataLoaded.emit(this.places);
+          this.cdr.detectChanges();
         }
       } catch (e) {
         console.error('Failed to fetch nearby places', e);
+        this.cdr.detectChanges();
       }
     }
   }

@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, SimpleChanges, inject, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges, inject, ElementRef, ViewChild, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { InsightsService } from '../../services/insights';
 import gsap from 'gsap';
@@ -60,6 +60,7 @@ export class ForYouComponent implements OnChanges, AfterViewInit {
   @ViewChild('aiContainer') container!: ElementRef;
   
   insights = inject(InsightsService);
+  cdr = inject(ChangeDetectorRef);
   
   loading = false;
   insightText: string | null = null;
@@ -93,6 +94,9 @@ export class ForYouComponent implements OnChanges, AfterViewInit {
       });
       this.insightText = result.insight;
       
+      // Force change detection since we are zoneless and using native fetch
+      this.cdr.detectChanges();
+      
       // Animate text entry
       setTimeout(() => {
         gsap.from('.ai-text', { opacity: 0, y: 10, duration: 1, ease: 'power2.out' });
@@ -100,8 +104,10 @@ export class ForYouComponent implements OnChanges, AfterViewInit {
     } catch (e) {
       console.error('Failed to generate insights', e);
       this.hasGenerated = false; // allow retry
+      this.cdr.detectChanges();
     } finally {
       this.loading = false;
+      this.cdr.detectChanges();
     }
   }
 }

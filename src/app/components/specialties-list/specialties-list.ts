@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ApiService } from '../../services/api';
 import { UiService } from '../../services/ui';
@@ -16,6 +16,11 @@ import { UiService } from '../../services/ui';
 
       <div *ngIf="!specialties" class="text-center py-4 text-muted">
         Loading curated specialties...
+      </div>
+
+      <div *ngIf="specialties?.length === 0" class="text-center py-4 text-muted">
+        <i class="bi bi-info-circle fs-3 d-block mb-2"></i>
+        No curated specialties found in this area yet.
       </div>
 
       <div class="list-group list-group-flush" *ngIf="specialties">
@@ -57,13 +62,16 @@ export class SpecialtiesListComponent implements OnInit {
   api = inject(ApiService);
   ui = inject(UiService);
   specialties: any[] | null = null;
+  cdr = inject(ChangeDetectorRef);
 
   async ngOnInit() {
     try {
       const data = await this.api.get<any>('/specialties?limit=5');
-      this.specialties = data.items;
+      this.specialties = data.documents || [];
+      this.cdr.detectChanges();
     } catch (e) {
       console.error('Failed to load specialties', e);
+      this.cdr.detectChanges();
     }
   }
 

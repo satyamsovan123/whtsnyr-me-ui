@@ -8,7 +8,7 @@ export class SwiggyService {
   private api = inject(ApiService);
 
   async searchRestaurants(lat: number, lng: number) {
-    return this.api.get<any>(`/swiggy/food/restaurants?lat=${lat}&lng=${lng}`);
+    return this.api.get<any>(`/swiggy/public/food/nearby/restaurants?lat=${lat}&lng=${lng}`);
   }
 
   async searchProducts(lat: number, lng: number) {

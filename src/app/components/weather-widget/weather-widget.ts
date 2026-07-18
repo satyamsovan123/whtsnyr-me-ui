@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges, inject } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges, inject, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { WeatherService } from '../../services/weather';
 
@@ -64,6 +64,7 @@ export class WeatherWidgetComponent implements OnChanges {
   @Input() location!: { lat: number; lng: number } | null;
   @Output() dataLoaded = new EventEmitter<any>();
   weatherService = inject(WeatherService);
+  cdr = inject(ChangeDetectorRef);
   weatherData: any = null;
 
   async ngOnChanges(changes: SimpleChanges) {
@@ -71,8 +72,10 @@ export class WeatherWidgetComponent implements OnChanges {
       try {
         this.weatherData = await this.weatherService.getCurrentWeather(this.location.lat, this.location.lng);
         this.dataLoaded.emit(this.weatherData);
+        this.cdr.detectChanges();
       } catch (e) {
         console.error('Failed to fetch weather', e);
+        this.cdr.detectChanges();
       }
     }
   }

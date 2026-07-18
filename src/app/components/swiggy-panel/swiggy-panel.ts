@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges, inject } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges, inject, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SwiggyService } from '../../services/swiggy';
 import { UiService } from '../../services/ui';
@@ -80,6 +80,7 @@ export class SwiggyPanelComponent {
   @Output() dataLoaded = new EventEmitter<any>();
   swiggy = inject(SwiggyService);
   ui = inject(UiService);
+  cdr = inject(ChangeDetectorRef);
   
   restaurants: any[] | null = null;
   loading = false;
@@ -91,13 +92,17 @@ export class SwiggyPanelComponent {
       const data = await this.swiggy.searchRestaurants(this.location.lat, this.location.lng);
       this.restaurants = data?.cards?.[0]?.card?.card?.gridElements?.infoWithStyle?.restaurants?.map((r: any) => r.info) || [];
       this.dataLoaded.emit(this.restaurants);
+      this.cdr.detectChanges();
       if (this.restaurants?.length === 0) {
         this.ui.showToast('No restaurants found nearby via Swiggy MCP', 'info');
       }
     } catch (e) {
+      console.error('Failed to load swiggy data', e);
+      this.cdr.detectChanges();
       this.ui.showToast('Failed to fetch restaurants', 'error');
     } finally {
       this.loading = false;
+      this.cdr.detectChanges();
     }
   }
 
