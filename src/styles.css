@@ -1,70 +1,125 @@
-/* You can add global styles to this file, and also import other style files */
+/* Global Styles for Minimal UI */
 :root {
-  /* 3-Color Apple-Esque Palette */
-  --bg-color: #FBFBFD;
-  --text-color: #1D1D1F;
-  --accent-color: #E75425;
-  
-  /* Additional UI variables for glassy effects */
-  --glass-bg: rgba(251, 251, 253, 0.85);
-  --glass-border: rgba(29, 29, 31, 0.08);
-  --glass-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+  --bg-color: #FFFFFF;
+  --bg-secondary: #F5F5F5;
+  --text-primary: #000000;
+  --text-secondary: #666666;
+  --text-tertiary: #999999;
+  --border-color: #EBEBEB;
+  --accent-color: #000000;
+  --swiggy-color: #FC8019;
+  --card-bg: #FFFFFF;
+  --inverse-bg: #000000;
+  --inverse-text: #FFFFFF;
+}
+
+[data-theme="dark"] {
+  --bg-color: #000000;
+  --bg-secondary: #121212;
+  --text-primary: #FFFFFF;
+  --text-secondary: #A0A0A0;
+  --text-tertiary: #666666;
+  --border-color: #222222;
+  --accent-color: #FFFFFF;
+  --card-bg: #121212;
+  --inverse-bg: #FFFFFF;
+  --inverse-text: #000000;
+}
+
+[data-theme="dark"] .bg-white { background-color: var(--bg-color) !important; }
+[data-theme="dark"] .bg-light { background-color: var(--bg-secondary) !important; }
+[data-theme="dark"] .text-dark { color: var(--text-primary) !important; }
+[data-theme="dark"] .text-secondary { color: var(--text-secondary) !important; }
+[data-theme="dark"] .border-light, [data-theme="dark"] .border { border-color: var(--border-color) !important; }
+[data-theme="dark"] .border-bottom { border-color: var(--border-color) !important; }
+[data-theme="dark"] .border-top { border-color: var(--border-color) !important; }
+[data-theme="dark"] .border-end { border-color: var(--border-color) !important; }
+[data-theme="dark"] .shadow-sm { box-shadow: 0 .125rem .25rem rgba(255,255,255,.075) !important; }
+[data-theme="dark"] .shadow { box-shadow: 0 .5rem 1rem rgba(255,255,255,.15) !important; }
+[data-theme="dark"] .shadow-lg { box-shadow: 0 1rem 3rem rgba(255,255,255,.175) !important; }
+
+/* Semantic Inverse Classes for buttons and chat bubbles */
+.bg-inverse {
+  background-color: var(--inverse-bg) !important;
+  color: var(--inverse-text) !important;
+}
+.text-inverse {
+  color: var(--inverse-text) !important;
 }
 
 body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   background-color: var(--bg-color);
-  color: var(--text-color);
+  color: var(--text-primary);
   margin: 0;
   padding: 0;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Minimal Scrollbar */
+/* Typography Utilities */
+.text-primary { color: var(--text-primary) !important; }
+.text-secondary { color: var(--text-secondary) !important; }
+.text-tertiary { color: var(--text-tertiary) !important; }
+
+/* Buttons */
+.btn-black {
+  background-color: var(--inverse-bg);
+  color: var(--inverse-text);
+  border-radius: 12px;
+  padding: 12px 24px;
+  font-weight: 600;
+  border: none;
+  transition: opacity 0.2s ease;
+}
+.btn-black:hover {
+  opacity: 0.9;
+  color: var(--inverse-text);
+}
+.btn-swiggy {
+  background-color: var(--inverse-bg);
+  color: var(--inverse-text);
+  border-radius: 12px;
+  padding: 12px 24px;
+  font-weight: 600;
+  border: none;
+}
+.btn-outline {
+  border: 1px solid var(--border-color);
+  background-color: transparent;
+  color: var(--text-primary);
+  border-radius: 12px;
+  padding: 12px 24px;
+  font-weight: 600;
+}
+
+/* Minimal Cards */
+.min-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+}
+
+/* Scrollbar */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 4px;
+  height: 4px;
 }
 ::-webkit-scrollbar-track {
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background-color: rgba(29, 29, 31, 0.15);
+  background-color: #E0E0E0;
   border-radius: 10px;
 }
 
-/* Liquid Glassy Utilities (Minimal) */
-.glass-panel {
-  background: var(--glass-bg);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid var(--glass-border);
-  box-shadow: var(--glass-shadow);
-  border-radius: 16px;
+/* Hide scrollbar for horizontal lists */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
 }
-
-/* Base Link & Button Resets */
-a {
-  color: var(--accent-color);
-  text-decoration: none;
-  transition: opacity 0.2s ease;
-}
-a:hover {
-  opacity: 0.8;
-  color: var(--accent-color);
-}
-.btn-accent {
-  background-color: var(--accent-color);
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  padding: 10px 20px;
-  font-weight: 500;
-  transition: transform 0.2s ease, opacity 0.2s ease;
-}
-.btn-accent:hover {
-  opacity: 0.9;
-  transform: scale(0.98);
-  color: #fff;
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }

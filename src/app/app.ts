@@ -4,17 +4,22 @@ import { filter } from 'rxjs/operators';
 import { LoaderComponent } from './components/loader/loader';
 import { ToastComponent } from './components/toast/toast';
 import { SeoService } from './services/seo';
+import { ThemeService } from './services/theme';
+import { SidebarService } from './services/sidebar';
+import { NavbarComponent } from './components/navbar/navbar';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, LoaderComponent, ToastComponent],
+  imports: [RouterOutlet, LoaderComponent, ToastComponent, NavbarComponent],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
 export class App implements OnInit {
   private router = inject(Router);
   private seo = inject(SeoService);
+  private theme = inject(ThemeService); // Init theme on load
+  public sidebarService = inject(SidebarService);
 
   ngOnInit() {
     this.router.events.pipe(

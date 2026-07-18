@@ -1,8 +1,31 @@
-<main class="min-vh-100 d-flex flex-column">
-  <!-- Global Router Outlet -->
-  <router-outlet></router-outlet>
+<div class="d-flex min-vh-100" style="overflow-x: hidden;" [class.sidebar-collapsed]="sidebarService.isCollapsed()">
+  <app-navbar></app-navbar>
   
-  <!-- Global UI Overlays -->
-  <app-loader></app-loader>
-  <app-toast></app-toast>
-</main>
+  <main class="flex-grow-1 main-content-wrapper position-relative">
+    <!-- Global Router Outlet -->
+    <router-outlet></router-outlet>
+  </main>
+</div>
+
+<!-- Global UI Overlays -->
+<app-loader></app-loader>
+<app-toast></app-toast>
+
+<style>
+  /* Give space for mobile nav and desktop sidebar */
+  .main-content-wrapper {
+    padding-bottom: 70px; /* Mobile Nav */
+    overflow-x: hidden;
+    width: 100%;
+  }
+  @media (min-width: 768px) {
+    .main-content-wrapper {
+      margin-left: 260px; /* Desktop Sidebar width */
+      padding-bottom: 0;
+      transition: margin-left 0.3s ease;
+    }
+    .sidebar-collapsed .main-content-wrapper {
+      margin-left: 80px; /* Collapsed width */
+    }
+  }
+</style>
