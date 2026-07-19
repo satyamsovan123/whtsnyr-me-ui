@@ -7,10 +7,12 @@ import { LABELS_TE } from '../constants/labels-te';
 import { LABELS_BN } from '../constants/labels-bn';
 import { LABELS_TA } from '../constants/labels-ta';
 import { LABELS_GJ } from '../constants/labels-gj';
+import { LABELS_MR } from '../constants/labels-mr';
 
 const LABELS_MAP: Record<string, any> = {
   en: LABELS_EN,
   hi: LABELS_HI,
+  mr: LABELS_MR,
   od: LABELS_OD,
   te: LABELS_TE,
   bn: LABELS_BN,

@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { SidebarService } from '../../services/sidebar';
 import { LanguageService } from '../../services/language';
+import { AuthService } from '../../services/auth';
 
 @Component({
   selector: 'app-navbar',
@@ -24,7 +25,7 @@ import { LanguageService } from '../../services/language';
           <i class="bi bi-compass-fill"></i>
           <span>{{ labels.NAVBAR.EXPLORE }}</span>
         </a>
-        <a routerLink="/account" routerLinkActive="active" class="nav-item">
+        <a *ngIf="!authService.isLoggedIn" routerLink="/account" routerLinkActive="active" class="nav-item">
           <i class="bi bi-person-fill"></i>
           <span>{{ labels.NAVBAR.SIGN_IN }}</span>
         </a>
@@ -75,7 +76,7 @@ import { LanguageService } from '../../services/language';
           <i class="bi bi-bookmark-fill"></i> 
           <span *ngIf="!sidebarService.isCollapsed()" class="ms-3" style="white-space: nowrap; animation: fadeIn 0.3s;">{{ labels.NAVBAR.SAVED }}</span>
         </a>
-        <a routerLink="/account" routerLinkActive="active" class="sidebar-item mb-2" [title]="sidebarService.isCollapsed() ? labels.NAVBAR.SIGN_IN : ''">
+        <a *ngIf="!authService.isLoggedIn" routerLink="/account" routerLinkActive="active" class="sidebar-item mb-2" [title]="sidebarService.isCollapsed() ? labels.NAVBAR.SIGN_IN : ''">
           <i class="bi bi-person-fill"></i> 
           <span *ngIf="!sidebarService.isCollapsed()" class="ms-3" style="white-space: nowrap; animation: fadeIn 0.3s;">{{ labels.NAVBAR.SIGN_IN }}</span>
         </a>
@@ -184,6 +185,7 @@ import { LanguageService } from '../../services/language';
 })
 export class NavbarComponent {
   public sidebarService = inject(SidebarService);
+  public authService = inject(AuthService);
   private langService = inject(LanguageService);
   get labels() { return this.langService.labels; }
 }

@@ -4,6 +4,8 @@ import { FormsModule } from '@angular/forms';
 import { LanguageService } from '../../services/language';
 import { ApiService } from '../../services/api';
 import { LocationService } from '../../services/location';
+import { ChangeDetectorRef } from '@angular/core';
+import { AiMessage, AiCardData, AiChatResponse } from '../../models';
 
 @Component({
   selector: 'app-ai-chat',
@@ -37,7 +39,7 @@ import { LocationService } from '../../services/location';
           <!-- AI Message -->
           <div *ngIf="msg.sender === 'ai'" class="d-flex justify-content-start mb-4 fade-in">
             <div class="text-primary w-100" style="max-width: 90%;">
-              <p class="mb-3 text-secondary">{{ msg.text }} <i class="bi bi-emoji-smile" *ngIf="!msg.isTyping"></i></p>
+              <p class="mb-3 text-secondary">{{ msg.text }}</p>
               
               <!-- Typing Indicator -->
               <div *ngIf="msg.isTyping" class="d-flex gap-1 align-items-center mb-2" style="height: 24px;">
@@ -57,11 +59,11 @@ import { LocationService } from '../../services/location';
                   </div>
                 </div>
                 <div class="d-flex gap-2">
-                  <a [href]="msg.cardData.mapLink || '#'" target="_blank" class="btn btn-outline border-light btn-sm flex-grow-1 fw-bold rounded-pill text-secondary d-flex justify-content-center align-items-center text-decoration-none" style="height: 38px;">
+                  <a [href]="getDirectionsUrl(msg.cardData)" target="_blank" class="btn btn-outline border-light btn-sm flex-grow-1 fw-bold rounded-pill text-secondary d-flex justify-content-center align-items-center text-decoration-none" style="height: 38px;">
                     <i class="bi bi-geo-alt me-1"></i> {{ labels.AI_CHAT.DIRECTIONS }}
                   </a>
                   <a [href]="msg.cardData.swiggyLink || '#'" target="_blank" *ngIf="msg.cardData.swiggyLink" class="btn btn-outline border-light btn-sm flex-grow-1 fw-bold rounded-pill text-dark d-flex justify-content-center align-items-center text-decoration-none" style="height: 38px;">
-                    <img src="https://upload.wikimedia.org/wikipedia/en/1/12/Swiggy_logo.svg" alt="Swiggy" height="16" class="me-1" style="object-fit: contain;"> {{ labels.AI_CHAT.ORDER }}
+                    <img src="/swiggy-logo.png" alt="Swiggy" height="16" class="me-1" style="object-fit: contain;"> {{ labels.AI_CHAT.ORDER }}
                   </a>
                 </div>
               </div>
@@ -95,10 +97,11 @@ export class AiChatComponent {
   private langService = inject(LanguageService);
   private apiService = inject(ApiService);
   private locationService = inject(LocationService);
+  private cdr = inject(ChangeDetectorRef);
   get labels() { return this.langService.labels; }
 
   currentInput = '';
-  messages: any[] = [];
+  messages: AiMessage[] = [];
 
   constructor() {
     this.messages = [];
@@ -119,8 +122,10 @@ export class AiChatComponent {
     
     try {
       const coords = this.locationService.coords();
+      // Exclude the current user message (the last one before 'Thinking...') from history
       const history = this.messages
         .filter(m => !m.isTyping && m.text !== this.labels.AI_CHAT.THINKING)
+        .slice(0, -1) 
         .map(m => ({ role: m.sender === 'ai' ? 'model' : 'user', text: m.text }));
 
       const payload = {
@@ -131,7 +136,7 @@ export class AiChatComponent {
         language: this.langService.currentLang
       };
 
-      const result = await this.apiService.post<any>('/api/v1/insights/chat', payload);
+      const result = await this.apiService.post<AiChatResponse>('/api/v1/insights/chat', payload);
       this.messages[aiMsgIndex] = {
         sender: 'ai',
         text: result.text,
@@ -146,6 +151,21 @@ export class AiChatComponent {
         showCard: false,
         isTyping: false
       };
+    } finally {
+      // Force change detection just in case
+      this.cdr.detectChanges();
     }
+  }
+
+  getDirectionsUrl(cardData: AiCardData): string {
+    if (cardData.mapLink) return cardData.mapLink;
+    if (cardData.name) {
+      const coords = this.locationService.coords();
+      if (coords) {
+        return `https://www.google.com/maps/dir/?api=1&origin=${coords.lat},${coords.lng}&destination=${encodeURIComponent(cardData.name)}`;
+      }
+      return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(cardData.name)}`;
+    }
+    return '#';
   }
 }

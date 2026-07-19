@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectorRef, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -48,7 +48,9 @@ import { AuthService } from '../../services/auth';
             <input type="password" class="form-control bg-light" id="passwordInput" [placeholder]="labels.AUTH.PASSWORD" [(ngModel)]="password" name="password" required>
           </div>
 
-          <div *ngIf="errorMessage" class="text-danger small mb-3 text-center">{{ errorMessage }}</div>
+          <div *ngIf="errorMessages.length > 0" class="text-danger small mb-3 text-center">
+            <div *ngFor="let msg of errorMessages" class="mb-1">{{ msg }}</div>
+          </div>
 
           <button type="submit" class="btn btn-dark w-100 py-3 rounded-pill fw-bold mb-3 shadow-sm" style="font-size: 1.1rem;" [disabled]="isLoading">
             <span *ngIf="!isLoading">{{ isLogin ? labels.AUTH.SIGN_IN : labels.AUTH.SIGN_UP }}</span>
@@ -95,7 +97,7 @@ import { AuthService } from '../../services/auth';
 export class AuthComponent {
   isLogin = true;
   isLoading = false;
-  errorMessage = '';
+  errorMessages: string[] = [];
   
   email = '';
   password = '';
@@ -103,22 +105,29 @@ export class AuthComponent {
 
   private langService = inject(LanguageService);
   private authService = inject(AuthService);
+  private cdr = inject(ChangeDetectorRef);
   get labels() { return this.langService.labels; }
 
-  constructor(private router: Router) {}
+  constructor(private router: Router) {
+    effect(() => {
+      if (this.authService.isLoggedIn) {
+        this.router.navigate(['/home']);
+      }
+    });
+  }
 
   toggleView(event: Event) {
     event.preventDefault();
     this.isLogin = !this.isLogin;
-    this.errorMessage = '';
+    this.errorMessages = [];
   }
 
   async onSubmit(event: Event) {
     event.preventDefault();
-    this.errorMessage = '';
+    this.errorMessages = [];
     
     if (!this.email || !this.password || (!this.isLogin && !this.name)) {
-      this.errorMessage = 'Please fill all fields';
+      this.errorMessages = ['Please fill all fields'];
       return;
     }
 
@@ -131,9 +140,10 @@ export class AuthComponent {
       }
       this.router.navigate(['/home']);
     } catch (e: any) {
-      this.errorMessage = e.message || 'Authentication failed';
+      this.errorMessages = e.message ? e.message.split('\n') : ['Authentication failed'];
     } finally {
       this.isLoading = false;
+      this.cdr.detectChanges();
     }
   }
 }

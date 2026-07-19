@@ -1,11 +1,12 @@
 export const SUPPORTED_LANGUAGES = [
-  { code: 'en', name: 'English' },
-  { code: 'hi', name: 'Hindi' },
-  { code: 'od', name: 'Odia' },
-  { code: 'te', name: 'Telugu' },
   { code: 'bn', name: 'Bangla' },
+  { code: 'en', name: 'English' },
+  { code: 'gj', name: 'Gujarati' },
+  { code: 'hi', name: 'Hindi' },
+  { code: 'mr', name: 'Marathi' },
+  { code: 'od', name: 'Odia' },
   { code: 'ta', name: 'Tamil' },
-  { code: 'gj', name: 'Gujarati' }
+  { code: 'te', name: 'Telugu' }
 ];
 
 export const PREFERRED_RADIUSES = ['1 km', '2 km', '5 km', '10 km'];
