@@ -32,6 +32,13 @@ export class AuthService {
 
   constructor(private api: ApiService) {
     this.checkSession();
+    window.addEventListener('app:unauthorized', () => {
+      if (this.isLoggedIn) {
+        this.logout();
+        // Option to alert or use toast via UI service, but AuthService shouldn't depend on UI directly if possible.
+        // It's enough to clear the session so the UI reacts.
+      }
+    });
   }
 
   async checkSession() {

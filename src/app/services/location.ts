@@ -20,7 +20,8 @@ export class LocationService {
             this.coords.set(pos);
             resolve(pos);
           },
-          (err) => reject(err)
+          (err) => reject(err),
+          { timeout: 10000, maximumAge: 0 }
         );
       }
     });

@@ -195,10 +195,11 @@ import {
             </div>
           </div>
 
-          <button
-            (click)="isSwiggyConnected ? disconnectSwiggy() : connectSwiggy()"
-            class="list-group-item list-group-item-action border-0 px-4 py-3 d-flex justify-content-between align-items-center bg-white position-relative z-1"
-          >
+          <ng-container *ngIf="currentUser">
+            <button
+              (click)="isSwiggyConnected ? disconnectSwiggy() : connectSwiggy()"
+              class="list-group-item list-group-item-action border-0 px-4 py-3 d-flex justify-content-between align-items-center bg-white position-relative z-1"
+            >
             <span class="text-dark">{{ labels.SETTINGS.SWIGGY }}</span>
             <span
               *ngIf="isSwiggyConnected === true"
@@ -208,7 +209,7 @@ import {
             <span
               *ngIf="isSwiggyConnected === false"
               class="text-secondary small fw-medium d-flex align-items-center"
-              >Connect <i class="bi bi-plus ms-1 opacity-50"></i
+              >Disconnected <i class="bi bi-link-45deg ms-1 opacity-50"></i
             ></span>
             <span
               *ngIf="isSwiggyConnected === null"
@@ -224,11 +225,12 @@ import {
             class="list-group-item list-group-item-action border-0 px-4 py-3 d-flex justify-content-between align-items-center bg-white position-relative z-1"
             (click)="openOrderModal()"
           >
-            <span class="text-dark">{{ labels.SETTINGS.ORDER_HISTORY }}</span>
+            <span class="text-dark">Swiggy Orders</span>
             <span class="text-secondary small d-flex align-items-center"
               ><i class="bi bi-chevron-right ms-2 opacity-50"></i
             ></span>
-          </button>
+            </button>
+          </ng-container>
         </div>
 
         <!-- Order History Modal (Custom) -->
@@ -270,15 +272,11 @@ import {
                       }}
                     </h6>
                     <span
-                      *ngIf="order._type !== 'Instamart'"
-                      class="badge rounded-pill fw-normal"
-                      [class.bg-danger]="order._type === 'Food'"
-                      [class.bg-light]="!order._type"
-                      [class.text-white]="order._type"
-                      [class.text-dark]="!order._type"
+                      *ngIf="order._type"
+                      class="badge rounded-pill fw-normal flex-shrink-0 bg-light text-dark border"
                       style="font-size: 0.7rem;"
                     >
-                      {{ order._type === 'Food' ? 'Swiggy Food' : 'Swiggy' }}
+                      {{ order._type === 'Food' ? 'Swiggy Food' : 'Instamart' }}
                     </span>
                   </div>
 
@@ -291,6 +289,12 @@ import {
                       }}<span *ngIf="!last">, </span>
                     </span>
                   </p>
+                  <p
+                    class="small text-secondary mb-2"
+                    *ngIf="order.orderedItems && (!order.items || order.items.length === 0)"
+                  >
+                    {{ order.orderedItems }}
+                  </p>
 
                   <div
                     class="d-flex justify-content-between align-items-center mt-3 pt-2 border-top border-light"
@@ -298,9 +302,9 @@ import {
                     <div class="d-flex flex-column">
                       <span
                         class="text-secondary small fw-medium"
-                        *ngIf="order.createdAt || order.order_time"
+                        *ngIf="order._displayDate"
                       >
-                        {{ order.createdAt || order.order_time | date: 'medium' }}
+                        {{ order._displayDate }}
                       </span>
                       <span
                         class="badge bg-light text-dark border fw-normal mt-1 align-self-start"
@@ -311,7 +315,8 @@ import {
                     </div>
                     <span class="fw-bold text-dark fs-6">
                       ₹{{
-                        order.billDetails?.grandTotal ||
+                        order._total ||
+                          order.billDetails?.grandTotal ||
                           order.totalAmount ||
                           order.order_total ||
                           order.net_total ||
@@ -454,6 +459,8 @@ export class SettingsComponent {
   ngOnInit() {
     if (this.authService.isLoggedIn) {
       this.checkSwiggyStatus();
+    } else {
+      this.isSwiggyConnected = false;
     }
   }
 
@@ -461,6 +468,9 @@ export class SettingsComponent {
     try {
       const res = await this.swiggyService.checkStatus();
       this.isSwiggyConnected = res && res.status === 'CONNECTED';
+      if (res && res.status === 'EXPIRED') {
+        this.ui.showToast('Your Swiggy connection has expired. Please connect again.', 'error');
+      }
     } catch (e) {
       console.error('Failed to check swiggy status', e);
       this.isSwiggyConnected = false;
@@ -508,37 +518,59 @@ export class SettingsComponent {
         this.swiggyService.getInstamartOrders(),
       ]);
 
-      const allOrders: any[] = [];
+      const foodNormalized: any[] = [];
+      const imNormalized: any[] = [];
 
       if (foodRes.status === 'fulfilled') {
-        const foodOrders = Array.isArray(foodRes.value)
-          ? foodRes.value
-          : foodRes.value?.orders || foodRes.value?.data || [];
-        allOrders.push(...foodOrders.map((o: any) => ({ ...o, _type: 'Food' })));
+        const val = foodRes.value;
+        let foodOrders = Array.isArray(val) ? val : [];
+        if (!Array.isArray(val) && val) {
+          foodOrders = val.orders || (val.data && val.data.orders) || (Array.isArray(val.data) ? val.data : []);
+        }
+        foodNormalized.push(...foodOrders.slice(0, 3).map((o: any) => ({
+          ...o,
+          _type: 'Food',
+          storeName: o.restaurantName || o.storeName,
+          items: o.orderedItems
+            ? [{ name: o.orderedItems, quantity: null }]
+            : o.items || [],
+          _displayDate: this.formatOrderDate(o.orderedTime || o.createdAt || o.order_time),
+          status: o.orderStatus || o.status || o.order_status || 'Completed',
+          _total: (o.orderTotal || '').replace(/[^\d.]/g, '') || o.billDetails?.grandTotal || o.totalAmount || o.order_total || o.net_total || o.total || o.bill_amount || 0
+        })));
       } else {
         console.error('Failed to fetch food orders:', foodRes.reason);
       }
 
       if (imRes.status === 'fulfilled') {
-        const imOrders = Array.isArray(imRes.value)
-          ? imRes.value
-          : imRes.value?.orders || imRes.value?.data || [];
-        allOrders.push(...imOrders.map((o: any) => ({ ...o, _type: 'Instamart' })));
+        const val = imRes.value;
+        let imOrders = Array.isArray(val) ? val : [];
+        if (!Array.isArray(val) && val) {
+          imOrders = val.orders || (val.data && val.data.orders) || (Array.isArray(val.data) ? val.data : []);
+        }
+        imNormalized.push(...imOrders.slice(0, 3).map((o: any) => ({
+          ...o,
+          _type: 'Instamart',
+          _displayDate: this.formatOrderDate(o.createdAt || o.order_time),
+          _total: o.billDetails?.grandTotal || o.totalAmount || o.order_total || o.net_total || o.total || o.bill_amount || 0
+        })));
       } else {
         console.error('Failed to fetch instamart orders:', imRes.reason);
       }
 
-      // Sort by date descending (newest first)
-      allOrders.sort((a, b) => {
-        const dateA = new Date(a.createdAt || a.order_time || 0).getTime();
-        const dateB = new Date(b.createdAt || b.order_time || 0).getTime();
-        return dateB - dateA;
-      });
-
-      this.orders = allOrders.slice(0, 5);
+      this.orders = [...foodNormalized, ...imNormalized];
     } catch (e: any) {
       console.error('Failed to load orders', e);
-      this.ui.showToast(e.message || 'Failed to load order history', 'error');
+      if (e.status === 401) {
+        this.ui.showToast('Your session has expired. Please log in again.', 'error');
+        this.isOrderModalOpen = false;
+      } else if (e.code === 'SWIGGY_REAUTH_REQUIRED') {
+        this.ui.showToast('Your Swiggy connection has expired. Please re-connect your account.', 'error');
+        this.isSwiggyConnected = false;
+        this.isOrderModalOpen = false;
+      } else {
+        this.ui.showToast(e.message || 'Failed to load order history', 'error');
+      }
     } finally {
       this.isLoadingOrders = false;
       this.cdr.detectChanges();
@@ -622,5 +654,20 @@ export class SettingsComponent {
   logout() {
     this.authService.logout();
     this.ui.showToast('Logged out successfully', 'success');
+  }
+
+  formatOrderDate(dateStr: string | undefined): string {
+    if (!dateStr) return '';
+    // Only try to parse ISO-style dates (contain 'T' or start with 4-digit year)
+    if (dateStr.includes('T') || /^\d{4}-/.test(dateStr)) {
+      const d = new Date(dateStr);
+      if (!isNaN(d.getTime()) && d.getFullYear() > 2020) {
+        return d.toLocaleDateString('en-IN', { month: 'short', day: 'numeric', year: 'numeric' })
+          + ', '
+          + d.toLocaleTimeString('en-IN', { hour: 'numeric', minute: '2-digit', hour12: true });
+      }
+    }
+    // Already a human-readable string like "July 4, 1:40 PM" — return as-is
+    return dateStr;
   }
 }
