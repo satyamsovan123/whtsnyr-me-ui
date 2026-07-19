@@ -226,13 +226,28 @@ export class AboutComponent implements AfterViewInit, OnDestroy {
   ngAfterViewInit() {
     this.ctx = gsap.context(() => {
       
-      // Character Split for Hero
+      // Safe Character Split for Hero (Uses Intl.Segmenter for complex languages)
       const hero = document.querySelector('.hero-heading');
       if (hero) {
         const text = `${this.labels.ABOUT.HERO_TEXT[0]}<br>${this.labels.ABOUT.HERO_TEXT[1]}<br>${this.labels.ABOUT.HERO_TEXT[2]}`;
         const lines = text.split('<br>');
+        
+        let segmenter: any;
+        if (typeof (Intl as any).Segmenter !== 'undefined') {
+          // Use 'en' as fallback if currentLang is unavailable
+          segmenter = new (Intl as any).Segmenter(this.langService.currentLang || 'en', { granularity: 'grapheme' });
+        }
+        
         hero.innerHTML = lines.map(line => {
-            return Array.from(line).map(ch => 
+            let graphemes: string[] = [];
+            if (segmenter) {
+              graphemes = Array.from(segmenter.segment(line)).map((s: any) => s.segment);
+            } else {
+              // Fallback for older browsers (might break Indic shaping, but safe fallback)
+              graphemes = Array.from(line);
+            }
+            
+            return graphemes.map(ch => 
               `<span class="hero-char d-inline-block">${ch === ' ' ? '&nbsp;' : ch}</span>`
             ).join('');
         }).join('<br>');
