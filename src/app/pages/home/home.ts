@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { LanguageService } from '../../services/language';
 import { LocationService } from '../../services/location';
 import { UiService } from '../../services/ui';
+import { ApiService } from '../../services/api';
 
 @Component({
   selector: 'app-home',
@@ -14,11 +15,19 @@ import { UiService } from '../../services/ui';
       <!-- Header -->
       <header class="d-flex justify-content-between align-items-start mb-3">
         <div>
-          <p class="text-secondary small mb-1">{{ labels.HOME.GREETING }}</p>
-          <h1 class="fw-bold fs-4 mb-0 d-flex align-items-center">
-            Bandra West
+          <p class="text-secondary small mb-1">{{ labels.HOME[dynamicGreetingKey] || labels.HOME.GREETING }}</p>
+          <h1 class="fw-bold fs-4 mb-0 d-flex align-items-center placeholder-glow" *ngIf="!location">
+            <span class="placeholder col-6 rounded"></span>
           </h1>
-          <p class="text-secondary small mt-1"><i class="bi bi-geo-alt-fill"></i> Mumbai, India</p>
+          <h1 class="fw-bold fs-4 mb-0 d-flex align-items-center" *ngIf="location">
+            {{ location.name || 'Current Location' }}
+          </h1>
+          <p class="text-secondary small mt-1 mb-0 placeholder-glow" *ngIf="!location">
+            <span class="placeholder col-4 rounded"></span>
+          </p>
+          <p class="text-secondary small mt-1 mb-0" *ngIf="location">
+            <i class="bi bi-geo-alt-fill"></i> {{ location.city || 'Locating...' }}
+          </p>
         </div>
         <button (click)="requestLocation()" class="btn btn-link text-secondary p-0 border-0 shadow-none text-decoration-none flex-shrink-0" title="Refresh Location">
           <i class="bi bi-geo-alt" style="font-size: 1.5rem; transition: color 0.2s;" onmouseover="this.classList.add('text-dark'); this.classList.remove('text-secondary')" onmouseout="this.classList.add('text-secondary'); this.classList.remove('text-dark')"></i>
@@ -26,30 +35,44 @@ import { UiService } from '../../services/ui';
       </header>
 
       <!-- Weather Hero Card -->
-      <div class="min-card mb-4 border-0 position-relative" style="background-image: url('https://images.unsplash.com/photo-1570168007204-dfb528c6858f?q=80&w=1000&auto=format&fit=crop'); background-size: cover; background-position: center; height: 200px; border-radius: 20px;">
+      <div class="min-card mb-4 border-0 position-relative" [style.background]="getWeatherGradient()" style="height: 200px; border-radius: 20px;">
         <div class="position-absolute bottom-0 start-0 w-100 p-3 p-md-4" style="background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);">
-          <h3 class="text-white fw-bold mb-1 fs-5">{{ labels.HOME.WEATHER_HERO_TITLE }}</h3>
-          <p class="text-white opacity-75 mb-0 small">{{ labels.HOME.WEATHER_HERO_SUBTITLE }}</p>
+          <h3 class="text-white fw-bold mb-1 fs-5 placeholder-glow" *ngIf="!weather">
+            <span class="placeholder col-6 rounded"></span>
+          </h3>
+          <h3 class="text-white fw-bold mb-1 fs-5" *ngIf="weather">{{ getWeatherHeroTitle() }}</h3>
+          
+          <p class="text-white opacity-75 mb-0 small placeholder-glow" *ngIf="!weather">
+            <span class="placeholder col-8 rounded"></span>
+          </p>
+          <p class="text-white opacity-75 mb-0 small" *ngIf="weather">{{ getWeatherHeroSubtitle() }}</p>
         </div>
       </div>
 
       <!-- Weather Stats Row -->
-      <div class="d-flex justify-content-between align-items-center mb-4 px-2">
+      <div class="d-flex justify-content-between align-items-center mb-4 px-2" *ngIf="weather">
         <div class="text-center">
-          <h4 class="fw-bold mb-0">28°</h4>
-          <p class="small text-secondary mb-0">{{ labels.HOME.SUNNY }}</p>
+          <h4 class="fw-bold mb-0">{{ weather.temperature }}°</h4>
+          <p class="small text-secondary mb-0">{{ weather.condition }}</p>
         </div>
         <div class="text-center">
-          <h4 class="fw-bold mb-0">42</h4>
+          <h4 class="fw-bold mb-0">{{ weather.aqi || 42 }}</h4>
           <p class="small text-secondary mb-0">{{ labels.HOME.GOOD }}</p>
         </div>
         <div class="text-center">
-          <h4 class="fw-bold mb-0">62%</h4>
+          <h4 class="fw-bold mb-0">{{ weather.humidity || 62 }}%</h4>
           <p class="small text-secondary mb-0">{{ labels.HOME.HUMIDITY }}</p>
         </div>
         <div class="text-center">
-          <h4 class="fw-bold mb-0">12</h4>
+          <h4 class="fw-bold mb-0">{{ weather.windSpeed || 12 }}</h4>
           <p class="small text-secondary mb-0">{{ labels.HOME.KM_H }}</p>
+        </div>
+      </div>
+      <!-- Weather Stats Skeleton -->
+      <div class="d-flex justify-content-between align-items-center mb-4 px-2 placeholder-glow" *ngIf="!weather">
+        <div class="text-center" *ngFor="let i of [1,2,3,4]" style="width: 20%;">
+          <h4 class="fw-bold mb-0"><span class="placeholder col-8 rounded"></span></h4>
+          <p class="small text-secondary mb-0"><span class="placeholder col-10 rounded"></span></p>
         </div>
       </div>
 
@@ -67,26 +90,21 @@ import { UiService } from '../../services/ui';
       </div>
       
       <div class="d-flex overflow-auto gap-3 pb-2 mb-4" #highlightScroll data-lenis-prevent="true" style="scrollbar-width: none; -ms-overflow-style: none;">
-        <!-- Highlight Card 1 -->
-        <div style="min-width: 150px;">
-          <div class="rounded-4 mb-2 bg-secondary" style="height: 110px; background-image: url('https://images.unsplash.com/photo-1524492412937-b28074a5d7da?q=80&w=400&auto=format&fit=crop'); background-size: cover;"></div>
-          <h6 class="fw-bold fs-6 mb-1 text-truncate">Bandra Fort</h6>
-          <p class="small text-secondary mb-0 text-truncate">1.1 km • <i class="bi bi-star-fill text-warning"></i> 4.6 • <span class="text-success">Open</span></p>
-        </div>
-        
-        <!-- Highlight Card 2 -->
-        <div style="min-width: 150px;">
-          <div class="rounded-4 mb-2 bg-secondary" style="height: 110px; background-image: url('https://images.unsplash.com/photo-1548013146-72479768bada?q=80&w=400&auto=format&fit=crop'); background-size: cover;"></div>
-          <h6 class="fw-bold fs-6 mb-1 text-truncate">Mount Mary</h6>
-          <p class="small text-secondary mb-0 text-truncate">1.3 km • <i class="bi bi-star-fill text-warning"></i> 4.7 • <span class="text-success">Open</span></p>
+        <!-- Dynamic Highlight Cards -->
+        <div style="min-width: 150px; max-width: 150px;" *ngFor="let place of highlights">
+          <div class="rounded-4 mb-2 bg-secondary" [style.background]="place.photoUrl ? 'url(' + place.photoUrl + ') center/cover' : 'linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)'" style="height: 110px;"></div>
+          <h6 class="fw-bold fs-6 mb-1 text-truncate">{{ place.name || 'Nearby Place' }}</h6>
+          <p class="small text-secondary mb-0 text-truncate">{{ (place.distance || 0) | number:'1.1-1' }} km • <i class="bi bi-star-fill text-warning"></i> {{ place.rating || 4.5 }} <span class="text-success ms-1" *ngIf="place.isOpen">Open</span><span class="text-danger ms-1" *ngIf="place.isOpen === false">Closed</span></p>
         </div>
 
-        <!-- Highlight Card 3 -->
-        <div style="min-width: 150px;">
-          <div class="rounded-4 mb-2 bg-secondary" style="height: 110px; background-image: url('https://images.unsplash.com/photo-1473448912268-2022ce9509d8?q=80&w=400&auto=format&fit=crop'); background-size: cover;"></div>
-          <h6 class="fw-bold fs-6 mb-1 text-truncate">Joggers' Park</h6>
-          <p class="small text-secondary mb-0 text-truncate">1.6 km • <i class="bi bi-star-fill text-warning"></i> 4.5 • <span class="text-success">Open</span></p>
-        </div>
+        <!-- Skeleton Highlight Cards -->
+        <ng-container *ngIf="!highlights || highlights.length === 0">
+          <div style="min-width: 150px; max-width: 150px;" *ngFor="let i of [1,2,3]" class="placeholder-glow">
+            <div class="rounded-4 mb-2 placeholder w-100" style="height: 110px;"></div>
+            <h6 class="fw-bold fs-6 mb-1"><span class="placeholder col-8 rounded"></span></h6>
+            <p class="small mb-0"><span class="placeholder col-6 rounded"></span></p>
+          </div>
+        </ng-container>
       </div>
 
       <!-- Local specialities -->
@@ -95,19 +113,21 @@ import { UiService } from '../../services/ui';
       </div>
 
       <div class="d-flex overflow-auto gap-3 pb-2 mb-4" #foodScroll data-lenis-prevent="true" style="scrollbar-width: none; -ms-overflow-style: none;">
-        <!-- Food Card 1 -->
-        <div style="min-width: 220px; max-width: 220px;">
-          <div class="rounded-4 mb-2 bg-secondary" style="height: 130px; background-image: url('https://images.unsplash.com/photo-1606491956689-2ea866880c84?q=80&w=400&auto=format&fit=crop'); background-size: cover;"></div>
-          <h6 class="fw-bold fs-6 mb-1 text-truncate">Vada Pav</h6>
-          <p class="small text-secondary mb-0" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">Mumbai's iconic street snack that never gets old.</p>
+        <!-- Dynamic Food Cards -->
+        <div style="min-width: 220px; max-width: 220px;" *ngFor="let item of specialties">
+          <div class="rounded-4 mb-2 bg-secondary" [style.background]="item.mediaUrls?.[0] ? 'url(' + item.mediaUrls[0] + ') center/cover' : 'linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)'" style="height: 130px;"></div>
+          <h6 class="fw-bold fs-6 mb-1 text-truncate">{{ item.name }}</h6>
+          <p class="small text-secondary mb-0" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">{{ item.description }}</p>
         </div>
-
-        <!-- Food Card 2 -->
-        <div style="min-width: 220px; max-width: 220px;">
-          <div class="rounded-4 mb-2 bg-secondary" style="height: 130px; background-image: url('https://images.unsplash.com/photo-1601050690597-df0568f70950?q=80&w=400&auto=format&fit=crop'); background-size: cover;"></div>
-          <h6 class="fw-bold fs-6 mb-1 text-truncate">Pav Bhaji</h6>
-          <p class="small text-secondary mb-0" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">A buttery, spicy classic loved by all Mumbaikars.</p>
-        </div>
+        
+        <!-- Skeleton Food Cards -->
+        <ng-container *ngIf="!specialties || specialties.length === 0">
+          <div style="min-width: 220px; max-width: 220px;" *ngFor="let i of [1,2]" class="placeholder-glow">
+            <div class="rounded-4 mb-2 placeholder w-100" style="height: 130px;"></div>
+            <h6 class="fw-bold fs-6 mb-1"><span class="placeholder col-7 rounded"></span></h6>
+            <p class="small mb-0"><span class="placeholder col-12 rounded"></span> <span class="placeholder col-8 rounded"></span></p>
+          </div>
+        </ng-container>
       </div>
 
     </div>
@@ -122,8 +142,57 @@ export class HomeComponent implements AfterViewInit, OnDestroy {
   private langService = inject(LanguageService);
   private locationService = inject(LocationService);
   private ui = inject(UiService);
+  private apiService = inject(ApiService);
+  
   get labels() { return this.langService.labels; }
   currentRadius = '2 km';
+  
+  weather: any = null;
+  specialties: any[] = [];
+  highlights: any[] = [];
+  location: any = null;
+
+  get dynamicGreetingKey(): string {
+    const hour = new Date().getHours();
+    if (hour < 12) return 'GREETING_MORNING';
+    if (hour < 17) return 'GREETING_AFTERNOON';
+    return 'GREETING_EVENING';
+  }
+
+  getWeatherGradient(): string {
+    if (!this.weather || !this.weather.condition) {
+      return 'linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%)';
+    }
+    const cond = this.weather.condition.toLowerCase();
+    if (cond.includes('clear') || cond.includes('sunny')) {
+      return 'linear-gradient(135deg, #f6d365 0%, #fda085 100%)';
+    } else if (cond.includes('cloud')) {
+      return 'linear-gradient(135deg, #89f7fe 0%, #66a6ff 100%)';
+    } else if (cond.includes('rain') || cond.includes('drizzle')) {
+      return 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)';
+    } else {
+      return 'linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%)';
+    }
+  }
+
+  getWeatherHeroTitle(): string {
+    if (!this.weather || !this.weather.condition) return this.labels.HOME.WEATHER_HERO_TITLE;
+    const cond = this.weather.condition.toLowerCase();
+    if (cond.includes('clear') || cond.includes('sunny')) return 'Beautiful weather today.';
+    if (cond.includes('cloud')) return 'Cloudy skies right now.';
+    if (cond.includes('rain') || cond.includes('drizzle')) return 'It is raining outside.';
+    if (cond.includes('snow')) return 'Snowy weather today.';
+    return `It's ${this.weather.condition} today.`;
+  }
+
+  getWeatherHeroSubtitle(): string {
+    if (!this.weather || !this.weather.condition) return this.labels.HOME.WEATHER_HERO_SUBTITLE;
+    const cond = this.weather.condition.toLowerCase();
+    if (cond.includes('clear') || cond.includes('sunny')) return 'Perfect time for a walk outside.';
+    if (cond.includes('cloud')) return 'A cool day to explore the city.';
+    if (cond.includes('rain') || cond.includes('drizzle') || cond.includes('snow')) return 'Great time for a cozy indoor café.';
+    return 'Great time to explore local spots.';
+  }
 
   @ViewChild('highlightScroll') highlightScroll!: ElementRef<HTMLElement>;
   @ViewChild('foodScroll') foodScroll!: ElementRef<HTMLElement>;
@@ -149,6 +218,12 @@ export class HomeComponent implements AfterViewInit, OnDestroy {
     if (this.foodScroll?.nativeElement) {
       this.foodScroll.nativeElement.addEventListener('wheel', this.wheelHandler, { passive: false });
     }
+    
+    // Initial fetch if we already have location
+    const coords = this.locationService.coords();
+    if (coords) {
+      this.fetchDynamicData(coords.lat, coords.lng);
+    }
   }
 
   ngOnDestroy() {
@@ -162,11 +237,44 @@ export class HomeComponent implements AfterViewInit, OnDestroy {
 
   async requestLocation() {
     try {
-      await this.locationService.requestLocation();
+      const pos = await this.locationService.requestLocation();
       this.ui.showToast(this.labels.TOAST.LOCATION_SUCCESS, 'success');
+      this.fetchDynamicData(pos.lat, pos.lng);
     } catch (error) {
       console.error('Location error:', error);
       this.ui.showToast(this.labels.TOAST.LOCATION_ERROR, 'error');
+    }
+  }
+
+  async fetchDynamicData(lat: number, lng: number) {
+    try {
+      this.weather = await this.apiService.get<any>(`/api/v1/weather?latitude=${lat}&longitude=${lng}`);
+    } catch (e) {
+      console.error('Failed to fetch weather', e);
+    }
+    
+    try {
+      const res = await this.apiService.get<any>(`/api/v1/specialties?latitude=${lat}&longitude=${lng}`);
+      if (res && res.documents) {
+        this.specialties = res.documents;
+      }
+    } catch (e) {
+      console.error('Failed to fetch specialties', e);
+    }
+    
+    try {
+      // 2 km = 2000 m
+      const radiusMeters = parseInt(this.currentRadius) * 1000;
+      const res = await this.apiService.get<any>(`/api/v1/providers/places/nearby?latitude=${lat}&longitude=${lng}&radius=${radiusMeters}`);
+      if (res && res.length) {
+        this.highlights = res;
+        this.location = {
+          name: res[0]?.vicinity?.split(',')[0] || 'Your Location',
+          city: res[0]?.vicinity || 'Unknown City'
+        };
+      }
+    } catch (e) {
+      console.error('Failed to fetch highlights', e);
     }
   }
 }

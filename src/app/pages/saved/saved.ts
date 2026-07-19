@@ -27,27 +27,7 @@ import { LanguageService } from '../../services/language';
 
         <!-- Populated State -->
         <div *ngIf="hasItems" class="d-flex flex-column gap-4 fade-in">
-          <!-- Item 1 -->
-          <div class="d-flex gap-3 align-items-center">
-            <div class="rounded-3 flex-shrink-0 bg-light" style="width: 80px; height: 80px; background-image: url('https://images.unsplash.com/photo-1524492412937-b28074a5d7da?q=80&w=200&auto=format&fit=crop'); background-size: cover;"></div>
-            <div class="flex-grow-1">
-              <h6 class="fw-bold mb-1 fs-5">Bandra Fort</h6>
-              <p class="small text-secondary mb-1">1.1 km • <i class="bi bi-star-fill text-warning"></i> 4.6 <span class="text-success ms-1">Open</span></p>
-              <p class="small text-tertiary mb-0" style="font-size: 0.8rem;">Historic • Photography</p>
-            </div>
-            <i class="bi fs-5" style="cursor: pointer;" [ngClass]="isBookmarked1 ? 'bi-bookmark-fill text-dark' : 'bi-bookmark text-secondary'" (click)="isBookmarked1 = !isBookmarked1"></i>
-          </div>
-
-          <!-- Item 2 -->
-          <div class="d-flex gap-3 align-items-center">
-            <div class="rounded-3 flex-shrink-0 bg-light" style="width: 80px; height: 80px; background-image: url('https://images.unsplash.com/photo-1554118811-1e0d58224f24?q=80&w=400&auto=format&fit=crop'); background-size: cover;"></div>
-            <div class="flex-grow-1">
-              <h6 class="fw-bold mb-1 fs-5">Kala Ghoda Café</h6>
-              <p class="small text-secondary mb-1">1.2 km • <i class="bi bi-star-fill text-warning"></i> 4.6 <span class="text-success ms-1">Open</span></p>
-              <p class="small text-tertiary mb-0" style="font-size: 0.8rem;">Cafe • Coffee</p>
-            </div>
-            <i class="bi fs-5" style="cursor: pointer;" [ngClass]="isBookmarked2 ? 'bi-bookmark-fill text-dark' : 'bi-bookmark text-secondary'" (click)="isBookmarked2 = !isBookmarked2"></i>
-          </div>
+          <!-- Dynamic Items would go here -->
         </div>
     </div>
   `,
@@ -66,7 +46,5 @@ export class SavedComponent {
   private langService = inject(LanguageService);
   get labels() { return this.langService.labels; }
 
-  hasItems = true;
-  isBookmarked1 = true;
-  isBookmarked2 = true;
+  hasItems = false;
 }

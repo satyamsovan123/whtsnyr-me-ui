@@ -1,52 +1,44 @@
 import { Routes } from '@angular/router';
-import { HomeComponent } from './pages/home/home';
-import { AiChatComponent } from './pages/ai-chat/ai-chat';
-import { ExploreComponent } from './pages/explore/explore';
-import { SettingsComponent } from './pages/settings/settings';
-import { AboutComponent } from './pages/about/about';
-import { PrivacyPolicyComponent } from './pages/privacy-policy/privacy-policy';
-import { SavedComponent } from './pages/saved/saved';
-import { AuthComponent } from './pages/auth/auth';
 
 export const routes: Routes = [
   { 
     path: 'home', 
-    component: HomeComponent,
+    loadComponent: () => import('./pages/home/home').then(m => m.HomeComponent),
     data: { title: 'Home | whtsnyr.me', description: 'Discover curated local specialties, weather, and food options near you.' }
   },
   { 
     path: 'ai', 
-    component: AiChatComponent,
+    loadComponent: () => import('./pages/ai-chat/ai-chat').then(m => m.AiChatComponent),
     data: { title: 'whtsnyr.AI | Your Smart Local Companion', description: 'Chat with our AI to find the best places, food, and events tailored to your preferences.' }
   },
   { 
     path: 'explore', 
-    component: ExploreComponent,
+    loadComponent: () => import('./pages/explore/explore').then(m => m.ExploreComponent),
     data: { title: 'Explore | whtsnyr.me', description: 'Discover local specialties, nature spots, temples, and shopping near you.' }
   },
   { 
     path: 'saved', 
-    component: SavedComponent,
+    loadComponent: () => import('./pages/saved/saved').then(m => m.SavedComponent),
     data: { title: 'Saved Places | whtsnyr.me', description: 'View your saved local spots.' }
   },
   { 
     path: 'settings', 
-    component: SettingsComponent,
+    loadComponent: () => import('./pages/settings/settings').then(m => m.SettingsComponent),
     data: { title: 'Settings | whtsnyr.me', description: 'Manage your preferences, saved places, and order history.' }
   },
   {
     path: 'about',
-    component: AboutComponent,
+    loadComponent: () => import('./pages/about/about').then(m => m.AboutComponent),
     data: { title: 'About Us | whtsnyr.me', description: 'Real-time local activity and trends.' }
   },
   {
     path: 'privacy-policy',
-    component: PrivacyPolicyComponent,
+    loadComponent: () => import('./pages/privacy-policy/privacy-policy').then(m => m.PrivacyPolicyComponent),
     data: { title: 'Privacy Policy | whtsnyr.me', description: 'Read our privacy policy.' }
   },
   {
     path: 'account',
-    component: AuthComponent,
+    loadComponent: () => import('./pages/auth/auth').then(m => m.AuthComponent),
     data: { title: 'Account | whtsnyr.me', description: 'Sign in or create an account to access your saved places and preferences.' }
   },
   { path: '', redirectTo: 'home', pathMatch: 'full' },

@@ -12,7 +12,10 @@ export const LABELS_EN = {
     YOU: 'You'
   },
   HOME: {
-    GREETING: 'Good Morning,',
+    GREETING: 'Good morning,',
+    GREETING_MORNING: 'Good morning,',
+    GREETING_AFTERNOON: 'Good afternoon,',
+    GREETING_EVENING: 'Good evening,',
     WEATHER_HERO_TITLE: 'Pleasant Weather Today.',
     WEATHER_HERO_SUBTITLE: 'Great time to explore local cafés.',
     HUMIDITY: 'Humidity',

@@ -2,6 +2,8 @@ import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { LanguageService } from '../../services/language';
+import { ApiService } from '../../services/api';
+import { LocationService } from '../../services/location';
 
 @Component({
   selector: 'app-ai-chat',
@@ -14,9 +16,9 @@ import { LanguageService } from '../../services/language';
       <div class="px-4 pt-4 pb-2 bg-white" style="z-index: 10; border-bottom: 1px solid rgba(0,0,0,0.05);">
         <h1 class="fw-bold fs-2 mb-3">{{ labels.AI_CHAT.HEADER_TITLE }}</h1>
         <div class="d-flex flex-nowrap overflow-auto gap-2 no-scrollbar pb-2">
-          <button class="btn btn-outline rounded-pill text-secondary btn-sm px-3 py-2 border-light bg-light bg-opacity-50 text-start text-truncate flex-shrink-0" style="width: 160px;"><i class="bi bi-search me-2"></i> {{ labels.AI_CHAT.FIND_LOCAL_FOOD }}</button>
-          <button class="btn btn-outline rounded-pill text-secondary btn-sm px-3 py-2 border-light bg-light bg-opacity-50 text-start text-truncate flex-shrink-0" style="width: 160px;"><i class="bi bi-moon me-2"></i> {{ labels.AI_CHAT.PLAN_EVENING }}</button>
-          <button class="btn btn-outline rounded-pill text-secondary btn-sm px-3 py-2 border-light bg-light bg-opacity-50 text-start text-truncate flex-shrink-0" style="width: 160px;"><i class="bi bi-gem me-2"></i> {{ labels.AI_CHAT.HIDDEN_GEMS }}</button>
+          <button (click)="currentInput = labels.AI_CHAT.FIND_LOCAL_FOOD; sendMessage()" class="btn btn-outline rounded-pill text-secondary btn-sm px-3 py-2 border-light bg-light bg-opacity-50 text-start text-truncate flex-shrink-0" style="width: 160px;"><i class="bi bi-search me-2"></i> {{ labels.AI_CHAT.FIND_LOCAL_FOOD }}</button>
+          <button (click)="currentInput = labels.AI_CHAT.PLAN_EVENING; sendMessage()" class="btn btn-outline rounded-pill text-secondary btn-sm px-3 py-2 border-light bg-light bg-opacity-50 text-start text-truncate flex-shrink-0" style="width: 160px;"><i class="bi bi-moon me-2"></i> {{ labels.AI_CHAT.PLAN_EVENING }}</button>
+          <button (click)="currentInput = labels.AI_CHAT.HIDDEN_GEMS; sendMessage()" class="btn btn-outline rounded-pill text-secondary btn-sm px-3 py-2 border-light bg-light bg-opacity-50 text-start text-truncate flex-shrink-0" style="width: 160px;"><i class="bi bi-gem me-2"></i> {{ labels.AI_CHAT.HIDDEN_GEMS }}</button>
         </div>
       </div>
 
@@ -44,23 +46,23 @@ import { LanguageService } from '../../services/language';
                 <div class="spinner-grow spinner-grow-sm text-secondary" style="width: 6px; height: 6px; animation-delay: 0.4s;" role="status"></div>
               </div>
 
-              <!-- Cafe Card (Only if it's the specific recommendation) -->
-              <div class="min-card p-3 shadow-sm border border-light" *ngIf="msg.showCard">
+              <!-- Cafe Card -->
+              <div class="min-card p-3 shadow-sm border border-light" *ngIf="msg.showCard && msg.cardData">
                 <div class="d-flex gap-3 mb-3">
-                  <div class="rounded-3 flex-shrink-0" style="width: 80px; height: 80px; background-image: url('https://images.unsplash.com/photo-1554118811-1e0d58224f24?q=80&w=400&auto=format&fit=crop'); background-size: cover;"></div>
+                  <div class="rounded-3 flex-shrink-0" [style.background]="msg.cardData.imageUrl ? 'url(' + msg.cardData.imageUrl + ') center/cover' : 'linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)'" style="width: 80px; height: 80px;"></div>
                   <div>
-                    <h6 class="fw-bold mb-1 fs-6">Kala Ghoda Café</h6>
-                    <p class="small text-secondary mb-1">1.2 km • <i class="bi bi-star-fill text-warning"></i> 4.6 <span class="text-success ms-1">Open</span></p>
-                    <p class="small text-tertiary mb-0 lh-sm" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">Cozy ambience, great coffee and beautiful decor.</p>
+                    <h6 class="fw-bold mb-1 fs-6">{{ msg.cardData.name }}</h6>
+                    <p class="small text-secondary mb-1">{{ msg.cardData.distance }} • <i class="bi bi-star-fill text-warning"></i> {{ msg.cardData.rating }} <span class="text-success ms-1" *ngIf="msg.cardData.isOpen">Open</span><span class="text-danger ms-1" *ngIf="msg.cardData.isOpen === false">Closed</span></p>
+                    <p class="small text-tertiary mb-0 lh-sm" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">{{ msg.cardData.description }}</p>
                   </div>
                 </div>
                 <div class="d-flex gap-2">
-                  <button class="btn btn-outline border-light btn-sm flex-grow-1 fw-bold rounded-pill text-secondary d-flex justify-content-center align-items-center" style="height: 38px;">
+                  <a [href]="msg.cardData.mapLink || '#'" target="_blank" class="btn btn-outline border-light btn-sm flex-grow-1 fw-bold rounded-pill text-secondary d-flex justify-content-center align-items-center text-decoration-none" style="height: 38px;">
                     <i class="bi bi-geo-alt me-1"></i> {{ labels.AI_CHAT.DIRECTIONS }}
-                  </button>
-                  <button class="btn btn-outline border-light btn-sm flex-grow-1 fw-bold rounded-pill text-dark d-flex justify-content-center align-items-center" style="height: 38px;">
+                  </a>
+                  <a [href]="msg.cardData.swiggyLink || '#'" target="_blank" *ngIf="msg.cardData.swiggyLink" class="btn btn-outline border-light btn-sm flex-grow-1 fw-bold rounded-pill text-dark d-flex justify-content-center align-items-center text-decoration-none" style="height: 38px;">
                     <img src="https://upload.wikimedia.org/wikipedia/en/1/12/Swiggy_logo.svg" alt="Swiggy" height="16" class="me-1" style="object-fit: contain;"> {{ labels.AI_CHAT.ORDER }}
-                  </button>
+                  </a>
                 </div>
               </div>
             </div>
@@ -91,36 +93,59 @@ import { LanguageService } from '../../services/language';
 })
 export class AiChatComponent {
   private langService = inject(LanguageService);
+  private apiService = inject(ApiService);
+  private locationService = inject(LocationService);
   get labels() { return this.langService.labels; }
 
   currentInput = '';
   messages: any[] = [];
 
   constructor() {
-    this.messages = [
-      { sender: 'user', text: this.labels.AI_CHAT.DEFAULT_USER_MSG, showCard: false, isTyping: false },
-      { sender: 'ai', text: this.labels.AI_CHAT.DEFAULT_AI_MSG, showCard: true, isTyping: false }
-    ];
+    this.messages = [];
   }
 
-  sendMessage() {
+  async sendMessage() {
     if (!this.currentInput.trim()) return;
     
-    // Add user message
-    this.messages.push({ sender: 'user', text: this.currentInput, showCard: false, isTyping: false });
+    const userMessage = this.currentInput;
     this.currentInput = '';
+    
+    // Add user message
+    this.messages.push({ sender: 'user', text: userMessage, showCard: false, isTyping: false });
     
     // Simulate AI thinking
     const aiMsgIndex = this.messages.length;
     this.messages.push({ sender: 'ai', text: this.labels.AI_CHAT.THINKING, showCard: false, isTyping: true });
     
-    setTimeout(() => {
-      this.messages[aiMsgIndex] = { 
-        sender: 'ai', 
-        text: this.labels.AI_CHAT.MOCK_RESPONSE, 
-        showCard: false, 
-        isTyping: false 
+    try {
+      const coords = this.locationService.coords();
+      const history = this.messages
+        .filter(m => !m.isTyping && m.text !== this.labels.AI_CHAT.THINKING)
+        .map(m => ({ role: m.sender === 'ai' ? 'model' : 'user', text: m.text }));
+
+      const payload = {
+        message: userMessage,
+        latitude: coords?.lat,
+        longitude: coords?.lng,
+        history,
+        language: this.langService.currentLang
       };
-    }, 1500);
+
+      const result = await this.apiService.post<any>('/api/v1/insights/chat', payload);
+      this.messages[aiMsgIndex] = {
+        sender: 'ai',
+        text: result.text,
+        showCard: result.showCard,
+        cardData: result.cardData,
+        isTyping: false
+      };
+    } catch (err) {
+      this.messages[aiMsgIndex] = {
+        sender: 'ai',
+        text: "I'm sorry, I couldn't connect to my brain. Please try again.",
+        showCard: false,
+        isTyping: false
+      };
+    }
   }
 }

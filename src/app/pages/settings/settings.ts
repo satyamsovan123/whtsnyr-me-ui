@@ -16,11 +16,11 @@ import { SUPPORTED_LANGUAGES, PREFERRED_RADIUSES, TEMPERATURE_UNITS, THEMES, LOC
       <!-- Profile Header -->
       <div class="p-4 d-flex align-items-center border-bottom border-light">
         <div class="rounded-circle bg-light border d-flex align-items-center justify-content-center me-3 flex-shrink-0" style="width: 60px; height: 60px; border-color: #dee2e6 !important;">
-          <span class="fs-4 fw-medium text-secondary">AM</span>
+          <i class="bi bi-person text-secondary fs-3"></i>
         </div>
         <div class="flex-grow-1">
-          <h2 class="fw-bold fs-5 mb-0 text-dark">Arjun Mehta</h2>
-          <p class="small text-secondary mb-0">arjun.mehta@gmail.com</p>
+          <h2 class="fw-bold fs-5 mb-0 text-dark">Guest User</h2>
+          <p class="small text-secondary mb-0">Sign in to sync your preferences</p>
         </div>
         <button class="btn btn-link text-secondary p-0 border-0 shadow-none text-decoration-none flex-shrink-0 ms-2" [title]="labels.SETTINGS.LOGOUT">
           <i class="bi bi-box-arrow-right" style="font-size: 1.5rem; transition: color 0.2s;" onmouseover="this.classList.add('text-dark'); this.classList.remove('text-secondary')" onmouseout="this.classList.add('text-secondary'); this.classList.remove('text-dark')"></i>
@@ -84,7 +84,7 @@ import { SUPPORTED_LANGUAGES, PREFERRED_RADIUSES, TEMPERATURE_UNITS, THEMES, LOC
 
         <button class="list-group-item list-group-item-action border-0 px-4 py-3 d-flex justify-content-between align-items-center bg-white position-relative z-1">
           <span class="text-dark">{{ labels.SETTINGS.SWIGGY }}</span>
-          <span class="text-success small fw-medium d-flex align-items-center">{{ labels.SETTINGS.CONNECTED }} <i class="bi bi-chevron-right text-secondary ms-2 opacity-50"></i></span>
+          <span class="text-secondary small fw-medium d-flex align-items-center">Connect <i class="bi bi-plus ms-1 opacity-50"></i></span>
         </button>
 
         <div class="px-4 py-2 mt-2"></div> <!-- Spacer -->
