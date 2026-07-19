@@ -7,6 +7,7 @@ import { ToastComponent } from './components/toast/toast';
 import { SeoService } from './services/seo';
 import { ThemeService } from './services/theme';
 import { SidebarService } from './services/sidebar';
+import { LocationService } from './services/location';
 import { NavbarComponent } from './components/navbar/navbar';
 
 // Declare Lenis since it is loaded via CDN
@@ -24,6 +25,7 @@ export class App implements OnInit, AfterViewInit {
   private seo = inject(SeoService);
   private theme = inject(ThemeService); // Init theme on load
   public sidebarService = inject(SidebarService);
+  private locationService = inject(LocationService);
   private document = inject(DOCUMENT);
 
   ngOnInit() {
@@ -40,6 +42,11 @@ export class App implements OnInit, AfterViewInit {
           this.seo.updateSeoTags(data['title'], data['description'] || 'Discover amazing local places.');
         }
       });
+    });
+
+    // Ask for location on startup
+    this.locationService.requestLocation().catch(err => {
+      console.warn('User denied location or location not available:', err);
     });
   }
 

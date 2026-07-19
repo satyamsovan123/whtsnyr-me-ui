@@ -70,6 +70,8 @@ export const LABELS_HI = {
   },
 
   TOAST: {
+    LOCATION_SUCCESS: 'स्थान सफलतापूर्वक अपडेट किया गया!',
+    LOCATION_ERROR: 'स्थान प्राप्त करने में असमर्थ। अनुमतियों की जांच करें।',
     ENABLE_LOCATION: 'बेहतरीन अनुभव के लिए कृपया स्थान सक्षम करें',
     LOCATION_UPDATED: 'स्थान अपडेट किया गया',
     LOCATION_FAILED: 'स्थान प्राप्त करने में विफल',

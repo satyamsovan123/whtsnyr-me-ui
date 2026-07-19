@@ -70,6 +70,8 @@ export const LABELS_OD = {
   },
 
   TOAST: {
+    LOCATION_SUCCESS: 'ଅବସ୍ଥାନ ସଫଳତାପୂର୍ବକ ଅପଡେଟ୍ ହେଲା!',
+    LOCATION_ERROR: 'ଅବସ୍ଥାନ ପୁନରୁଦ୍ଧାର କରିବାରେ ଅସମର୍ଥ | ଅନୁମତିଗୁଡିକ ଯାଞ୍ଚ କରନ୍ତୁ |',
     ENABLE_LOCATION: 'ସର୍ବୋତ୍ତମ ଅନୁଭୂତି ପାଇଁ ଦୟାକରି ସ୍ଥାନ ସକ୍ଷମ କରନ୍ତୁ',
     LOCATION_UPDATED: 'ସ୍ଥାନ ଅପଡେଟ୍ ହୋଇଛି',
     LOCATION_FAILED: 'ସ୍ଥାନ ପାଇବାରେ ବିଫଳ',

@@ -1,6 +1,8 @@
 import { Component, inject, AfterViewInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LanguageService } from '../../services/language';
+import { LocationService } from '../../services/location';
+import { UiService } from '../../services/ui';
 
 @Component({
   selector: 'app-home',
@@ -118,6 +120,8 @@ import { LanguageService } from '../../services/language';
 })
 export class HomeComponent implements AfterViewInit, OnDestroy {
   private langService = inject(LanguageService);
+  private locationService = inject(LocationService);
+  private ui = inject(UiService);
   get labels() { return this.langService.labels; }
   currentRadius = '2 km';
 
@@ -156,20 +160,13 @@ export class HomeComponent implements AfterViewInit, OnDestroy {
     }
   }
 
-  requestLocation() {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          console.log('Location access granted:', position.coords.latitude, position.coords.longitude);
-          alert('Location updated successfully!');
-        },
-        (error) => {
-          console.error('Location error:', error);
-          alert('Unable to retrieve your location. Please check your permissions.');
-        }
-      );
-    } else {
-      alert('Geolocation is not supported by your browser.');
+  async requestLocation() {
+    try {
+      await this.locationService.requestLocation();
+      this.ui.showToast(this.labels.TOAST.LOCATION_SUCCESS, 'success');
+    } catch (error) {
+      console.error('Location error:', error);
+      this.ui.showToast(this.labels.TOAST.LOCATION_ERROR, 'error');
     }
   }
 }

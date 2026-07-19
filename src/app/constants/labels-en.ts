@@ -70,6 +70,8 @@ export const LABELS_EN = {
   },
 
   TOAST: {
+    LOCATION_SUCCESS: 'Location updated successfully!',
+    LOCATION_ERROR: 'Unable to retrieve location. Check permissions.',
     ENABLE_LOCATION: 'Please enable location for the best experience',
     LOCATION_UPDATED: 'Location updated',
     LOCATION_FAILED: 'Failed to get location',

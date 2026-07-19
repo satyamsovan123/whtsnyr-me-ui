@@ -70,6 +70,8 @@ export const LABELS_BN = {
   },
 
   TOAST: {
+    LOCATION_SUCCESS: 'অবস্থান সফলভাবে আপডেট করা হয়েছে!',
+    LOCATION_ERROR: 'অবস্থান পুনরুদ্ধার করতে অক্ষম। অনুমতি চেক করুন।',
     ENABLE_LOCATION: 'সেরা অভিজ্ঞতার জন্য অনুগ্রহ করে অবস্থান সক্ষম করুন',
     LOCATION_UPDATED: 'অবস্থান আপডেট করা হয়েছে',
     LOCATION_FAILED: 'অবস্থান পেতে ব্যর্থ',

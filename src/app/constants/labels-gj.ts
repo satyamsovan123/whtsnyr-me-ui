@@ -70,6 +70,8 @@ export const LABELS_GJ = {
   },
 
   TOAST: {
+    LOCATION_SUCCESS: 'સ્થાન સફળતાપૂર્વક અપડેટ થયું!',
+    LOCATION_ERROR: 'સ્થાન પુનઃપ્રાપ્ત કરવામાં અસમર્થ. પરવાનગીઓ તપાસો.',
     ENABLE_LOCATION: 'શ્રેષ્ઠ અનુભવ માટે કૃપા કરીને સ્થાન સક્ષમ કરો',
     LOCATION_UPDATED: 'સ્થાન અપડેટ કર્યું',
     LOCATION_FAILED: 'સ્થાન મેળવવામાં નિષ્ફળ',

@@ -70,6 +70,8 @@ export const LABELS_TE = {
   },
 
   TOAST: {
+    LOCATION_SUCCESS: 'స్థానం విజయవంతంగా నవీకరించబడింది!',
+    LOCATION_ERROR: 'స్థానాన్ని తిరిగి పొందడం సాధ్యం కాలేదు. అనుమతులను తనిఖీ చేయండి.',
     ENABLE_LOCATION: 'ఉత్తమ అనుభవం కోసం దయచేసి స్థానాన్ని ప్రారంభించండి',
     LOCATION_UPDATED: 'స్థానం నవీకరించబడింది',
     LOCATION_FAILED: 'స్థానం పొందడం విఫలమైంది',
