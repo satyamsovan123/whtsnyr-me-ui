@@ -4,6 +4,8 @@ import { RouterModule } from '@angular/router';
 import { ThemeService, Theme } from '../../services/theme';
 import { LanguageService } from '../../services/language';
 import { UiService } from '../../services/ui';
+import { AuthService } from '../../services/auth';
+import { Router } from '@angular/router';
 import { SUPPORTED_LANGUAGES, PREFERRED_RADIUSES, TEMPERATURE_UNITS, THEMES, LOCATION_OPTIONS } from '../../constants/common';
 
 @Component({
@@ -16,13 +18,19 @@ import { SUPPORTED_LANGUAGES, PREFERRED_RADIUSES, TEMPERATURE_UNITS, THEMES, LOC
       <!-- Profile Header -->
       <div class="p-4 d-flex align-items-center border-bottom border-light">
         <div class="rounded-circle bg-light border d-flex align-items-center justify-content-center me-3 flex-shrink-0" style="width: 60px; height: 60px; border-color: #dee2e6 !important;">
-          <i class="bi bi-person text-secondary fs-3"></i>
+          <i *ngIf="!currentUser" class="bi bi-person text-secondary fs-3"></i>
+          <span *ngIf="currentUser" class="fs-4 fw-medium text-secondary">{{ currentUser.displayName?.charAt(0)?.toUpperCase() || 'U' }}</span>
         </div>
-        <div class="flex-grow-1">
+        <div class="flex-grow-1" *ngIf="!currentUser">
           <h2 class="fw-bold fs-5 mb-0 text-dark">Guest User</h2>
           <p class="small text-secondary mb-0">Sign in to sync your preferences</p>
+          <a routerLink="/account" class="btn btn-sm btn-outline-dark rounded-pill mt-2 px-3 py-1 fw-bold">Sign In</a>
         </div>
-        <button class="btn btn-link text-secondary p-0 border-0 shadow-none text-decoration-none flex-shrink-0 ms-2" [title]="labels.SETTINGS.LOGOUT">
+        <div class="flex-grow-1" *ngIf="currentUser">
+          <h2 class="fw-bold fs-5 mb-0 text-dark">{{ currentUser.displayName }}</h2>
+          <p class="small text-secondary mb-0">{{ currentUser.email }}</p>
+        </div>
+        <button *ngIf="currentUser" (click)="logout()" class="btn btn-link text-secondary p-0 border-0 shadow-none text-decoration-none flex-shrink-0 ms-2" [title]="labels.SETTINGS.LOGOUT">
           <i class="bi bi-box-arrow-right" style="font-size: 1.5rem; transition: color 0.2s;" onmouseover="this.classList.add('text-dark'); this.classList.remove('text-secondary')" onmouseout="this.classList.add('text-secondary'); this.classList.remove('text-dark')"></i>
         </button>
       </div>
@@ -138,7 +146,11 @@ export class SettingsComponent {
   private themeService = inject(ThemeService);
   private langService = inject(LanguageService);
   private ui = inject(UiService);
+  private authService = inject(AuthService);
+  private router = inject(Router);
+
   get labels() { return this.langService.labels; }
+  get currentUser() { return this.authService.currentUser; }
 
   public supportedLanguages = SUPPORTED_LANGUAGES;
   public preferredRadiuses = PREFERRED_RADIUSES;
@@ -146,9 +158,22 @@ export class SettingsComponent {
   public themes = THEMES;
   public locationOptions = LOCATION_OPTIONS;
 
-  // Mock State
-  currentRadius = '2 km';
-  currentTemp = '°C';
+  get currentRadius() {
+    return this.currentUser?.preferences?.radius || '2 km';
+  }
+  
+  set currentRadius(val: string) {
+    this.authService.updatePreferences({ radius: val });
+  }
+
+  get currentTemp() {
+    return this.currentUser?.preferences?.temperatureUnit || 'C';
+  }
+  
+  set currentTemp(val: string) {
+    this.authService.updatePreferences({ temperatureUnit: val });
+  }
+
   currentLocation = 'Always';
 
   get currentTheme(): string {
@@ -177,10 +202,17 @@ export class SettingsComponent {
   onThemeChange(event: Event) {
     const val = (event.target as HTMLSelectElement).value;
     this.themeService.setTheme(val as Theme);
+    this.authService.updatePreferences({ theme: val });
   }
 
   onLanguageChange(event: Event) {
     const val = (event.target as HTMLSelectElement).value;
     this.langService.setLanguage(val);
+    this.authService.updatePreferences({ language: val });
+  }
+
+  logout() {
+    this.authService.logout();
+    this.ui.showToast('Logged out successfully', 'success');
   }
 }

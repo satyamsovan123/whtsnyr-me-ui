@@ -1,9 +1,10 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LanguageService } from '../../services/language';
 import { EXPLORE_CATEGORIES, PREFERRED_RADIUSES } from '../../constants/common';
 import { ApiService } from '../../services/api';
 import { LocationService } from '../../services/location';
+import { BookmarkService } from '../../services/bookmark';
 
 @Component({
   selector: 'app-explore',
@@ -98,7 +99,7 @@ import { LocationService } from '../../services/location';
               <p class="small text-secondary mb-1">{{ (place.distance || 0) | number:'1.1-1' }} km • <i class="bi bi-star-fill text-warning"></i> {{ place.rating || 4.5 }} <span class="text-success ms-1" *ngIf="place.isOpen">Open</span><span class="text-danger ms-1" *ngIf="place.isOpen === false">Closed</span></p>
               <p class="small text-tertiary mb-0 text-truncate" style="font-size: 0.8rem;">{{ place.types?.join(' • ') || 'Place' }}</p>
             </div>
-            <i class="bi fs-5" style="cursor: pointer;" [ngClass]="bookmarked[i] ? 'bi-bookmark-fill text-dark' : 'bi-bookmark text-secondary'" (click)="bookmarked[i] = !bookmarked[i]"></i>
+            <i class="bi fs-5" style="cursor: pointer;" [ngClass]="isSaved(place) ? 'bi-bookmark-fill text-dark' : 'bi-bookmark text-secondary'" (click)="toggleBookmark(place)"></i>
           </div>
         </div>
       </div>
@@ -119,6 +120,8 @@ export class ExploreComponent {
   private langService = inject(LanguageService);
   private apiService = inject(ApiService);
   private locationService = inject(LocationService);
+  private bookmarkService = inject(BookmarkService);
+  private cdr = inject(ChangeDetectorRef);
   
   get labels() { return this.langService.labels; }
 
@@ -131,7 +134,6 @@ export class ExploreComponent {
 
   highlights: any[] = [];
   isLoading = false;
-  bookmarked: boolean[] = [];
 
   constructor() {
     this.fetchDynamicData();
@@ -158,17 +160,25 @@ export class ExploreComponent {
       const res = await this.apiService.get<any>(`/api/v1/providers/places/nearby?latitude=${coords.lat}&longitude=${coords.lng}&radius=${radiusMeters}`);
       if (res && res.length) {
         this.highlights = res;
-        this.bookmarked = new Array(res.length).fill(false);
       }
     } catch (e) {
       console.error('Failed to fetch explore highlights', e);
     } finally {
       this.isLoading = false;
+      this.cdr.detectChanges();
     }
   }
 
   get currentCategoryName(): string {
     const c = this.exploreCategories.find(x => x.value === this.currentCategory);
     return c ? this.labels.EXPLORE[c.labelKey] : this.currentCategory;
+  }
+
+  isSaved(place: any): boolean {
+    return this.bookmarkService.isBookmarked(place.placeId);
+  }
+
+  toggleBookmark(place: any) {
+    this.bookmarkService.toggleBookmark(place);
   }
 }

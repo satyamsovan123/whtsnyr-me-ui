@@ -1,12 +1,14 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 import { LanguageService } from '../../services/language';
+import { AuthService } from '../../services/auth';
 
 @Component({
   selector: 'app-auth',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, FormsModule],
   template: `
     <div class="page-container bg-white min-vh-100 d-flex flex-column align-items-center justify-content-center mx-auto position-relative p-4 fade-in max-w-desktop">
       <div class="w-100" style="max-width: 400px; animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);">
@@ -35,19 +37,22 @@ import { LanguageService } from '../../services/language';
         <!-- Form -->
         <form (ngSubmit)="onSubmit($event)">
           <div class="mb-3" *ngIf="!isLogin" style="animation: fadeIn 0.4s ease-out;">
-            <input type="text" class="form-control bg-light" id="nameInput" [placeholder]="labels.AUTH.FULL_NAME">
+            <input type="text" class="form-control bg-light" id="nameInput" [placeholder]="labels.AUTH.FULL_NAME" [(ngModel)]="name" name="name" required>
           </div>
           
           <div class="mb-3">
-            <input type="email" class="form-control bg-light" id="emailInput" [placeholder]="labels.AUTH.EMAIL_ADDRESS">
+            <input type="email" class="form-control bg-light" id="emailInput" [placeholder]="labels.AUTH.EMAIL_ADDRESS" [(ngModel)]="email" name="email" required>
           </div>
           
           <div class="mb-4">
-            <input type="password" class="form-control bg-light" id="passwordInput" [placeholder]="labels.AUTH.PASSWORD">
+            <input type="password" class="form-control bg-light" id="passwordInput" [placeholder]="labels.AUTH.PASSWORD" [(ngModel)]="password" name="password" required>
           </div>
 
-          <button type="submit" class="btn btn-dark w-100 py-3 rounded-pill fw-bold mb-3 shadow-sm" style="font-size: 1.1rem;">
-            {{ isLogin ? labels.AUTH.SIGN_IN : labels.AUTH.SIGN_UP }}
+          <div *ngIf="errorMessage" class="text-danger small mb-3 text-center">{{ errorMessage }}</div>
+
+          <button type="submit" class="btn btn-dark w-100 py-3 rounded-pill fw-bold mb-3 shadow-sm" style="font-size: 1.1rem;" [disabled]="isLoading">
+            <span *ngIf="!isLoading">{{ isLogin ? labels.AUTH.SIGN_IN : labels.AUTH.SIGN_UP }}</span>
+            <span *ngIf="isLoading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
           </button>
         </form>
 
@@ -89,7 +94,15 @@ import { LanguageService } from '../../services/language';
 })
 export class AuthComponent {
   isLogin = true;
+  isLoading = false;
+  errorMessage = '';
+  
+  email = '';
+  password = '';
+  name = '';
+
   private langService = inject(LanguageService);
+  private authService = inject(AuthService);
   get labels() { return this.langService.labels; }
 
   constructor(private router: Router) {}
@@ -97,11 +110,30 @@ export class AuthComponent {
   toggleView(event: Event) {
     event.preventDefault();
     this.isLogin = !this.isLogin;
+    this.errorMessage = '';
   }
 
-  onSubmit(event: Event) {
+  async onSubmit(event: Event) {
     event.preventDefault();
-    // Navigate home after successful submission (mocking auth)
-    this.router.navigate(['/home']);
+    this.errorMessage = '';
+    
+    if (!this.email || !this.password || (!this.isLogin && !this.name)) {
+      this.errorMessage = 'Please fill all fields';
+      return;
+    }
+
+    this.isLoading = true;
+    try {
+      if (this.isLogin) {
+        await this.authService.login({ email: this.email, password: this.password });
+      } else {
+        await this.authService.register({ email: this.email, password: this.password, displayName: this.name });
+      }
+      this.router.navigate(['/home']);
+    } catch (e: any) {
+      this.errorMessage = e.message || 'Authentication failed';
+    } finally {
+      this.isLoading = false;
+    }
   }
 }

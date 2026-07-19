@@ -1,9 +1,10 @@
-import { Component, inject, AfterViewInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
+import { Component, inject, AfterViewInit, ViewChild, ElementRef, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LanguageService } from '../../services/language';
 import { LocationService } from '../../services/location';
 import { UiService } from '../../services/ui';
 import { ApiService } from '../../services/api';
+import { BookmarkService } from '../../services/bookmark';
 
 @Component({
   selector: 'app-home',
@@ -92,19 +93,28 @@ import { ApiService } from '../../services/api';
       <div class="d-flex overflow-auto gap-3 pb-2 mb-4" #highlightScroll data-lenis-prevent="true" style="scrollbar-width: none; -ms-overflow-style: none;">
         <!-- Dynamic Highlight Cards -->
         <div style="min-width: 150px; max-width: 150px;" *ngFor="let place of highlights">
-          <div class="rounded-4 mb-2 bg-secondary" [style.background]="place.photoUrl ? 'url(' + place.photoUrl + ') center/cover' : 'linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)'" style="height: 110px;"></div>
+          <div class="rounded-4 mb-2 position-relative" [style.background]="place.photoUrl ? 'url(' + place.photoUrl + ') center/cover' : 'linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)'" style="height: 110px;">
+             <button class="btn btn-sm btn-light rounded-circle position-absolute shadow-sm" style="top: 8px; right: 8px; width: 28px; height: 28px; padding: 0;" (click)="toggleBookmark(place)">
+                <i class="bi" [ngClass]="isSaved(place) ? 'bi-bookmark-fill text-dark' : 'bi-bookmark text-secondary'" style="font-size: 0.9rem;"></i>
+             </button>
+          </div>
           <h6 class="fw-bold fs-6 mb-1 text-truncate">{{ place.name || 'Nearby Place' }}</h6>
           <p class="small text-secondary mb-0 text-truncate">{{ (place.distance || 0) | number:'1.1-1' }} km • <i class="bi bi-star-fill text-warning"></i> {{ place.rating || 4.5 }} <span class="text-success ms-1" *ngIf="place.isOpen">Open</span><span class="text-danger ms-1" *ngIf="place.isOpen === false">Closed</span></p>
         </div>
 
         <!-- Skeleton Highlight Cards -->
-        <ng-container *ngIf="!highlights || highlights.length === 0">
+        <ng-container *ngIf="isLoadingHighlights">
           <div style="min-width: 150px; max-width: 150px;" *ngFor="let i of [1,2,3]" class="placeholder-glow">
             <div class="rounded-4 mb-2 placeholder w-100" style="height: 110px;"></div>
             <h6 class="fw-bold fs-6 mb-1"><span class="placeholder col-8 rounded"></span></h6>
             <p class="small mb-0"><span class="placeholder col-6 rounded"></span></p>
           </div>
         </ng-container>
+
+        <!-- Empty State -->
+        <div *ngIf="!isLoadingHighlights && (!highlights || highlights.length === 0)" class="text-secondary small d-flex align-items-center justify-content-center w-100" style="height: 110px;">
+          No nearby places found.
+        </div>
       </div>
 
       <!-- Local specialities -->
@@ -121,13 +131,18 @@ import { ApiService } from '../../services/api';
         </div>
         
         <!-- Skeleton Food Cards -->
-        <ng-container *ngIf="!specialties || specialties.length === 0">
+        <ng-container *ngIf="isLoadingSpecialties">
           <div style="min-width: 220px; max-width: 220px;" *ngFor="let i of [1,2]" class="placeholder-glow">
             <div class="rounded-4 mb-2 placeholder w-100" style="height: 130px;"></div>
             <h6 class="fw-bold fs-6 mb-1"><span class="placeholder col-7 rounded"></span></h6>
             <p class="small mb-0"><span class="placeholder col-12 rounded"></span> <span class="placeholder col-8 rounded"></span></p>
           </div>
         </ng-container>
+
+        <!-- Empty State -->
+        <div *ngIf="!isLoadingSpecialties && (!specialties || specialties.length === 0)" class="text-secondary small d-flex align-items-center justify-content-center w-100" style="height: 130px;">
+          No local specialties found here.
+        </div>
       </div>
 
     </div>
@@ -143,6 +158,8 @@ export class HomeComponent implements AfterViewInit, OnDestroy {
   private locationService = inject(LocationService);
   private ui = inject(UiService);
   private apiService = inject(ApiService);
+  private bookmarkService = inject(BookmarkService);
+  private cdr = inject(ChangeDetectorRef);
   
   get labels() { return this.langService.labels; }
   currentRadius = '2 km';
@@ -151,6 +168,8 @@ export class HomeComponent implements AfterViewInit, OnDestroy {
   specialties: any[] = [];
   highlights: any[] = [];
   location: any = null;
+  isLoadingHighlights = true;
+  isLoadingSpecialties = true;
 
   get dynamicGreetingKey(): string {
     const hour = new Date().getHours();
@@ -247,6 +266,8 @@ export class HomeComponent implements AfterViewInit, OnDestroy {
   }
 
   async fetchDynamicData(lat: number, lng: number) {
+    this.isLoadingHighlights = true;
+    this.isLoadingSpecialties = true;
     try {
       this.weather = await this.apiService.get<any>(`/api/v1/weather?latitude=${lat}&longitude=${lng}`);
     } catch (e) {
@@ -255,26 +276,39 @@ export class HomeComponent implements AfterViewInit, OnDestroy {
     
     try {
       const res = await this.apiService.get<any>(`/api/v1/specialties?latitude=${lat}&longitude=${lng}`);
-      if (res && res.documents) {
-        this.specialties = res.documents;
-      }
+      this.specialties = res?.documents || [];
     } catch (e) {
       console.error('Failed to fetch specialties', e);
+      this.specialties = [];
+    } finally {
+      this.isLoadingSpecialties = false;
+      this.cdr.detectChanges();
     }
     
     try {
-      // 2 km = 2000 m
       const radiusMeters = parseInt(this.currentRadius) * 1000;
       const res = await this.apiService.get<any>(`/api/v1/providers/places/nearby?latitude=${lat}&longitude=${lng}&radius=${radiusMeters}`);
-      if (res && res.length) {
-        this.highlights = res;
+      this.highlights = res || [];
+      if (this.highlights.length > 0) {
         this.location = {
-          name: res[0]?.vicinity?.split(',')[0] || 'Your Location',
-          city: res[0]?.vicinity || 'Unknown City'
+          name: this.highlights[0]?.vicinity?.split(',')[0] || 'Your Location',
+          city: this.highlights[0]?.vicinity || 'Unknown City'
         };
       }
     } catch (e) {
       console.error('Failed to fetch highlights', e);
+      this.highlights = [];
+    } finally {
+      this.isLoadingHighlights = false;
+      this.cdr.detectChanges();
     }
+  }
+
+  isSaved(place: any): boolean {
+    return this.bookmarkService.isBookmarked(place.placeId);
+  }
+
+  toggleBookmark(place: any) {
+    this.bookmarkService.toggleBookmark(place);
   }
 }
