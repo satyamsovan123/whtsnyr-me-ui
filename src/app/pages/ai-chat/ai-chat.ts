@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { LABELS } from '../../constants/labels';
+import { LanguageService } from '../../services/language';
 
 @Component({
   selector: 'app-ai-chat',
@@ -81,5 +81,6 @@ import { LABELS } from '../../constants/labels';
   `]
 })
 export class AiChatComponent {
-  public labels = LABELS;
+  private langService = inject(LanguageService);
+  get labels() { return this.langService.labels; }
 }

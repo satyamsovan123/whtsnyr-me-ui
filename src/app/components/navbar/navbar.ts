@@ -2,7 +2,7 @@ import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { SidebarService } from '../../services/sidebar';
-import { LABELS } from '../../constants/labels';
+import { LanguageService } from '../../services/language';
 
 @Component({
   selector: 'app-navbar',
@@ -36,7 +36,7 @@ import { LABELS } from '../../constants/labels';
       <a routerLink="/about" class="sidebar-header p-4 d-flex align-items-center text-decoration-none text-dark" [class.justify-content-center]="sidebarService.isCollapsed()" style="cursor: pointer;">
         <div *ngIf="!sidebarService.isCollapsed()" style="white-space: nowrap; overflow: hidden; animation: fadeIn 0.3s;">
           <h3 class="fw-bold mb-0">{{ labels.ABOUT.TITLE }}</h3>
-          <p class="text-secondary small mb-0">{{ labels.ABOUT.HERO_TEXT_1 }} {{ labels.ABOUT.HERO_TEXT_2 }} {{ labels.ABOUT.HERO_TEXT_3 }}</p>
+          <p class="text-secondary small mb-0">{{ labels.ABOUT.HERO_TEXT[0] }} {{ labels.ABOUT.HERO_TEXT[1] }} {{ labels.ABOUT.HERO_TEXT[2] }}</p>
         </div>
         <div *ngIf="sidebarService.isCollapsed()" style="animation: fadeIn 0.3s;">
           <h3 class="fw-bold mb-0 fs-4">w</h3>
@@ -165,5 +165,6 @@ import { LABELS } from '../../constants/labels';
 })
 export class NavbarComponent {
   public sidebarService = inject(SidebarService);
-  public labels = LABELS;
+  private langService = inject(LanguageService);
+  get labels() { return this.langService.labels; }
 }

@@ -1,9 +1,9 @@
-import { Component, AfterViewInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
+import { Component, inject, AfterViewInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { LABELS } from '../../constants/labels';
+import { LanguageService } from '../../services/language';
 import { environment } from '../../../environments/environment';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -47,14 +47,14 @@ gsap.registerPlugin(ScrollTrigger);
             <!-- Text Content (Left) -->
             <div class="col-md-7 col-lg-6 mb-5 mb-md-0 apple-text-1 pe-md-5 ms-md-4 ms-lg-5 px-4 px-md-0" style="opacity: 0; transform: translateX(-30px); position: relative;">
               <h2 class="fw-bold tracking-tighter mb-4" style="font-size: clamp(2.5rem, 5vw, 3.5rem); line-height: 1.1; color: #1d1d1f;">
-                {{ labels.ABOUT.SECTION_1_TITLE }}<br>
-                <span style="color: #34c759;">{{ labels.ABOUT.SECTION_1_SUBTITLE }}</span>
+                {{ labels.ABOUT.SECTIONS[0].TITLE }}<br>
+                <span style="color: #34c759;">{{ labels.ABOUT.SECTIONS[0].SUBTITLE }}</span>
               </h2>
               <p class="fw-semibold tracking-tight m-0 mb-4" style="font-size: 1.25rem; line-height: 1.5; color: #86868b;">
-                {{ labels.ABOUT.SECTION_1_P1 }}
+                {{ labels.ABOUT.SECTIONS[0].P1 }}
               </p>
               <p class="fw-semibold tracking-tight m-0" style="font-size: 1.25rem; line-height: 1.5; color: #86868b;">
-                {{ labels.ABOUT.SECTION_1_P2_1 }}<span style="color: #1d1d1f;">{{ labels.ABOUT.SECTION_1_P2_BOLD }}</span>{{ labels.ABOUT.SECTION_1_P2_2 }}
+                {{ labels.ABOUT.SECTIONS[0].P2_1 }}<span style="color: #1d1d1f;">{{ labels.ABOUT.SECTIONS[0].P2_BOLD }}</span>{{ labels.ABOUT.SECTIONS[0].P2_2 }}
               </p>
             </div>
             
@@ -141,13 +141,13 @@ gsap.registerPlugin(ScrollTrigger);
             <!-- Right Side: Text Content -->
             <div class="col-md-6 order-1 order-md-2 apple-text-2 ps-md-4 ps-lg-5 px-4 px-md-0" style="opacity: 0; transform: translateX(30px);">
               <h2 class="fw-bold tracking-tight mb-4" style="font-size: 3rem; line-height: 1.1; color: #1d1d1f;">
-                {{ labels.ABOUT.SECTION_2_TITLE }}<span style="color: #34C759;">{{ labels.ABOUT.SECTION_2_TITLE_HIGHLIGHT }}</span>
+                {{ labels.ABOUT.SECTIONS[1].TITLE }}<span style="color: #34C759;">{{ labels.ABOUT.SECTIONS[1].TITLE_HIGHLIGHT }}</span>
               </h2>
               <p class="fw-semibold tracking-tight text-secondary mb-4" style="font-size: 1.25rem; line-height: 1.5;">
-                {{ labels.ABOUT.SECTION_2_P1 }}
+                {{ labels.ABOUT.SECTIONS[1].P1 }}
               </p>
               <p class="fw-semibold tracking-tight m-0" style="font-size: 1.25rem; line-height: 1.5; color: #86868b;">
-                <span style="color: #1d1d1f;">{{ labels.ABOUT.SECTION_2_P2_BOLD }}</span>{{ labels.ABOUT.SECTION_2_P2 }}
+                <span style="color: #1d1d1f;">{{ labels.ABOUT.SECTIONS[1].P2_BOLD }}</span>{{ labels.ABOUT.SECTIONS[1].P2 }}
               </p>
             </div>
 
@@ -219,7 +219,8 @@ export class AboutComponent implements AfterViewInit, OnDestroy {
   @ViewChild('whySection') whySection!: ElementRef;
 
   private ctx!: gsap.Context;
-  public labels = LABELS;
+  private langService = inject(LanguageService);
+  get labels() { return this.langService.labels; }
   public contactEmail = environment.contactEmail;
 
   ngAfterViewInit() {
@@ -228,7 +229,7 @@ export class AboutComponent implements AfterViewInit, OnDestroy {
       // Character Split for Hero
       const hero = document.querySelector('.hero-heading');
       if (hero) {
-        const text = `${LABELS.ABOUT.HERO_TEXT_1}<br>${LABELS.ABOUT.HERO_TEXT_2}<br>${LABELS.ABOUT.HERO_TEXT_3}`;
+        const text = `${this.labels.ABOUT.HERO_TEXT[0]}<br>${this.labels.ABOUT.HERO_TEXT[1]}<br>${this.labels.ABOUT.HERO_TEXT[2]}`;
         const lines = text.split('<br>');
         hero.innerHTML = lines.map(line => {
             return Array.from(line).map(ch => 

@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { LABELS } from '../../constants/labels';
+import { LanguageService } from '../../services/language';
+import { EXPLORE_CATEGORIES, PREFERRED_RADIUSES } from '../../constants/common';
 
 @Component({
   selector: 'app-explore',
@@ -19,14 +20,9 @@ import { LABELS } from '../../constants/labels';
           
           <!-- Category Dropdown -->
           <div class="position-relative d-inline-block">
-            <button class="btn btn-outline border-light rounded-pill text-dark fw-medium btn-sm px-3 shadow-sm bg-white text-nowrap">{{ currentCategory }} <i class="bi bi-chevron-down ms-1"></i></button>
+            <button class="btn btn-outline border-light rounded-pill text-dark fw-medium btn-sm px-3 shadow-sm bg-white text-nowrap">{{ currentCategoryName }} <i class="bi bi-chevron-down ms-1"></i></button>
             <select class="position-absolute top-0 start-0 w-100 h-100 opacity-0" style="cursor: pointer;" (change)="currentCategory = $any($event.target).value">
-              <option value="All Categories" [selected]="currentCategory === 'All Categories'">All Categories</option>
-              <option value="Food & Dining" [selected]="currentCategory === 'Food & Dining'">Food & Dining</option>
-              <option value="Nature & Parks" [selected]="currentCategory === 'Nature & Parks'">Nature & Parks</option>
-              <option value="Shopping" [selected]="currentCategory === 'Shopping'">Shopping</option>
-              <option value="Arts & Culture" [selected]="currentCategory === 'Arts & Culture'">Arts & Culture</option>
-              <option value="Entertainment" [selected]="currentCategory === 'Entertainment'">Entertainment</option>
+              <option *ngFor="let cat of exploreCategories" [value]="cat.value" [selected]="currentCategory === cat.value">{{ labels.EXPLORE[cat.labelKey] }}</option>
             </select>
           </div>
 
@@ -34,10 +30,7 @@ import { LABELS } from '../../constants/labels';
           <div class="position-relative d-inline-block">
             <button class="btn btn-outline border-light rounded-pill text-dark fw-medium btn-sm px-3 shadow-sm bg-white text-nowrap">{{ currentRadius }} <i class="bi bi-chevron-down ms-1"></i></button>
             <select class="position-absolute top-0 start-0 w-100 h-100 opacity-0" style="cursor: pointer;" (change)="currentRadius = $any($event.target).value">
-              <option value="1 km" [selected]="currentRadius === '1 km'">1 km</option>
-              <option value="2 km" [selected]="currentRadius === '2 km'">2 km</option>
-              <option value="5 km" [selected]="currentRadius === '5 km'">5 km</option>
-              <option value="10 km" [selected]="currentRadius === '10 km'">10 km</option>
+              <option *ngFor="let r of preferredRadiuses" [value]="r" [selected]="currentRadius === r">{{ r }}</option>
             </select>
           </div>
 
@@ -125,8 +118,18 @@ import { LABELS } from '../../constants/labels';
   `]
 })
 export class ExploreComponent {
-  public labels = LABELS;
+  private langService = inject(LanguageService);
+  get labels() { return this.langService.labels; }
+
+  public exploreCategories = EXPLORE_CATEGORIES;
+  public preferredRadiuses = PREFERRED_RADIUSES;
+
   currentCategory = 'All Categories';
   currentRadius = '2 km';
   isModalOpen = false;
+
+  get currentCategoryName(): string {
+    const c = this.exploreCategories.find(x => x.value === this.currentCategory);
+    return c ? this.labels.EXPLORE[c.labelKey] : this.currentCategory;
+  }
 }

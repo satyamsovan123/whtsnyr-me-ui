@@ -1,7 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { LABELS } from '../../constants/labels';
+import { LanguageService } from '../../services/language';
 
 @Component({
   selector: 'app-privacy-policy',
@@ -15,24 +15,24 @@ import { LABELS } from '../../constants/labels';
         </div>
 
           <div class="policy-section">
-            <h2 class="h5 fw-bold mb-3">{{ labels.PRIVACY.SECTION_1_TITLE }}</h2>
+            <h2 class="h5 fw-bold mb-3">{{ labels.PRIVACY.SECTIONS[0].TITLE }}</h2>
             <p class="text-secondary" style="line-height: 1.7;">
-            {{ labels.PRIVACY.SECTION_1_TEXT }}
+            {{ labels.PRIVACY.SECTIONS[0].TEXT }}
             </p>
 
-          <h3 class="fw-bold fs-4 mb-3">{{ labels.PRIVACY.SECTION_2_TITLE }}</h3>
+          <h3 class="fw-bold fs-4 mb-3">{{ labels.PRIVACY.SECTIONS[1].TITLE }}</h3>
           <p class="text-secondary mb-4" style="line-height: 1.7;">
-            {{ labels.PRIVACY.SECTION_2_TEXT }}
+            {{ labels.PRIVACY.SECTIONS[1].TEXT }}
           </p>
 
-          <h3 class="fw-bold fs-4 mb-3">{{ labels.PRIVACY.SECTION_3_TITLE }}</h3>
+          <h3 class="fw-bold fs-4 mb-3">{{ labels.PRIVACY.SECTIONS[2].TITLE }}</h3>
           <p class="text-secondary mb-4" style="line-height: 1.7;">
-            {{ labels.PRIVACY.SECTION_3_TEXT }}
+            {{ labels.PRIVACY.SECTIONS[2].TEXT }}
           </p>
 
-          <h3 class="fw-bold fs-4 mb-3">{{ labels.PRIVACY.SECTION_4_TITLE }}</h3>
+          <h3 class="fw-bold fs-4 mb-3">{{ labels.PRIVACY.SECTIONS[3].TITLE }}</h3>
           <p class="text-secondary mb-5" style="line-height: 1.7;">
-            {{ labels.PRIVACY.SECTION_4_TEXT }}
+            {{ labels.PRIVACY.SECTIONS[3].TEXT }}
           </p>
         </div>
     </div>
@@ -46,5 +46,6 @@ import { LABELS } from '../../constants/labels';
   `]
 })
 export class PrivacyPolicyComponent {
-  public labels = LABELS;
+  private langService = inject(LanguageService);
+  get labels() { return this.langService.labels; }
 }

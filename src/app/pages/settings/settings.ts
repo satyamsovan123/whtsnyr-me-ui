@@ -2,7 +2,8 @@ import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { ThemeService, Theme } from '../../services/theme';
-import { LABELS } from '../../constants/labels';
+import { LanguageService } from '../../services/language';
+import { SUPPORTED_LANGUAGES, PREFERRED_RADIUSES, TEMPERATURE_UNITS, THEMES, LOCATION_OPTIONS } from '../../constants/common';
 
 @Component({
   selector: 'app-settings',
@@ -30,10 +31,7 @@ import { LABELS } from '../../constants/labels';
           <div class="position-relative d-inline-block">
             <span class="text-secondary small d-flex align-items-center">{{ currentRadius }} <i class="bi bi-chevron-right ms-2 opacity-50"></i></span>
             <select class="position-absolute top-0 start-0 w-100 h-100 opacity-0" style="cursor: pointer;" (change)="currentRadius = $any($event.target).value">
-              <option value="1 km" [selected]="currentRadius === '1 km'">1 km</option>
-              <option value="2 km" [selected]="currentRadius === '2 km'">2 km</option>
-              <option value="5 km" [selected]="currentRadius === '5 km'">5 km</option>
-              <option value="10 km" [selected]="currentRadius === '10 km'">10 km</option>
+              <option *ngFor="let r of preferredRadiuses" [value]="r" [selected]="currentRadius === r">{{ r }}</option>
             </select>
           </div>
         </div>
@@ -43,8 +41,7 @@ import { LABELS } from '../../constants/labels';
           <div class="position-relative d-inline-block">
             <span class="text-secondary small d-flex align-items-center">{{ currentTemp }} <i class="bi bi-chevron-right ms-2 opacity-50"></i></span>
             <select class="position-absolute top-0 start-0 w-100 h-100 opacity-0" style="cursor: pointer;" (change)="currentTemp = $any($event.target).value">
-              <option value="°C" [selected]="currentTemp === '°C'">Celsius (°C)</option>
-              <option value="°F" [selected]="currentTemp === '°F'">Fahrenheit (°F)</option>
+              <option *ngFor="let t of temperatureUnits" [value]="t.value" [selected]="currentTemp === t.value">{{ labels.SETTINGS[t.labelKey] }}</option>
             </select>
           </div>
         </div>
@@ -52,11 +49,9 @@ import { LABELS } from '../../constants/labels';
         <div class="list-group-item border-0 px-4 py-3 d-flex justify-content-between align-items-center bg-white">
           <span class="text-dark">{{ labels.SETTINGS.THEME }}</span>
           <div class="position-relative d-inline-block">
-            <span class="text-secondary small d-flex align-items-center text-capitalize">{{ currentTheme }} <i class="bi bi-chevron-right ms-2 opacity-50"></i></span>
+            <span class="text-secondary small d-flex align-items-center text-capitalize">{{ currentThemeName }} <i class="bi bi-chevron-right ms-2 opacity-50"></i></span>
             <select class="position-absolute top-0 start-0 w-100 h-100 opacity-0" style="cursor: pointer;" (change)="onThemeChange($event)">
-              <option value="light" [selected]="currentTheme === 'light'">Light</option>
-              <option value="dark" [selected]="currentTheme === 'dark'">Dark</option>
-              <option value="system" [selected]="currentTheme === 'system'">System</option>
+              <option *ngFor="let theme of themes" [value]="theme.value" [selected]="currentTheme === theme.value">{{ labels.SETTINGS[theme.labelKey] }}</option>
             </select>
           </div>
         </div>
@@ -64,11 +59,9 @@ import { LABELS } from '../../constants/labels';
         <div class="list-group-item border-0 px-4 py-3 d-flex justify-content-between align-items-center bg-white">
           <span class="text-dark">{{ labels.SETTINGS.LANGUAGE }}</span>
           <div class="position-relative d-inline-block">
-            <span class="text-secondary small d-flex align-items-center">{{ currentLang }} <i class="bi bi-chevron-right ms-2 opacity-50"></i></span>
-            <select class="position-absolute top-0 start-0 w-100 h-100 opacity-0" style="cursor: pointer;" (change)="currentLang = $any($event.target).value">
-              <option value="English" [selected]="currentLang === 'English'">English</option>
-              <option value="Hindi" [selected]="currentLang === 'Hindi'">Hindi</option>
-              <option value="Odia" [selected]="currentLang === 'Odia'">Odia</option>
+            <span class="text-secondary small d-flex align-items-center">{{ currentLangName }} <i class="bi bi-chevron-right ms-2 opacity-50"></i></span>
+            <select class="position-absolute top-0 start-0 w-100 h-100 opacity-0" style="cursor: pointer;" (change)="onLanguageChange($event)">
+              <option *ngFor="let lang of supportedLanguages" [value]="lang.code" [selected]="currentLangCode === lang.code">{{ lang.name }}</option>
             </select>
           </div>
         </div>
@@ -78,11 +71,9 @@ import { LABELS } from '../../constants/labels';
         <div class="list-group-item border-0 px-4 py-3 d-flex justify-content-between align-items-center bg-white">
           <span class="text-dark">{{ labels.SETTINGS.LOCATION }}</span>
           <div class="position-relative d-inline-block">
-            <span class="text-secondary small d-flex align-items-center">{{ currentLocation }} <i class="bi bi-chevron-right ms-2 opacity-50"></i></span>
+            <span class="text-secondary small d-flex align-items-center">{{ currentLocationName }} <i class="bi bi-chevron-right ms-2 opacity-50"></i></span>
             <select class="position-absolute top-0 start-0 w-100 h-100 opacity-0" style="cursor: pointer;" (change)="currentLocation = $any($event.target).value">
-              <option value="Always" [selected]="currentLocation === 'Always'">Always</option>
-              <option value="While using" [selected]="currentLocation === 'While using'">While using the app</option>
-              <option value="Never" [selected]="currentLocation === 'Never'">Never</option>
+              <option *ngFor="let loc of locationOptions" [value]="loc.value" [selected]="currentLocation === loc.value">{{ labels.SETTINGS[loc.labelKey] }}</option>
             </select>
           </div>
         </div>
@@ -103,11 +94,11 @@ import { LABELS } from '../../constants/labels';
       <!-- Settings Footer -->
       <div class="mt-auto border-top border-light" style="padding: 60px 24px 100px; margin-top: 40px !important;">
         <div class="legal-text mb-4">
-          {{ labels.SETTINGS.LEGAL_DISCLAIMER_1 }}
+          {{ labels.SETTINGS.LEGAL_DISCLAIMERS[0] }}
           <br><br>
-          {{ labels.SETTINGS.LEGAL_DISCLAIMER_2 }}
+          {{ labels.SETTINGS.LEGAL_DISCLAIMERS[1] }}
           <br><br>
-          {{ labels.SETTINGS.LEGAL_DISCLAIMER_3 }}
+          {{ labels.SETTINGS.LEGAL_DISCLAIMERS[2] }}
         </div>
 
         <div class="d-flex flex-wrap gap-3 mb-4 mt-5">
@@ -141,20 +132,50 @@ import { LABELS } from '../../constants/labels';
 })
 export class SettingsComponent {
   private themeService = inject(ThemeService);
-  public labels = LABELS;
+  private langService = inject(LanguageService);
+  get labels() { return this.langService.labels; }
+
+  public supportedLanguages = SUPPORTED_LANGUAGES;
+  public preferredRadiuses = PREFERRED_RADIUSES;
+  public temperatureUnits = TEMPERATURE_UNITS;
+  public themes = THEMES;
+  public locationOptions = LOCATION_OPTIONS;
 
   // Mock State
   currentRadius = '2 km';
   currentTemp = '°C';
-  currentLang = 'English';
   currentLocation = 'Always';
   
   get currentTheme(): string {
     return this.themeService.getTheme();
   }
 
+  get currentThemeName(): string {
+    const t = this.themes.find(x => x.value === this.currentTheme);
+    return t ? this.labels.SETTINGS[t.labelKey] : this.currentTheme;
+  }
+
+  get currentLocationName(): string {
+    const l = this.locationOptions.find(x => x.value === this.currentLocation);
+    return l ? this.labels.SETTINGS[l.labelKey] : this.currentLocation;
+  }
+
+  get currentLangCode(): string {
+    return this.langService.currentLang;
+  }
+  
+  get currentLangName(): string {
+    const lang = this.supportedLanguages.find(l => l.code === this.currentLangCode);
+    return lang ? lang.name : 'English';
+  }
+
   onThemeChange(event: Event) {
     const val = (event.target as HTMLSelectElement).value;
     this.themeService.setTheme(val as Theme);
+  }
+
+  onLanguageChange(event: Event) {
+    const val = (event.target as HTMLSelectElement).value;
+    this.langService.setLanguage(val);
   }
 }
