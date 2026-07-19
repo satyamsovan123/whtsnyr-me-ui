@@ -34,19 +34,16 @@ import { LanguageService } from '../../services/language';
 
         <!-- Form -->
         <form (ngSubmit)="onSubmit($event)">
-          <div class="form-floating mb-3" *ngIf="!isLogin" style="animation: fadeIn 0.4s ease-out;">
-            <input type="text" class="form-control rounded-4 border-light bg-light" id="nameInput" [placeholder]="labels.AUTH.FULL_NAME">
-            <label for="nameInput" class="text-secondary">{{ labels.AUTH.FULL_NAME }}</label>
+          <div class="mb-3" *ngIf="!isLogin" style="animation: fadeIn 0.4s ease-out;">
+            <input type="text" class="form-control bg-light" id="nameInput" [placeholder]="labels.AUTH.FULL_NAME">
           </div>
           
-          <div class="form-floating mb-3">
-            <input type="email" class="form-control rounded-4 border-light bg-light" id="emailInput" [placeholder]="labels.AUTH.EMAIL_ADDRESS">
-            <label for="emailInput" class="text-secondary">{{ labels.AUTH.EMAIL_ADDRESS }}</label>
+          <div class="mb-3">
+            <input type="email" class="form-control bg-light" id="emailInput" [placeholder]="labels.AUTH.EMAIL_ADDRESS">
           </div>
           
-          <div class="form-floating mb-4">
-            <input type="password" class="form-control rounded-4 border-light bg-light" id="passwordInput" [placeholder]="labels.AUTH.PASSWORD">
-            <label for="passwordInput" class="text-secondary">{{ labels.AUTH.PASSWORD }}</label>
+          <div class="mb-4">
+            <input type="password" class="form-control bg-light" id="passwordInput" [placeholder]="labels.AUTH.PASSWORD">
           </div>
 
           <button type="submit" class="btn btn-dark w-100 py-3 rounded-pill fw-bold mb-3 shadow-sm" style="font-size: 1.1rem;">
@@ -77,11 +74,8 @@ import { LanguageService } from '../../services/language';
     }
     .form-control:focus {
       box-shadow: none;
-      border-color: #212529;
-      background-color: #fff !important;
-    }
-    .form-floating > label {
-      padding-left: 1rem;
+      border-color: var(--text-primary);
+      background-color: var(--card-bg) !important;
     }
     .form-control {
       padding-left: 1rem;

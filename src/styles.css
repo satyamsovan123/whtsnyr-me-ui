@@ -158,7 +158,7 @@ body {
   margin-bottom: 1.25rem !important;
 }
 
-.list-group-item, .restaurant-card, .tip-card, .apple-inner-card {
+.restaurant-card, .tip-card, .apple-inner-card {
   border-radius: 16px !important;
   padding: 1rem !important;
   margin-bottom: 0.75rem !important;
@@ -167,22 +167,34 @@ body {
   transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), background-color 0.25s ease !important;
 }
 
-[data-theme="dark"] .list-group-item, 
 [data-theme="dark"] .restaurant-card, 
 [data-theme="dark"] .tip-card, 
 [data-theme="dark"] .apple-inner-card {
   background-color: rgba(255, 255, 255, 0.05) !important;
 }
 
-.list-group-item:hover, .restaurant-card:hover, .tip-card:hover, .apple-inner-card:hover {
+.restaurant-card:hover, .tip-card:hover, .apple-inner-card:hover {
   transform: scale(1.02) !important;
   background-color: rgba(0, 0, 0, 0.04) !important;
 }
 
-[data-theme="dark"] .list-group-item:hover, 
+.list-group-item {
+  border-radius: 16px !important;
+  border: none !important;
+  transition: background-color 0.2s ease !important;
+}
+
+.list-group-item:hover {
+  background-color: rgba(0, 0, 0, 0.04) !important;
+}
+
 [data-theme="dark"] .restaurant-card:hover, 
 [data-theme="dark"] .tip-card:hover, 
 [data-theme="dark"] .apple-inner-card:hover {
+  background-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+[data-theme="dark"] .list-group-item:hover {
   background-color: rgba(255, 255, 255, 0.08) !important;
 }
 
