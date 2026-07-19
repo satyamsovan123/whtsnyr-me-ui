@@ -1,0 +1,15 @@
+{
+  "name": "whtsnyr-me-ui",
+  "short_name": "whtsnyr-me-ui",
+  "display": "standalone",
+  "scope": "./",
+  "start_url": "./",
+  "icons": [
+    {
+      "src": "logo-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

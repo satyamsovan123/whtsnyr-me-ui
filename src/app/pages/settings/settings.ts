@@ -14,8 +14,8 @@ import { SUPPORTED_LANGUAGES, PREFERRED_RADIUSES, TEMPERATURE_UNITS, THEMES, LOC
       
       <!-- Profile Header -->
       <div class="p-4 d-flex align-items-center border-bottom border-light">
-        <div class="rounded-circle bg-secondary d-flex align-items-center justify-content-center me-3" style="width: 60px; height: 60px;">
-          <img src="https://ui-avatars.com/api/?name=Arjun+Mehta&background=random" class="w-100 h-100 rounded-circle" alt="Arjun">
+        <div class="rounded-circle bg-light border d-flex align-items-center justify-content-center me-3" style="width: 60px; height: 60px; border-color: #dee2e6 !important;">
+          <span class="fs-4 fw-medium text-secondary">AM</span>
         </div>
         <div>
           <h2 class="fw-bold fs-5 mb-0 text-dark">Arjun Mehta</h2>
@@ -119,7 +119,7 @@ import { SUPPORTED_LANGUAGES, PREFERRED_RADIUSES, TEMPERATURE_UNITS, THEMES, LOC
   styles: [`
     :host {
       display: block;
-      height: 100vh;
+      min-height: 100vh;
       background-color: var(--bg-color);
     }
     .max-w-desktop {

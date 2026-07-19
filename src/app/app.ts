@@ -1,5 +1,6 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, AfterViewInit } from '@angular/core';
 import { RouterOutlet, Router, NavigationEnd } from '@angular/router';
+import { DOCUMENT } from '@angular/common';
 import { filter } from 'rxjs/operators';
 import { LoaderComponent } from './components/loader/loader';
 import { ToastComponent } from './components/toast/toast';
@@ -8,6 +9,9 @@ import { ThemeService } from './services/theme';
 import { SidebarService } from './services/sidebar';
 import { NavbarComponent } from './components/navbar/navbar';
 
+// Declare Lenis since it is loaded via CDN
+declare const Lenis: any;
+
 @Component({
   selector: 'app-root',
   standalone: true,
@@ -15,17 +19,17 @@ import { NavbarComponent } from './components/navbar/navbar';
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
-export class App implements OnInit {
+export class App implements OnInit, AfterViewInit {
   private router = inject(Router);
   private seo = inject(SeoService);
   private theme = inject(ThemeService); // Init theme on load
   public sidebarService = inject(SidebarService);
+  private document = inject(DOCUMENT);
 
   ngOnInit() {
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
     ).subscribe(() => {
-      // Find the current route's data
       let route = this.router.routerState.root;
       while (route.firstChild) {
         route = route.firstChild;
@@ -37,5 +41,29 @@ export class App implements OnInit {
         }
       });
     });
+  }
+
+  ngAfterViewInit() {
+    // Initialize Lenis on the native window
+    setTimeout(() => {
+      if (typeof Lenis !== 'undefined') {
+        const lenis = new Lenis({
+          duration: 1.2,
+          easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+          direction: 'vertical',
+          gestureDirection: 'vertical',
+          smooth: true,
+          smoothTouch: false,
+          touchMultiplier: 2,
+        });
+
+        function raf(time: number) {
+          lenis.raf(time);
+          requestAnimationFrame(raf);
+        }
+
+        requestAnimationFrame(raf);
+      }
+    }, 100);
   }
 }

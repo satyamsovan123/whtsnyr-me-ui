@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, AfterViewInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LanguageService } from '../../services/language';
 
@@ -51,7 +51,6 @@ import { LanguageService } from '../../services/language';
         </div>
       </div>
 
-      <!-- Nearby highlights -->
       <div class="d-flex justify-content-between align-items-center mb-3 mt-4">
         <h5 class="fw-bold mb-0">{{ labels.HOME.NEARBY_HIGHLIGHTS }}</h5>
         <div class="position-relative d-inline-block">
@@ -65,7 +64,7 @@ import { LanguageService } from '../../services/language';
         </div>
       </div>
       
-      <div class="d-flex overflow-auto no-scrollbar gap-3 pb-2 mb-4">
+      <div class="d-flex overflow-auto gap-3 pb-2 mb-4" #highlightScroll data-lenis-prevent="true" style="scrollbar-width: none; -ms-overflow-style: none;">
         <!-- Highlight Card 1 -->
         <div style="min-width: 150px;">
           <div class="rounded-4 mb-2 bg-secondary" style="height: 110px; background-image: url('https://images.unsplash.com/photo-1524492412937-b28074a5d7da?q=80&w=400&auto=format&fit=crop'); background-size: cover;"></div>
@@ -93,7 +92,7 @@ import { LanguageService } from '../../services/language';
         <h5 class="fw-bold mb-0">{{ labels.HOME.LOCAL_SPECIALITIES }}</h5>
       </div>
 
-      <div class="d-flex overflow-auto no-scrollbar gap-3 pb-2 mb-4">
+      <div class="d-flex overflow-auto gap-3 pb-2 mb-4" #foodScroll data-lenis-prevent="true" style="scrollbar-width: none; -ms-overflow-style: none;">
         <!-- Food Card 1 -->
         <div style="min-width: 220px; max-width: 220px;">
           <div class="rounded-4 mb-2 bg-secondary" style="height: 130px; background-image: url('https://images.unsplash.com/photo-1606491956689-2ea866880c84?q=80&w=400&auto=format&fit=crop'); background-size: cover;"></div>
@@ -117,17 +116,51 @@ import { LanguageService } from '../../services/language';
     }
   `]
 })
-export class HomeComponent {
+export class HomeComponent implements AfterViewInit, OnDestroy {
   private langService = inject(LanguageService);
   get labels() { return this.langService.labels; }
   currentRadius = '2 km';
+
+  @ViewChild('highlightScroll') highlightScroll!: ElementRef<HTMLElement>;
+  @ViewChild('foodScroll') foodScroll!: ElementRef<HTMLElement>;
+  
+  private wheelHandler = (event: WheelEvent) => {
+    const container = event.currentTarget as HTMLElement;
+    if (event.deltaY !== 0 && event.deltaX === 0) {
+      const isAtLeft = container.scrollLeft === 0;
+      const isAtRight = container.scrollLeft + container.clientWidth >= container.scrollWidth - 1;
+
+      if (event.deltaY < 0 && isAtLeft) return;
+      if (event.deltaY > 0 && isAtRight) return;
+
+      event.preventDefault();
+      container.scrollBy({ left: event.deltaY > 0 ? 250 : -250, behavior: 'smooth' });
+    }
+  };
+
+  ngAfterViewInit() {
+    if (this.highlightScroll?.nativeElement) {
+      this.highlightScroll.nativeElement.addEventListener('wheel', this.wheelHandler, { passive: false });
+    }
+    if (this.foodScroll?.nativeElement) {
+      this.foodScroll.nativeElement.addEventListener('wheel', this.wheelHandler, { passive: false });
+    }
+  }
+
+  ngOnDestroy() {
+    if (this.highlightScroll?.nativeElement) {
+      this.highlightScroll.nativeElement.removeEventListener('wheel', this.wheelHandler);
+    }
+    if (this.foodScroll?.nativeElement) {
+      this.foodScroll.nativeElement.removeEventListener('wheel', this.wheelHandler);
+    }
+  }
 
   requestLocation() {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
           console.log('Location access granted:', position.coords.latitude, position.coords.longitude);
-          // TODO: Reverse geocode to update the "Bandra West" title dynamically
           alert('Location updated successfully!');
         },
         (error) => {

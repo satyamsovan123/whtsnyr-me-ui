@@ -8,7 +8,7 @@ import { EXPLORE_CATEGORIES, PREFERRED_RADIUSES } from '../../constants/common';
   standalone: true,
   imports: [CommonModule],
   template: `
-    <div class="page-container d-flex flex-column h-100 max-w-desktop mx-auto bg-white fade-in">
+    <div class="page-container d-flex flex-column flex-grow-1 max-w-desktop mx-auto bg-white fade-in w-100">
       
       <!-- Top Search & Filters -->
       <div class="pt-3 px-4 bg-white z-1">
@@ -79,7 +79,7 @@ import { EXPLORE_CATEGORIES, PREFERRED_RADIUSES } from '../../constants/common';
               <p class="small text-secondary mb-1">1.1 km • <i class="bi bi-star-fill text-warning"></i> 4.6 <span class="text-success ms-1">Open</span></p>
               <p class="small text-tertiary mb-0" style="font-size: 0.8rem;">Historic • Photography</p>
             </div>
-            <i class="bi bi-bookmark text-secondary fs-5" style="cursor: pointer;"></i>
+            <i class="bi fs-5" style="cursor: pointer;" [ngClass]="isBookmarked1 ? 'bi-bookmark-fill text-dark' : 'bi-bookmark text-secondary'" (click)="isBookmarked1 = !isBookmarked1"></i>
           </div>
 
           <!-- Item 2 -->
@@ -90,7 +90,7 @@ import { EXPLORE_CATEGORIES, PREFERRED_RADIUSES } from '../../constants/common';
               <p class="small text-secondary mb-1">1.3 km • <i class="bi bi-star-fill text-warning"></i> 4.7 <span class="text-success ms-1">Open</span></p>
               <p class="small text-tertiary mb-0" style="font-size: 0.8rem;">Architecture • Spiritual</p>
             </div>
-            <i class="bi bi-bookmark text-secondary fs-5" style="cursor: pointer;"></i>
+            <i class="bi fs-5" style="cursor: pointer;" [ngClass]="isBookmarked2 ? 'bi-bookmark-fill text-dark' : 'bi-bookmark text-secondary'" (click)="isBookmarked2 = !isBookmarked2"></i>
           </div>
 
           <!-- Item 3 -->
@@ -101,7 +101,7 @@ import { EXPLORE_CATEGORIES, PREFERRED_RADIUSES } from '../../constants/common';
               <p class="small text-secondary mb-1">1.6 km • <i class="bi bi-star-fill text-warning"></i> 4.5 <span class="text-success ms-1">Open</span></p>
               <p class="small text-tertiary mb-0" style="font-size: 0.8rem;">Nature • Walking</p>
             </div>
-            <i class="bi bi-bookmark text-secondary fs-5" style="cursor: pointer;"></i>
+            <i class="bi fs-5" style="cursor: pointer;" [ngClass]="isBookmarked3 ? 'bi-bookmark-fill text-dark' : 'bi-bookmark text-secondary'" (click)="isBookmarked3 = !isBookmarked3"></i>
           </div>
         </div>
       </div>
@@ -109,8 +109,9 @@ import { EXPLORE_CATEGORIES, PREFERRED_RADIUSES } from '../../constants/common';
   `,
   styles: [`
     :host {
-      display: block;
-      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
     }
     .max-w-desktop {
       max-width: 800px;
@@ -127,6 +128,10 @@ export class ExploreComponent {
   currentCategory = 'All Categories';
   currentRadius = '2 km';
   isModalOpen = false;
+
+  isBookmarked1 = false;
+  isBookmarked2 = true;
+  isBookmarked3 = false;
 
   get currentCategoryName(): string {
     const c = this.exploreCategories.find(x => x.value === this.currentCategory);

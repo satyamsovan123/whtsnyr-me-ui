@@ -1,8 +1,7 @@
-<div class="d-flex w-100" style="height: 100vh; height: 100dvh; overflow: hidden;" [class.sidebar-collapsed]="sidebarService.isCollapsed()">
+<div [class.sidebar-collapsed]="sidebarService.isCollapsed()">
   <app-navbar></app-navbar>
   
-  <main class="flex-grow-1 main-content-wrapper position-relative" style="height: 100%; overflow-y: auto; overflow-x: hidden;">
-    <!-- Global Router Outlet -->
+  <main class="main-content-wrapper position-relative">
     <router-outlet></router-outlet>
   </main>
 </div>
@@ -17,15 +16,18 @@
     padding-bottom: 70px; /* Mobile Nav */
     overflow-x: hidden;
     width: 100%;
+    min-height: 100vh;
   }
   @media (min-width: 768px) {
     .main-content-wrapper {
       margin-left: 260px; /* Desktop Sidebar width */
+      width: calc(100% - 260px);
       padding-bottom: 0;
-      transition: margin-left 0.3s ease;
+      transition: margin-left 0.3s ease, width 0.3s ease;
     }
     .sidebar-collapsed .main-content-wrapper {
       margin-left: 80px; /* Collapsed width */
+      width: calc(100% - 80px);
     }
   }
 </style>

@@ -33,17 +33,28 @@ import { LanguageService } from '../../services/language';
 
     <!-- Desktop Sidebar -->
     <aside class="d-none d-md-flex flex-column desktop-sidebar bg-white border-end" [class.collapsed]="sidebarService.isCollapsed()">
-      <a routerLink="/about" class="sidebar-header p-4 d-flex align-items-center text-decoration-none text-dark" [class.justify-content-center]="sidebarService.isCollapsed()" style="cursor: pointer;">
-        <div *ngIf="!sidebarService.isCollapsed()" style="white-space: nowrap; overflow: hidden; animation: fadeIn 0.3s;">
-          <h3 class="fw-bold mb-0">{{ labels.ABOUT.TITLE }}</h3>
-          <p class="text-secondary small mb-0">{{ labels.ABOUT.HERO_TEXT[0] }} {{ labels.ABOUT.HERO_TEXT[1] }} {{ labels.ABOUT.HERO_TEXT[2] }}</p>
+      <a routerLink="/about" class="sidebar-header p-4 d-flex align-items-center text-decoration-none text-primary" [class.justify-content-center]="sidebarService.isCollapsed()" style="cursor: pointer;">
+        <div style="animation: fadeIn 0.3s; width: 32px; height: 32px; flex-shrink: 0; display: flex; justify-content: center; align-items: center;" class="text-primary" [class.me-3]="!sidebarService.isCollapsed()">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 120" width="100%" height="100%">
+            <g stroke="currentColor" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" fill="none">
+              <path d="M 23,48 A 27 27 0 1 1 77,48 C 77,70 60,70 60,85" />
+              <circle cx="50" cy="104" r="5.5" />
+            </g>
+            <g fill="currentColor">
+              <circle cx="30" cy="62" r="3.5" />
+              <circle cx="36" cy="74" r="3.5" />
+              <circle cx="42" cy="84" r="3.5" />
+              <circle cx="47" cy="93" r="3.5" />
+            </g>
+          </svg>
         </div>
-        <div *ngIf="sidebarService.isCollapsed()" style="animation: fadeIn 0.3s;">
-          <h3 class="fw-bold mb-0 fs-4">w</h3>
+        <div *ngIf="!sidebarService.isCollapsed()" style="white-space: nowrap; overflow: hidden; animation: fadeIn 0.3s;">
+          <h3 class="fw-bold mb-0" style="font-size: 1.5rem;">{{ labels.ABOUT.TITLE }}</h3>
+          <p class="small mb-0 text-secondary" style="font-size: 0.75rem;">{{ labels.ABOUT.HERO_TEXT[0] }} {{ labels.ABOUT.HERO_TEXT[1] }} {{ labels.ABOUT.HERO_TEXT[2] }}</p>
         </div>
       </a>
       
-      <div class="sidebar-links flex-grow-1 mt-2 overflow-y-auto d-flex flex-column" style="min-height: 0;" [class.px-3]="!sidebarService.isCollapsed()" [class.px-2]="sidebarService.isCollapsed()">
+      <div class="sidebar-links flex-grow-1 mt-2 overflow-y-auto d-flex flex-column" data-lenis-prevent="true" style="min-height: 0;" [class.px-3]="!sidebarService.isCollapsed()" [class.px-2]="sidebarService.isCollapsed()">
         <a routerLink="/home" routerLinkActive="active" class="sidebar-item mb-2" [title]="sidebarService.isCollapsed() ? labels.NAVBAR.HOME : ''">
           <i class="bi bi-house-door-fill"></i> 
           <span *ngIf="!sidebarService.isCollapsed()" class="ms-3" style="white-space: nowrap; animation: fadeIn 0.3s;">{{ labels.NAVBAR.HOME }}</span>
