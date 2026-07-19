@@ -44,6 +44,10 @@ export const LABELS_EN = {
     ENTERTAINMENT: 'Entertainment'
   },
   AI_CHAT: {
+    THINKING: 'Thinking...',
+    DEFAULT_USER_MSG: 'Suggest a nice cafe nearby',
+    DEFAULT_AI_MSG: 'Here are some of the best cafés near you',
+    MOCK_RESPONSE: 'That sounds like a great plan! The backend integration will handle this soon.',
     HEADER_TITLE: 'What Do You Want to Do Today?',
     HEADER_SUBTITLE: 'I can help you find the best places to eat, drink, or explore.',
     PLACEHOLDER: 'Ask Anything...',
@@ -52,9 +56,9 @@ export const LABELS_EN = {
     START_CHAT: 'Start a New Conversation',
     RECENT_SEARCHES: 'Recent Searches',
     CLEAR_ALL: 'Clear All',
-    FIND_LOCAL_FOOD: 'Find Famous Local Food',
-    PLAN_EVENING: 'Plan My Evening',
-    HIDDEN_GEMS: 'Hidden Gems Nearby',
+    FIND_LOCAL_FOOD: 'Local Food',
+    PLAN_EVENING: 'Evening Plan',
+    HIDDEN_GEMS: 'Hidden Gems',
     FAMILY_OUTING: 'Family Outing',
     BUILD_GROCERY: 'Build Grocery Cart'
   },

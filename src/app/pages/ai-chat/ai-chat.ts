@@ -13,12 +13,10 @@ import { LanguageService } from '../../services/language';
       <!-- Fixed Header & Options -->
       <div class="px-4 pt-4 pb-2 bg-white" style="z-index: 10; border-bottom: 1px solid rgba(0,0,0,0.05);">
         <h1 class="fw-bold fs-2 mb-3">{{ labels.AI_CHAT.HEADER_TITLE }}</h1>
-        <div class="d-flex flex-wrap gap-2">
-          <button class="btn btn-outline rounded-pill text-secondary btn-sm px-3 py-2 border-light bg-light bg-opacity-50 text-start text-truncate" style="width: 240px;"><i class="bi bi-search me-2"></i> {{ labels.AI_CHAT.FIND_LOCAL_FOOD }}</button>
-          <button class="btn btn-outline rounded-pill text-secondary btn-sm px-3 py-2 border-light bg-light bg-opacity-50 text-start text-truncate" style="width: 240px;"><i class="bi bi-moon me-2"></i> {{ labels.AI_CHAT.PLAN_EVENING }}</button>
-          <button class="btn btn-outline rounded-pill text-secondary btn-sm px-3 py-2 border-light bg-light bg-opacity-50 text-start text-truncate" style="width: 240px;"><i class="bi bi-gem me-2"></i> {{ labels.AI_CHAT.HIDDEN_GEMS }}</button>
-          <button class="btn btn-outline rounded-pill text-secondary btn-sm px-3 py-2 border-light bg-light bg-opacity-50 text-start text-truncate" style="width: 240px;"><i class="bi bi-people me-2"></i> {{ labels.AI_CHAT.FAMILY_OUTING }}</button>
-          <button class="btn btn-outline rounded-pill text-secondary btn-sm px-3 py-2 border-light bg-light bg-opacity-50 text-start text-truncate" style="width: 240px;"><i class="bi bi-cart me-2"></i> {{ labels.AI_CHAT.BUILD_GROCERY }}</button>
+        <div class="d-flex flex-nowrap overflow-auto gap-2 no-scrollbar pb-2">
+          <button class="btn btn-outline rounded-pill text-secondary btn-sm px-3 py-2 border-light bg-light bg-opacity-50 text-start text-truncate flex-shrink-0" style="width: 160px;"><i class="bi bi-search me-2"></i> {{ labels.AI_CHAT.FIND_LOCAL_FOOD }}</button>
+          <button class="btn btn-outline rounded-pill text-secondary btn-sm px-3 py-2 border-light bg-light bg-opacity-50 text-start text-truncate flex-shrink-0" style="width: 160px;"><i class="bi bi-moon me-2"></i> {{ labels.AI_CHAT.PLAN_EVENING }}</button>
+          <button class="btn btn-outline rounded-pill text-secondary btn-sm px-3 py-2 border-light bg-light bg-opacity-50 text-start text-truncate flex-shrink-0" style="width: 160px;"><i class="bi bi-gem me-2"></i> {{ labels.AI_CHAT.HIDDEN_GEMS }}</button>
         </div>
       </div>
 
@@ -96,10 +94,14 @@ export class AiChatComponent {
   get labels() { return this.langService.labels; }
 
   currentInput = '';
-  messages = [
-    { sender: 'user', text: 'Suggest a nice cafe nearby', showCard: false, isTyping: false },
-    { sender: 'ai', text: 'Here are some of the best cafés near you', showCard: true, isTyping: false }
-  ];
+  messages: any[] = [];
+
+  constructor() {
+    this.messages = [
+      { sender: 'user', text: this.labels.AI_CHAT.DEFAULT_USER_MSG, showCard: false, isTyping: false },
+      { sender: 'ai', text: this.labels.AI_CHAT.DEFAULT_AI_MSG, showCard: true, isTyping: false }
+    ];
+  }
 
   sendMessage() {
     if (!this.currentInput.trim()) return;
@@ -110,12 +112,12 @@ export class AiChatComponent {
     
     // Simulate AI thinking
     const aiMsgIndex = this.messages.length;
-    this.messages.push({ sender: 'ai', text: 'Thinking...', showCard: false, isTyping: true });
+    this.messages.push({ sender: 'ai', text: this.labels.AI_CHAT.THINKING, showCard: false, isTyping: true });
     
     setTimeout(() => {
       this.messages[aiMsgIndex] = { 
         sender: 'ai', 
-        text: 'That sounds like a great plan! The backend integration will handle this soon.', 
+        text: this.labels.AI_CHAT.MOCK_RESPONSE, 
         showCard: false, 
         isTyping: false 
       };
