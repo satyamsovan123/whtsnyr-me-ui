@@ -8,7 +8,7 @@ import { EXPLORE_CATEGORIES, PREFERRED_RADIUSES } from '../../constants/common';
   standalone: true,
   imports: [CommonModule],
   template: `
-    <div class="page-container d-flex flex-column flex-grow-1 max-w-desktop mx-auto bg-white fade-in w-100">
+    <div class="page-container position-relative d-flex flex-column flex-grow-1 max-w-desktop mx-auto bg-white fade-in w-100">
       
       <!-- Top Search & Filters -->
       <div class="pt-3 px-4 bg-white z-1">
@@ -56,10 +56,10 @@ import { EXPLORE_CATEGORIES, PREFERRED_RADIUSES } from '../../constants/common';
            [style]="isModalOpen ? 'padding-top: max(env(safe-area-inset-top), 20px); padding-bottom: max(env(safe-area-inset-bottom), 20px);' : 'margin-top: -60px; max-height: 40vh;'">
         
         <!-- Modal Header -->
-        <div *ngIf="isModalOpen" class="d-flex justify-content-between align-items-center p-3 border-bottom flex-shrink-0">
+        <div *ngIf="isModalOpen" class="d-flex justify-content-between align-items-center px-4 py-3 border-bottom flex-shrink-0">
           <h5 class="fw-bold mb-0">{{ labels.EXPLORE.PLACES_NEARBY }}</h5>
-          <button (click)="isModalOpen = false" class="btn btn-light rounded-circle p-2 d-flex align-items-center justify-content-center" style="width: 36px; height: 36px;">
-            <i class="bi bi-chevron-down"></i>
+          <button (click)="isModalOpen = false" class="btn btn-link text-secondary p-0 border-0 shadow-none d-flex align-items-center justify-content-center" style="width: 36px; height: 36px;">
+            <i class="bi bi-arrows-angle-contract fs-5"></i>
           </button>
         </div>
 
@@ -70,7 +70,7 @@ import { EXPLORE_CATEGORIES, PREFERRED_RADIUSES } from '../../constants/common';
         </div>
         
         <!-- Scrollable List -->
-        <div class="overflow-auto pb-2 pe-1" [ngClass]="{'p-4': isModalOpen}">
+        <div class="overflow-auto pb-2 pe-1" [ngClass]="{'px-4 pt-4': isModalOpen}">
           <!-- Item 1 -->
           <div class="d-flex gap-3 align-items-center mb-4">
             <div class="rounded-3 flex-shrink-0 bg-light" style="width: 70px; height: 70px; background-image: url('https://images.unsplash.com/photo-1524492412937-b28074a5d7da?q=80&w=200&auto=format&fit=crop'); background-size: cover;"></div>
