@@ -134,6 +134,6 @@ export const LABELS = {
   },
   COMMON: {
     COPYRIGHT: 'Copyright © 2026 whtsnyr.me v1.0.0.',
-    REGION: '🇮🇳 OD 19'
+    REGION: 'OD 19'
   }
 };

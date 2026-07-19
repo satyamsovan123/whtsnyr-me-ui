@@ -43,7 +43,7 @@ import { LABELS } from '../../constants/labels';
         </div>
       </a>
       
-      <div class="sidebar-links flex-grow-1 mt-2 overflow-y-auto no-scrollbar" [class.px-3]="!sidebarService.isCollapsed()" [class.px-2]="sidebarService.isCollapsed()">
+      <div class="sidebar-links flex-grow-1 mt-2 overflow-y-auto d-flex flex-column" style="min-height: 0;" [class.px-3]="!sidebarService.isCollapsed()" [class.px-2]="sidebarService.isCollapsed()">
         <a routerLink="/home" routerLinkActive="active" class="sidebar-item mb-2" [title]="sidebarService.isCollapsed() ? labels.NAVBAR.HOME : ''">
           <i class="bi bi-house-door-fill"></i> 
           <span *ngIf="!sidebarService.isCollapsed()" class="ms-3" style="white-space: nowrap; animation: fadeIn 0.3s;">{{ labels.NAVBAR.HOME }}</span>
@@ -60,7 +60,7 @@ import { LABELS } from '../../constants/labels';
           <i class="bi bi-bookmark-fill"></i> 
           <span *ngIf="!sidebarService.isCollapsed()" class="ms-3" style="white-space: nowrap; animation: fadeIn 0.3s;">{{ labels.NAVBAR.SAVED }}</span>
         </a>
-        <a routerLink="/settings" routerLinkActive="active" class="sidebar-item mt-auto mb-4" [title]="sidebarService.isCollapsed() ? labels.NAVBAR.SETTINGS : ''">
+        <a routerLink="/settings" routerLinkActive="active" class="sidebar-item mb-4" [title]="sidebarService.isCollapsed() ? labels.NAVBAR.SETTINGS : ''">
           <i class="bi bi-gear-fill"></i> 
           <span *ngIf="!sidebarService.isCollapsed()" class="ms-3" style="white-space: nowrap; animation: fadeIn 0.3s;">{{ labels.NAVBAR.SETTINGS }}</span>
         </a>

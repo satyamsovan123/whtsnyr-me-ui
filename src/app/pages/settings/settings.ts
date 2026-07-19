@@ -25,56 +25,66 @@ import { LABELS } from '../../constants/labels';
       <!-- Settings List -->
       <div class="list-group list-group-flush pt-2">
         
-        <div class="list-group-item border-0 px-4 py-3 d-flex justify-content-between align-items-center bg-white position-relative">
+        <div class="list-group-item border-0 px-4 py-3 d-flex justify-content-between align-items-center bg-white">
           <span class="text-dark">{{ labels.SETTINGS.PREFERRED_RADIUS }}</span>
-          <span class="text-secondary small d-flex align-items-center">{{ currentRadius }} <i class="bi bi-chevron-right ms-2 opacity-50"></i></span>
-          <select class="position-absolute top-0 start-0 w-100 h-100 opacity-0" style="cursor: pointer;" (change)="currentRadius = $any($event.target).value">
-            <option value="1 km" [selected]="currentRadius === '1 km'">1 km</option>
-            <option value="2 km" [selected]="currentRadius === '2 km'">2 km</option>
-            <option value="5 km" [selected]="currentRadius === '5 km'">5 km</option>
-            <option value="10 km" [selected]="currentRadius === '10 km'">10 km</option>
-          </select>
+          <div class="position-relative d-inline-block">
+            <span class="text-secondary small d-flex align-items-center">{{ currentRadius }} <i class="bi bi-chevron-right ms-2 opacity-50"></i></span>
+            <select class="position-absolute top-0 start-0 w-100 h-100 opacity-0" style="cursor: pointer;" (change)="currentRadius = $any($event.target).value">
+              <option value="1 km" [selected]="currentRadius === '1 km'">1 km</option>
+              <option value="2 km" [selected]="currentRadius === '2 km'">2 km</option>
+              <option value="5 km" [selected]="currentRadius === '5 km'">5 km</option>
+              <option value="10 km" [selected]="currentRadius === '10 km'">10 km</option>
+            </select>
+          </div>
         </div>
 
-        <div class="list-group-item border-0 px-4 py-3 d-flex justify-content-between align-items-center bg-white position-relative">
+        <div class="list-group-item border-0 px-4 py-3 d-flex justify-content-between align-items-center bg-white">
           <span class="text-dark">{{ labels.SETTINGS.TEMPERATURE_UNITS }}</span>
-          <span class="text-secondary small d-flex align-items-center">{{ currentTemp }} <i class="bi bi-chevron-right ms-2 opacity-50"></i></span>
-          <select class="position-absolute top-0 start-0 w-100 h-100 opacity-0" style="cursor: pointer;" (change)="currentTemp = $any($event.target).value">
-            <option value="°C" [selected]="currentTemp === '°C'">Celsius (°C)</option>
-            <option value="°F" [selected]="currentTemp === '°F'">Fahrenheit (°F)</option>
-          </select>
+          <div class="position-relative d-inline-block">
+            <span class="text-secondary small d-flex align-items-center">{{ currentTemp }} <i class="bi bi-chevron-right ms-2 opacity-50"></i></span>
+            <select class="position-absolute top-0 start-0 w-100 h-100 opacity-0" style="cursor: pointer;" (change)="currentTemp = $any($event.target).value">
+              <option value="°C" [selected]="currentTemp === '°C'">Celsius (°C)</option>
+              <option value="°F" [selected]="currentTemp === '°F'">Fahrenheit (°F)</option>
+            </select>
+          </div>
         </div>
 
-        <div class="list-group-item border-0 px-4 py-3 d-flex justify-content-between align-items-center bg-white position-relative">
+        <div class="list-group-item border-0 px-4 py-3 d-flex justify-content-between align-items-center bg-white">
           <span class="text-dark">{{ labels.SETTINGS.THEME }}</span>
-          <span class="text-secondary small d-flex align-items-center text-capitalize">{{ currentTheme }} <i class="bi bi-chevron-right ms-2 opacity-50"></i></span>
-          <select class="position-absolute top-0 start-0 w-100 h-100 opacity-0" style="cursor: pointer;" (change)="onThemeChange($event)">
-            <option value="light" [selected]="currentTheme === 'light'">Light</option>
-            <option value="dark" [selected]="currentTheme === 'dark'">Dark</option>
-            <option value="system" [selected]="currentTheme === 'system'">System</option>
-          </select>
+          <div class="position-relative d-inline-block">
+            <span class="text-secondary small d-flex align-items-center text-capitalize">{{ currentTheme }} <i class="bi bi-chevron-right ms-2 opacity-50"></i></span>
+            <select class="position-absolute top-0 start-0 w-100 h-100 opacity-0" style="cursor: pointer;" (change)="onThemeChange($event)">
+              <option value="light" [selected]="currentTheme === 'light'">Light</option>
+              <option value="dark" [selected]="currentTheme === 'dark'">Dark</option>
+              <option value="system" [selected]="currentTheme === 'system'">System</option>
+            </select>
+          </div>
         </div>
 
-        <div class="list-group-item border-0 px-4 py-3 d-flex justify-content-between align-items-center bg-white position-relative">
+        <div class="list-group-item border-0 px-4 py-3 d-flex justify-content-between align-items-center bg-white">
           <span class="text-dark">{{ labels.SETTINGS.LANGUAGE }}</span>
-          <span class="text-secondary small d-flex align-items-center">{{ currentLang }} <i class="bi bi-chevron-right ms-2 opacity-50"></i></span>
-          <select class="position-absolute top-0 start-0 w-100 h-100 opacity-0" style="cursor: pointer;" (change)="currentLang = $any($event.target).value">
-            <option value="English" [selected]="currentLang === 'English'">English</option>
-            <option value="Hindi" [selected]="currentLang === 'Hindi'">Hindi</option>
-            <option value="Odia" [selected]="currentLang === 'Odia'">Odia</option>
-          </select>
+          <div class="position-relative d-inline-block">
+            <span class="text-secondary small d-flex align-items-center">{{ currentLang }} <i class="bi bi-chevron-right ms-2 opacity-50"></i></span>
+            <select class="position-absolute top-0 start-0 w-100 h-100 opacity-0" style="cursor: pointer;" (change)="currentLang = $any($event.target).value">
+              <option value="English" [selected]="currentLang === 'English'">English</option>
+              <option value="Hindi" [selected]="currentLang === 'Hindi'">Hindi</option>
+              <option value="Odia" [selected]="currentLang === 'Odia'">Odia</option>
+            </select>
+          </div>
         </div>
         
         <div class="px-4 py-2 mt-2"></div> <!-- Spacer -->
 
-        <div class="list-group-item border-0 px-4 py-3 d-flex justify-content-between align-items-center bg-white position-relative">
+        <div class="list-group-item border-0 px-4 py-3 d-flex justify-content-between align-items-center bg-white">
           <span class="text-dark">{{ labels.SETTINGS.LOCATION }}</span>
-          <span class="text-secondary small d-flex align-items-center">{{ currentLocation }} <i class="bi bi-chevron-right ms-2 opacity-50"></i></span>
-          <select class="position-absolute top-0 start-0 w-100 h-100 opacity-0" style="cursor: pointer;" (change)="currentLocation = $any($event.target).value">
-            <option value="Always" [selected]="currentLocation === 'Always'">Always</option>
-            <option value="While using" [selected]="currentLocation === 'While using'">While using the app</option>
-            <option value="Never" [selected]="currentLocation === 'Never'">Never</option>
-          </select>
+          <div class="position-relative d-inline-block">
+            <span class="text-secondary small d-flex align-items-center">{{ currentLocation }} <i class="bi bi-chevron-right ms-2 opacity-50"></i></span>
+            <select class="position-absolute top-0 start-0 w-100 h-100 opacity-0" style="cursor: pointer;" (change)="currentLocation = $any($event.target).value">
+              <option value="Always" [selected]="currentLocation === 'Always'">Always</option>
+              <option value="While using" [selected]="currentLocation === 'While using'">While using the app</option>
+              <option value="Never" [selected]="currentLocation === 'Never'">Never</option>
+            </select>
+          </div>
         </div>
 
         <button class="list-group-item list-group-item-action border-0 px-4 py-3 d-flex justify-content-between align-items-center bg-white position-relative z-1">
@@ -107,7 +117,10 @@ import { LABELS } from '../../constants/labels';
         
         <div class="d-flex justify-content-between align-items-center">
           <p class="text-secondary mb-0">{{ labels.COMMON.COPYRIGHT }}</p>
-          <span class="text-secondary">{{ labels.COMMON.REGION }}</span>
+          <span class="text-secondary d-flex align-items-center">
+            <img src="https://flagcdn.com/w20/in.png" width="16" alt="India" class="me-2" style="border-radius: 2px;">
+            {{ labels.COMMON.REGION }}
+          </span>
         </div>
       </div>
     </div>
