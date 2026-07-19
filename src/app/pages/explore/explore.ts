@@ -10,7 +10,7 @@ import { LABELS } from '../../constants/labels';
     <div class="page-container d-flex flex-column h-100 max-w-desktop mx-auto bg-white fade-in">
       
       <!-- Top Search & Filters -->
-      <div class="pt-3 bg-white z-1">
+      <div class="pt-3 px-4 bg-white z-1">
         <div class="input-group bg-light rounded-pill p-1 mb-3">
           <span class="input-group-text bg-transparent border-0 text-secondary"><i class="bi bi-search"></i></span>
           <input type="text" class="form-control border-0 bg-transparent shadow-none" [placeholder]="labels.EXPLORE.SEARCH_PLACEHOLDER">

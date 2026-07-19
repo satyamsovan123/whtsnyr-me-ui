@@ -8,8 +8,7 @@ import { LABELS } from '../../constants/labels';
   standalone: true,
   imports: [CommonModule, RouterModule],
   template: `
-    <div class="page-container bg-white min-vh-100 fade-in max-w-desktop mx-auto position-relative p-4 p-md-5">
-      <div class="w-100 mx-auto pt-3" style="max-width: 700px;">
+    <div class="page-container bg-white min-vh-100 fade-in max-w-desktop mx-auto position-relative px-4 py-4">
         <div class="mb-5">
           <h1 class="display-5 fw-bold tracking-tight mb-2">{{ labels.PRIVACY.TITLE }}</h1>
           <p class="text-secondary">{{ labels.PRIVACY.LAST_UPDATED }}</p>
@@ -36,12 +35,14 @@ import { LABELS } from '../../constants/labels';
             {{ labels.PRIVACY.SECTION_4_TEXT }}
           </p>
         </div>
-      </div>
     </div>
   `,
   styles: [`
     .tracking-tight { letter-spacing: -0.04em; }
     h3 { letter-spacing: -0.02em; }
+    .max-w-desktop {
+      max-width: 800px;
+    }
   `]
 })
 export class PrivacyPolicyComponent {

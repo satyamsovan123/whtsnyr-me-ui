@@ -37,6 +37,8 @@
 [data-theme="dark"] .shadow-sm { box-shadow: 0 .125rem .25rem rgba(255,255,255,.075) !important; }
 [data-theme="dark"] .shadow { box-shadow: 0 .5rem 1rem rgba(255,255,255,.15) !important; }
 [data-theme="dark"] .shadow-lg { box-shadow: 0 1rem 3rem rgba(255,255,255,.175) !important; }
+[data-theme="dark"] .form-control { color: var(--text-primary) !important; }
+[data-theme="dark"] .form-control::placeholder { color: var(--text-secondary) !important; }
 
 /* Semantic Inverse Classes for buttons and chat bubbles */
 .bg-inverse {

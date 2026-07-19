@@ -7,8 +7,7 @@ import { LABELS } from '../../constants/labels';
   standalone: true,
   imports: [CommonModule],
   template: `
-    <div class="page-container bg-white min-vh-100 fade-in max-w-desktop mx-auto position-relative p-4 p-md-5">
-      <div class="w-100 mx-auto" style="max-width: 800px;">
+    <div class="page-container bg-white min-vh-100 fade-in max-w-desktop mx-auto position-relative px-4 py-4">
         
         <div class="mb-5">
           <h1 class="fw-bold fs-2 mb-2">{{ labels.SAVED.TITLE }}</h1>
@@ -39,7 +38,6 @@ import { LABELS } from '../../constants/labels';
           </div>
           
         </div>
-      </div>
     </div>
   `,
   styles: [`
@@ -47,6 +45,9 @@ import { LABELS } from '../../constants/labels';
       display: block;
       height: 100vh;
       background-color: var(--bg-color);
+    }
+    .max-w-desktop {
+      max-width: 800px;
     }
   `]
 })
