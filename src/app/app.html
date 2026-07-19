@@ -1,7 +1,7 @@
-<div class="d-flex min-vh-100" style="overflow-x: hidden;" [class.sidebar-collapsed]="sidebarService.isCollapsed()">
+<div class="d-flex w-100" style="height: 100vh; height: 100dvh; overflow: hidden;" [class.sidebar-collapsed]="sidebarService.isCollapsed()">
   <app-navbar></app-navbar>
   
-  <main class="flex-grow-1 main-content-wrapper position-relative">
+  <main class="flex-grow-1 main-content-wrapper position-relative" style="height: 100%; overflow-y: auto; overflow-x: hidden;">
     <!-- Global Router Outlet -->
     <router-outlet></router-outlet>
   </main>

@@ -118,6 +118,7 @@ import { LABELS } from '../../constants/labels';
       left: 0;
       width: 260px;
       height: 100vh;
+      height: 100dvh; /* Fallback for iOS */
       z-index: 1000;
       transition: width 0.3s ease;
       overflow: hidden;
