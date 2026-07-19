@@ -14,11 +14,11 @@ import { LanguageService } from '../../services/language';
       <div class="px-4 pt-4 pb-2 bg-white" style="z-index: 10; border-bottom: 1px solid rgba(0,0,0,0.05);">
         <h1 class="fw-bold fs-2 mb-3">{{ labels.AI_CHAT.HEADER_TITLE }}</h1>
         <div class="d-flex flex-wrap gap-2">
-          <button class="btn btn-outline rounded-pill text-secondary btn-sm px-3 py-2 border-light bg-light bg-opacity-50"><i class="bi bi-search me-2"></i> {{ labels.AI_CHAT.FIND_LOCAL_FOOD }}</button>
-          <button class="btn btn-outline rounded-pill text-secondary btn-sm px-3 py-2 border-light bg-light bg-opacity-50"><i class="bi bi-moon me-2"></i> {{ labels.AI_CHAT.PLAN_EVENING }}</button>
-          <button class="btn btn-outline rounded-pill text-secondary btn-sm px-3 py-2 border-light bg-light bg-opacity-50"><i class="bi bi-gem me-2"></i> {{ labels.AI_CHAT.HIDDEN_GEMS }}</button>
-          <button class="btn btn-outline rounded-pill text-secondary btn-sm px-3 py-2 border-light bg-light bg-opacity-50"><i class="bi bi-people me-2"></i> {{ labels.AI_CHAT.FAMILY_OUTING }}</button>
-          <button class="btn btn-outline rounded-pill text-secondary btn-sm px-3 py-2 border-light bg-light bg-opacity-50"><i class="bi bi-cart me-2"></i> {{ labels.AI_CHAT.BUILD_GROCERY }}</button>
+          <button class="btn btn-outline rounded-pill text-secondary btn-sm px-3 py-2 border-light bg-light bg-opacity-50 text-start text-truncate" style="width: 240px;"><i class="bi bi-search me-2"></i> {{ labels.AI_CHAT.FIND_LOCAL_FOOD }}</button>
+          <button class="btn btn-outline rounded-pill text-secondary btn-sm px-3 py-2 border-light bg-light bg-opacity-50 text-start text-truncate" style="width: 240px;"><i class="bi bi-moon me-2"></i> {{ labels.AI_CHAT.PLAN_EVENING }}</button>
+          <button class="btn btn-outline rounded-pill text-secondary btn-sm px-3 py-2 border-light bg-light bg-opacity-50 text-start text-truncate" style="width: 240px;"><i class="bi bi-gem me-2"></i> {{ labels.AI_CHAT.HIDDEN_GEMS }}</button>
+          <button class="btn btn-outline rounded-pill text-secondary btn-sm px-3 py-2 border-light bg-light bg-opacity-50 text-start text-truncate" style="width: 240px;"><i class="bi bi-people me-2"></i> {{ labels.AI_CHAT.FAMILY_OUTING }}</button>
+          <button class="btn btn-outline rounded-pill text-secondary btn-sm px-3 py-2 border-light bg-light bg-opacity-50 text-start text-truncate" style="width: 240px;"><i class="bi bi-cart me-2"></i> {{ labels.AI_CHAT.BUILD_GROCERY }}</button>
         </div>
       </div>
 
@@ -57,11 +57,11 @@ import { LanguageService } from '../../services/language';
                   </div>
                 </div>
                 <div class="d-flex gap-2">
-                  <button class="btn btn-outline border-light btn-sm flex-grow-1 fw-bold rounded-pill text-secondary">
+                  <button class="btn btn-outline border-light btn-sm flex-grow-1 fw-bold rounded-pill text-secondary d-flex justify-content-center align-items-center" style="height: 38px;">
                     <i class="bi bi-geo-alt me-1"></i> {{ labels.AI_CHAT.DIRECTIONS }}
                   </button>
-                  <button class="btn btn-outline border-light btn-sm flex-grow-1 fw-bold rounded-pill text-dark d-flex justify-content-center align-items-center">
-                    <img src="https://upload.wikimedia.org/wikipedia/en/1/12/Swiggy_logo.svg" alt="Swiggy" height="14" class="me-1"> {{ labels.AI_CHAT.ORDER }}
+                  <button class="btn btn-outline border-light btn-sm flex-grow-1 fw-bold rounded-pill text-dark d-flex justify-content-center align-items-center" style="height: 38px;">
+                    <img src="https://upload.wikimedia.org/wikipedia/en/1/12/Swiggy_logo.svg" alt="Swiggy" height="16" class="me-1" style="object-fit: contain;"> {{ labels.AI_CHAT.ORDER }}
                   </button>
                 </div>
               </div>
