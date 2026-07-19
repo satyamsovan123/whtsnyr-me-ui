@@ -29,7 +29,11 @@ export class UiService {
     this.toasts.update(current => [...current, toast]);
 
     setTimeout(() => {
-      this.toasts.update(current => current.filter(t => t.id !== id));
+      this.removeToast(id);
     }, 3000);
+  }
+
+  removeToast(id: number) {
+    this.toasts.update(current => current.filter(t => t.id !== id));
   }
 }

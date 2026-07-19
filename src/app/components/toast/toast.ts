@@ -13,7 +13,7 @@ import { UiService } from '../../services/ui';
           <div class="toast-body">
             {{ toast.message }}
           </div>
-          <button type="button" class="btn-close btn-close-white me-2 m-auto" aria-label="Close"></button>
+          <button type="button" class="btn-close btn-close-white me-2 m-auto" aria-label="Close" (click)="ui.removeToast(toast.id)"></button>
         </div>
       </div>
     </div>

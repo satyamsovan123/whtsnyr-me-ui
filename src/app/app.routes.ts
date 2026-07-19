@@ -6,6 +6,7 @@ import { SettingsComponent } from './pages/settings/settings';
 import { AboutComponent } from './pages/about/about';
 import { PrivacyPolicyComponent } from './pages/privacy-policy/privacy-policy';
 import { SavedComponent } from './pages/saved/saved';
+import { AuthComponent } from './pages/auth/auth';
 
 export const routes: Routes = [
   { 
@@ -42,6 +43,11 @@ export const routes: Routes = [
     path: 'privacy-policy',
     component: PrivacyPolicyComponent,
     data: { title: 'Privacy Policy | whtsnyr.me', description: 'Read our privacy policy.' }
+  },
+  {
+    path: 'account',
+    component: AuthComponent,
+    data: { title: 'Account | whtsnyr.me', description: 'Sign in or create an account to access your saved places and preferences.' }
   },
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: '**', redirectTo: 'home' }

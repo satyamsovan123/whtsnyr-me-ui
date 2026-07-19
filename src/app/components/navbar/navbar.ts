@@ -24,8 +24,12 @@ import { LanguageService } from '../../services/language';
           <i class="bi bi-compass-fill"></i>
           <span>{{ labels.NAVBAR.EXPLORE }}</span>
         </a>
-        <a routerLink="/settings" routerLinkActive="active" class="nav-item">
+        <a routerLink="/account" routerLinkActive="active" class="nav-item">
           <i class="bi bi-person-fill"></i>
+          <span>{{ labels.NAVBAR.SIGN_IN }}</span>
+        </a>
+        <a routerLink="/settings" routerLinkActive="active" class="nav-item">
+          <i class="bi bi-gear-fill"></i>
           <span>{{ labels.NAVBAR.YOU }}</span>
         </a>
       </div>
@@ -71,6 +75,10 @@ import { LanguageService } from '../../services/language';
           <i class="bi bi-bookmark-fill"></i> 
           <span *ngIf="!sidebarService.isCollapsed()" class="ms-3" style="white-space: nowrap; animation: fadeIn 0.3s;">{{ labels.NAVBAR.SAVED }}</span>
         </a>
+        <a routerLink="/account" routerLinkActive="active" class="sidebar-item mb-2" [title]="sidebarService.isCollapsed() ? labels.NAVBAR.SIGN_IN : ''">
+          <i class="bi bi-person-fill"></i> 
+          <span *ngIf="!sidebarService.isCollapsed()" class="ms-3" style="white-space: nowrap; animation: fadeIn 0.3s;">{{ labels.NAVBAR.SIGN_IN }}</span>
+        </a>
         <a routerLink="/settings" routerLinkActive="active" class="sidebar-item mb-4" [title]="sidebarService.isCollapsed() ? labels.NAVBAR.SETTINGS : ''">
           <i class="bi bi-gear-fill"></i> 
           <span *ngIf="!sidebarService.isCollapsed()" class="ms-3" style="white-space: nowrap; animation: fadeIn 0.3s;">{{ labels.NAVBAR.SETTINGS }}</span>
@@ -84,7 +92,7 @@ import { LanguageService } from '../../services/language';
            [class.pe-2]="!sidebarService.isCollapsed()"
            [class.pe-0]="sidebarService.isCollapsed()"
            (click)="sidebarService.toggle()" 
-           [title]="sidebarService.isCollapsed() ? 'Expand sidebar' : 'Collapse sidebar'"
+           [title]="sidebarService.isCollapsed() ? labels.NAVBAR.EXPAND_SIDEBAR : labels.NAVBAR.COLLAPSE_SIDEBAR"
            onmouseover="this.classList.add('text-dark'); this.classList.remove('text-secondary')"
            onmouseout="this.classList.add('text-secondary'); this.classList.remove('text-dark')"></i>
       </div>

@@ -38,7 +38,7 @@ import { EXPLORE_CATEGORIES, PREFERRED_RADIUSES } from '../../constants/common';
       </div>
 
       <!-- Map Area (Placeholder) -->
-      <div class="flex-grow-1 position-relative bg-light">
+      <div class="flex-grow-1 position-relative bg-light rounded-4 overflow-hidden mx-3 mb-3 shadow-sm" style="min-height: 400px;">
         <div class="w-100 h-100" style="background-image: url('https://images.unsplash.com/photo-1524661135-423995f22d0b?q=80&w=800&auto=format&fit=crop'); background-size: cover; background-position: center; opacity: 0.8; filter: grayscale(0.2) contrast(1.1) brightness(1.1);"></div>
         
         <!-- Map Pins -->

@@ -1,7 +1,8 @@
-import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges, inject, ChangeDetectorRef } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, inject, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SwiggyService } from '../../services/swiggy';
 import { UiService } from '../../services/ui';
+import { LanguageService } from '../../services/language';
 
 @Component({
   selector: 'app-swiggy-panel',
@@ -75,15 +76,22 @@ import { UiService } from '../../services/ui';
     }
   `]
 })
-export class SwiggyPanelComponent {
+export class SwiggyPanelComponent implements OnInit {
   @Input() location!: { lat: number; lng: number } | null;
   @Output() dataLoaded = new EventEmitter<any>();
   swiggy = inject(SwiggyService);
   ui = inject(UiService);
+  languageService = inject(LanguageService);
   cdr = inject(ChangeDetectorRef);
+
+  get labels() {
+    return this.languageService.labels;
+  }
   
   restaurants: any[] | null = null;
   loading = false;
+
+  ngOnInit() {}
 
   async search() {
     if (!this.location) return;
@@ -94,12 +102,12 @@ export class SwiggyPanelComponent {
       this.dataLoaded.emit(this.restaurants);
       this.cdr.detectChanges();
       if (this.restaurants?.length === 0) {
-        this.ui.showToast('No restaurants found nearby via Swiggy MCP', 'info');
+        this.ui.showToast(this.labels.TOAST.NO_RESTAURANTS, 'info');
       }
     } catch (e) {
       console.error('Failed to load swiggy data', e);
       this.cdr.detectChanges();
-      this.ui.showToast('Failed to fetch restaurants', 'error');
+      this.ui.showToast(this.labels.TOAST.FETCH_FAILED, 'error');
     } finally {
       this.loading = false;
       this.cdr.detectChanges();
@@ -107,6 +115,6 @@ export class SwiggyPanelComponent {
   }
 
   order(rest: any) {
-    this.ui.showToast(`Opening menu for ${rest.name}...`, 'info');
+    this.ui.showToast(`${this.labels.TOAST.OPENING_MENU} ${rest.name}...`, 'info');
   }
 }

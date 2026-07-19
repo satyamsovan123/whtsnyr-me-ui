@@ -14,12 +14,6 @@ import { LanguageService } from '../../services/language';
           <p class="text-secondary">{{ labels.SAVED.SUBTITLE }}</p>
         </div>
 
-        <!-- Tabs or Toggle for Mock Data -->
-        <div class="d-flex justify-content-end mb-3">
-          <button class="btn btn-sm btn-outline rounded-pill text-secondary border-light" (click)="hasItems = !hasItems">
-            <i class="bi bi-magic me-1"></i> Toggle Empty State
-          </button>
-        </div>
 
         <!-- Empty State -->
         <div *ngIf="!hasItems" class="d-flex flex-column align-items-center justify-content-center text-center py-5 fade-in">

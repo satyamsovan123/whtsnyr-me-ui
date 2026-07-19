@@ -4,6 +4,7 @@ import { WeatherWidgetComponent } from '../weather-widget/weather-widget';
 import { PlacesExplorerComponent } from '../places-explorer/places-explorer';
 import { SpecialtiesListComponent } from '../specialties-list/specialties-list';
 import { SwiggyPanelComponent } from '../swiggy-panel/swiggy-panel';
+import { LanguageService } from '../../services/language';
 import { ForYouComponent } from '../for-you/for-you';
 import { LocationService } from '../../services/location';
 import { UiService } from '../../services/ui';
@@ -28,8 +29,8 @@ import gsap from 'gsap';
           <h1 class="display-5 fw-bold mb-0 text-dark">Good {{ getTimeOfDay() }}!</h1>
           <p class="text-muted fs-5 mb-0">Discover what's near you.</p>
         </div>
-        <button class="btn btn-light rounded-circle shadow-sm" (click)="requestLocation()" aria-label="Refresh Location">
-          <i class="bi bi-geo-alt-fill text-accent"></i>
+        <button class="btn btn-link text-secondary p-0 border-0 shadow-none text-decoration-none" (click)="requestLocation()" aria-label="Refresh Location">
+          <i class="bi bi-geo-alt" style="font-size: 1.25rem; transition: color 0.2s;" onmouseover="this.classList.add('text-dark'); this.classList.remove('text-secondary')" onmouseout="this.classList.add('text-secondary'); this.classList.remove('text-dark')"></i>
         </button>
       </header>
 
@@ -71,7 +72,12 @@ import gsap from 'gsap';
 })
 export class DashboardComponent implements OnInit, AfterViewInit {
   location = inject(LocationService);
-  ui = inject(UiService);
+  private ui = inject(UiService);
+  private languageService = inject(LanguageService);
+
+  get labels() {
+    return this.languageService.labels;
+  }
   
   @ViewChild('dashboardContainer') container!: ElementRef;
 
@@ -86,7 +92,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     try {
       await this.location.requestLocation();
     } catch (e) {
-      this.ui.showToast('Please enable location for the best experience', 'info');
+      this.ui.showToast(this.labels.TOAST.LOCATION_FAILED, 'error');
     }
   }
 
@@ -106,9 +112,9 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     try {
       this.ui.showLoader();
       await this.location.requestLocation();
-      this.ui.showToast('Location updated', 'success');
+      this.ui.showToast(this.labels.TOAST.LOCATION_UPDATED, 'success');
     } catch (e) {
-      this.ui.showToast('Failed to get location', 'error');
+      this.ui.showToast(this.labels.TOAST.LOCATION_FAILED, 'error');
     } finally {
       this.ui.hideLoader();
     }

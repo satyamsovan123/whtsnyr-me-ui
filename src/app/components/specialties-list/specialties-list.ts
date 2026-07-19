@@ -2,6 +2,7 @@ import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ApiService } from '../../services/api';
 import { UiService } from '../../services/ui';
+import { LanguageService } from '../../services/language';
 
 @Component({
   selector: 'app-specialties-list',
@@ -60,9 +61,14 @@ import { UiService } from '../../services/ui';
 })
 export class SpecialtiesListComponent implements OnInit {
   api = inject(ApiService);
-  ui = inject(UiService);
+  private ui = inject(UiService);
+  private languageService = inject(LanguageService);
   specialties: any[] | null = null;
   cdr = inject(ChangeDetectorRef);
+
+  get labels() {
+    return this.languageService.labels;
+  }
 
   async ngOnInit() {
     try {
@@ -76,6 +82,6 @@ export class SpecialtiesListComponent implements OnInit {
   }
 
   onSelect(item: any) {
-    this.ui.showToast(`Selected ${item.name}`, 'info');
+    this.ui.showToast(`${this.labels.TOAST.SELECTED} ${item.name}`, 'info');
   }
 }

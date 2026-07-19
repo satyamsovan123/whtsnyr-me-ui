@@ -39,6 +39,11 @@ gsap.registerPlugin(ScrollTrigger);
             <h1 class="fw-bold tracking-tighter mb-4 hero-heading" style="font-size: clamp(3.5rem, 8vw, 6rem); line-height: 1.05;">
               Around<br>you,<br>reimagined.
             </h1>
+            <div class="mt-5" style="opacity: 0; animation: fadeIn 1s ease-out 1s forwards;">
+              <a routerLink="/home" class="btn btn-dark rounded-pill px-5 py-3 fw-bold shadow-sm" style="font-size: 1.1rem;">
+                {{ labels.ABOUT.START_EXPLORING }}
+              </a>
+            </div>
           </div>
         </section>
 
@@ -169,11 +174,14 @@ gsap.registerPlugin(ScrollTrigger);
               {{ labels.ABOUT.WHY_TEXT }}
             </p>
             
-            <!-- Subtle Contact Link -->
-            <div class="apple-text-3 mt-5" style="opacity: 0; transform: translateY(30px);">
-              <p class="fw-semibold text-secondary" style="font-size: 1.1rem;">
-                {{ labels.ABOUT.CONTACT_PRE }}<a [href]="'mailto:' + contactEmail" class="text-decoration-none text-primary" style="border-bottom: 1px solid var(--border-color); transition: border-color 0.2s;">{{ labels.ABOUT.CONTACT_LINK }}</a>{{ labels.ABOUT.CONTACT_POST }}
-              </p>
+            <!-- Call to Action -->
+            <div class="apple-text-3 mb-5 d-flex flex-column flex-sm-row justify-content-center align-items-center gap-3" style="opacity: 0; transform: translateY(30px);">
+              <a routerLink="/home" class="btn btn-dark rounded-pill px-5 py-3 fw-bold shadow-sm" style="font-size: 1.1rem;">
+                {{ labels.ABOUT.START_EXPLORING }}
+              </a>
+              <a [href]="'mailto:' + contactEmail" class="btn btn-outline-secondary rounded-pill px-5 py-3 fw-bold" style="font-size: 1.1rem;">
+                {{ labels.ABOUT.CONTACT_LINK }}
+              </a>
             </div>
           </div>
         </section>

@@ -65,34 +65,53 @@ body {
 .text-tertiary { color: var(--text-tertiary) !important; }
 
 /* Buttons */
-.btn-black {
-  background-color: var(--inverse-bg);
-  color: var(--inverse-text);
-  border-radius: 12px;
-  padding: 12px 24px;
-  font-weight: 600;
-  border: none;
-  transition: opacity 0.2s ease;
+/* Disable Hover States Globally */
+.btn {
+  transition: none !important;
 }
-.btn-black:hover {
-  opacity: 0.9;
-  color: var(--inverse-text);
+.btn:hover, .btn:active, .btn:focus {
+  opacity: 1 !important;
+  transform: none !important;
+  box-shadow: none !important;
 }
-.btn-swiggy {
-  background-color: var(--inverse-bg);
-  color: var(--inverse-text);
-  border-radius: 12px;
-  padding: 12px 24px;
-  font-weight: 600;
-  border: none;
+
+/* Primary Actions: Black button with white text (inverse theme variables) */
+.btn-dark, .btn-primary, .btn-accent, .btn-black, .btn-swiggy {
+  background-color: var(--inverse-bg) !important;
+  color: var(--inverse-text) !important;
+  border: 1px solid var(--inverse-bg) !important;
 }
-.btn-outline {
-  border: 1px solid var(--border-color);
-  background-color: transparent;
-  color: var(--text-primary);
-  border-radius: 12px;
-  padding: 12px 24px;
-  font-weight: 600;
+.btn-dark:hover, .btn-dark:active, .btn-dark:focus,
+.btn-primary:hover, .btn-primary:active, .btn-primary:focus,
+.btn-accent:hover, .btn-accent:active, .btn-accent:focus,
+.btn-black:hover, .btn-black:active, .btn-black:focus,
+.btn-swiggy:hover, .btn-swiggy:active, .btn-swiggy:focus {
+  background-color: var(--inverse-bg) !important;
+  color: var(--inverse-text) !important;
+  border-color: var(--inverse-bg) !important;
+}
+
+/* Secondary Actions: Transparent button, black text, black border */
+.btn-outline, .btn-outline-secondary, .btn-outline-dark, .btn-light, .btn-outline-light {
+  background-color: transparent !important;
+  color: var(--inverse-bg) !important;
+  border: 1px solid var(--inverse-bg) !important;
+}
+.btn-outline:hover, .btn-outline:active, .btn-outline:focus,
+.btn-outline-secondary:hover, .btn-outline-secondary:active, .btn-outline-secondary:focus,
+.btn-outline-dark:hover, .btn-outline-dark:active, .btn-outline-dark:focus,
+.btn-light:hover, .btn-light:active, .btn-light:focus,
+.btn-outline-light:hover, .btn-outline-light:active, .btn-outline-light:focus {
+  background-color: transparent !important;
+  color: var(--inverse-bg) !important;
+  border-color: var(--inverse-bg) !important;
+}
+
+/* Exclude link buttons from border styles */
+.btn-link {
+  border: none !important;
+  background-color: transparent !important;
+  color: var(--inverse-bg) !important;
 }
 
 /* Minimal Cards */

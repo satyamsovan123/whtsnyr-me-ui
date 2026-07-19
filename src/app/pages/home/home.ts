@@ -18,8 +18,8 @@ import { LanguageService } from '../../services/language';
           </h1>
           <p class="text-secondary small mt-1"><i class="bi bi-geo-alt-fill"></i> Mumbai, India</p>
         </div>
-        <button (click)="requestLocation()" class="btn btn-light rounded-circle shadow-sm border d-flex align-items-center justify-content-center flex-shrink-0" style="width: 44px; height: 44px;">
-          <i class="bi bi-geo-alt"></i>
+        <button (click)="requestLocation()" class="btn btn-link text-secondary p-0 border-0 shadow-none text-decoration-none flex-shrink-0" title="Refresh Location">
+          <i class="bi bi-geo-alt" style="font-size: 1.5rem; transition: color 0.2s;" onmouseover="this.classList.add('text-dark'); this.classList.remove('text-secondary')" onmouseout="this.classList.add('text-secondary'); this.classList.remove('text-dark')"></i>
         </button>
       </header>
 

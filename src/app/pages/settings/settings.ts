@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { ThemeService, Theme } from '../../services/theme';
 import { LanguageService } from '../../services/language';
+import { UiService } from '../../services/ui';
 import { SUPPORTED_LANGUAGES, PREFERRED_RADIUSES, TEMPERATURE_UNITS, THEMES, LOCATION_OPTIONS } from '../../constants/common';
 
 @Component({
@@ -14,13 +15,16 @@ import { SUPPORTED_LANGUAGES, PREFERRED_RADIUSES, TEMPERATURE_UNITS, THEMES, LOC
       
       <!-- Profile Header -->
       <div class="p-4 d-flex align-items-center border-bottom border-light">
-        <div class="rounded-circle bg-light border d-flex align-items-center justify-content-center me-3" style="width: 60px; height: 60px; border-color: #dee2e6 !important;">
+        <div class="rounded-circle bg-light border d-flex align-items-center justify-content-center me-3 flex-shrink-0" style="width: 60px; height: 60px; border-color: #dee2e6 !important;">
           <span class="fs-4 fw-medium text-secondary">AM</span>
         </div>
-        <div>
+        <div class="flex-grow-1">
           <h2 class="fw-bold fs-5 mb-0 text-dark">Arjun Mehta</h2>
           <p class="small text-secondary mb-0">arjun.mehta@gmail.com</p>
         </div>
+        <button class="btn btn-link text-secondary p-0 border-0 shadow-none text-decoration-none flex-shrink-0 ms-2" [title]="labels.SETTINGS.LOGOUT">
+          <i class="bi bi-box-arrow-right" style="font-size: 1.5rem; transition: color 0.2s;" onmouseover="this.classList.add('text-dark'); this.classList.remove('text-secondary')" onmouseout="this.classList.add('text-secondary'); this.classList.remove('text-dark')"></i>
+        </button>
       </div>
 
       <!-- Settings List -->
@@ -133,6 +137,7 @@ import { SUPPORTED_LANGUAGES, PREFERRED_RADIUSES, TEMPERATURE_UNITS, THEMES, LOC
 export class SettingsComponent {
   private themeService = inject(ThemeService);
   private langService = inject(LanguageService);
+  private ui = inject(UiService);
   get labels() { return this.langService.labels; }
 
   public supportedLanguages = SUPPORTED_LANGUAGES;
@@ -145,7 +150,7 @@ export class SettingsComponent {
   currentRadius = '2 km';
   currentTemp = '°C';
   currentLocation = 'Always';
-  
+
   get currentTheme(): string {
     return this.themeService.getTheme();
   }
